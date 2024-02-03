@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1706990862640,
+      "tag": "0000_remarkable_guardsmen",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1706991313276,
+      "tag": "0001_far_the_hand",
+      "breakpoints": true
+    }
+  ]
+}
