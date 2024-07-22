@@ -18,11 +18,11 @@ const PricingCard: React.FC<IPricingCard> = ({
 	description,
 }) => {
 	return (
-		<Card className="relative border-washed-purple-800 bg-brand-dark/20 backdrop:blur py-7 p-6 rounded-[10px] min-w-[253px]">
+		<Card className="relative min-w-[253px] rounded-[10px] border-washed-purple-800 bg-brand-dark/20 p-6 py-7 backdrop:blur">
 			{variant == "PAID" ? (
-				<Wallet className="right-4 absolute" />
+				<Wallet className="absolute right-4" />
 			) : (
-				<Diamond className="right-4 absolute" />
+				<Diamond className="absolute right-4" />
 			)}
 			<H4 className="mb-2 w-full">
 				{label || variant == "PAID" ? "Plan" : "Free Plan"}
@@ -31,7 +31,7 @@ const PricingCard: React.FC<IPricingCard> = ({
 				<H5 className="text-Neutrals/neutrals-6">
 					$ {amount || variant == "PAID" ? "9.99" : "0"} /m
 				</H5>
-				<P className="font-normal text-[13px] text-Neutrals/neutrals-8">
+				<P className="text-[13px] font-normal text-Neutrals/neutrals-8">
 					{description || "Limited block trails for teams"}
 				</P>
 				<Button className="my-3 w-full">Get Started</Button>
@@ -42,23 +42,23 @@ const PricingCard: React.FC<IPricingCard> = ({
 						? "Everything in free + "
 						: "Here's what you get "}
 				</p>
-				<ul className="space-y-1.5 mt-2">
+				<ul className="mt-2 space-y-1.5">
 					<li className="flex items-center gap-2">
-						<Check className="w-[14px] h-[15px]" />{" "}
+						<Check className="h-[15px] w-[14px]" />{" "}
 						{variant == "UNPAID"
 							? "3 Blocks for Teams"
 							: "Unlimited Blocks for Teams"}
 					</li>
 					<li className="flex items-center gap-2">
-						<Check className="w-[14px] h-[15px]" /> Unlimited File
+						<Check className="h-[15px] w-[14px]" /> Unlimited File
 						Upload
 					</li>
 					<li className="flex items-center gap-2">
-						<Check className="w-[14px] h-[15px]" /> 30 Day page
+						<Check className="h-[15px] w-[14px]" /> 30 Day page
 						History
 					</li>
 					<li className="flex items-center gap-2">
-						<Check className="w-[14px] h-[15px]" /> Invite 10 Member
+						<Check className="h-[15px] w-[14px]" /> Invite 10 Member
 					</li>
 				</ul>
 			</div>

@@ -26,9 +26,12 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { SignUpFormSchema } from "@/lib/form-schema/authSchema";
-import { signupServerAction } from "@/services/server-actions/auth.server.action";
+import {
+	googleOAuthSignIn,
+	signupServerAction,
+} from "@/services/server-actions/auth.server.action";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { MailCheck } from "lucide-react";
+import { CircleDashed, MailCheck } from "lucide-react";
 import React from "react";
 
 const SignUpForm = () => {
@@ -36,6 +39,7 @@ const SignUpForm = () => {
 	const searchParams = useSearchParams();
 	const [submitError, setSubmitError] = useState("");
 	const [confirmation, setConfirmation] = useState<boolean>(false);
+	const [isOAuthLogin, setIsOAuthLogin] = useState(false);
 
 	// Error Triggers
 	const exchangeError = useMemo(() => {
@@ -72,9 +76,21 @@ const SignUpForm = () => {
 		setConfirmation(true);
 	}
 
+	async function googleSignIn() {
+		setIsOAuthLogin(true);
+		const { success, data, message } = await googleOAuthSignIn();
+		if (!success) {
+			setSubmitError(message);
+			form.reset();
+			setIsOAuthLogin(false);
+			return;
+		}
+		router.push(data.url as string);
+	}
+
 	return (
-		<section className="flex justify-center items-center -bg-pos-19 bg-35 bg-custom-radial px-4 py-8 w-full min-h-full">
-			<Card className="border-washed-purple-900/50 bg-brand-dark shadow-lg shadow-washed-blue-900/50 w-full min-w-[270px] max-w-[28rem]">
+		<section className="flex min-h-full w-full items-center justify-center bg-custom-radial bg-35 -bg-pos-19 px-4 py-8">
+			<Card className="w-full min-w-[270px] max-w-[28rem] border-washed-purple-900/50 bg-brand-dark shadow-lg shadow-washed-blue-900/50">
 				<CardHeader className="text-center">
 					<Link href={"/"}>
 						<Image
@@ -84,7 +100,7 @@ const SignUpForm = () => {
 							height={100}
 							priority={true}
 							quality={1}
-							className="mx-auto w-[120px] h-auto"
+							className="mx-auto h-auto w-[120px]"
 						/>
 					</Link>
 					<CardTitle className="text-xl">Sign Up</CardTitle>
@@ -101,7 +117,7 @@ const SignUpForm = () => {
 							}}
 							onSubmit={form.handleSubmit(onSubmit)}
 						>
-							<div className="gap-4 grid">
+							<div className="grid gap-4">
 								<Label htmlFor="fullName">Name</Label>
 								<FormField
 									name="fullName"
@@ -126,7 +142,7 @@ const SignUpForm = () => {
 									}}
 								/>
 
-								<div className="gap-2 grid">
+								<div className="grid gap-2">
 									<Label htmlFor="email">Email</Label>
 									<FormField
 										name="email"
@@ -151,7 +167,7 @@ const SignUpForm = () => {
 										}}
 									/>
 								</div>
-								<div className="gap-2 grid">
+								<div className="grid gap-2">
 									<Label htmlFor="password">Password</Label>
 									<FormField
 										name="password"
@@ -177,7 +193,7 @@ const SignUpForm = () => {
 										}}
 									/>
 								</div>
-								<div className="gap-2 grid">
+								<div className="grid gap-2">
 									<Label htmlFor="password">
 										Confirm Password
 									</Label>
@@ -217,14 +233,14 @@ const SignUpForm = () => {
 											)}
 										>
 											{!exchangeError && (
-												<MailCheck className="w-4 h-4" />
+												<MailCheck className="h-4 w-4" />
 											)}
 											<AlertTitle className="">
 												{exchangeError
 													? "Invalid Link"
 													: submitError
-													? "Invalid Email"
-													: "Check your email."}
+														? "Invalid Email"
+														: "Check your email."}
 											</AlertTitle>
 											<AlertDescription>
 												{exchangeError ||
@@ -245,13 +261,34 @@ const SignUpForm = () => {
 										)}
 									</React.Fragment>
 								)}
-								<Button type="submit" className="w-full">
-									Create an account
+								<Button
+									type="submit"
+									disabled={
+										form.formState.isLoading ||
+										form.formState.isSubmitting
+									}
+									className="w-full"
+								>
+									{form.formState.isLoading ||
+									form.formState.isSubmitting ? (
+										<CircleDashed className="animate-[spin_1.5s_linear_infinite] disabled:text-washed-blue-800" />
+									) : (
+										"Create an account"
+									)}
 								</Button>
 							</div>
 						</form>
-						<Button variant="outline" className="mt-4 w-full">
-							Sign up with Google
+						<Button
+							disabled={isOAuthLogin}
+							onClick={googleSignIn}
+							variant="outline"
+							className="mt-4 w-full"
+						>
+							{isOAuthLogin ? (
+								<CircleDashed className="animate-[spin_1.5s_linear_infinite] disabled:text-washed-blue-800" />
+							) : (
+								"Sign up with Google"
+							)}
 						</Button>
 						<div className="mt-4 text-center text-sm">
 							Already have an account?{" "}

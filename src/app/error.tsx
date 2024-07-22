@@ -10,11 +10,11 @@ export default function GlobalError({
 	reset: () => void;
 }) {
 	return (
-		<div className="relative z-0 flex justify-center items-center p-4 w-screen h-screen min-h-screen text-gray-300">
-			<div className="-z-10 absolute bg-brand-dark bg-gradient-to-t from-[38%] from-indigo-600/80 to-[30%] to-purple-700/80 blur-[20vw] w-[40vw] h-[40vw]" />
-			<div className="flex flex-col justify-center items-center p-6 w-full text-center">
+		<div className="relative z-0 flex h-screen min-h-screen w-screen items-center justify-center p-4 text-gray-300">
+			<div className="absolute -z-10 h-[40vw] w-[40vw] bg-brand-dark bg-gradient-to-t from-indigo-600/80 from-[38%] to-purple-700/80 to-[30%] blur-[20vw]" />
+			<div className="flex w-full flex-col items-center justify-center p-6 text-center">
 				<div className="w-fit text-center">
-					<h1 className="font-bold text-3xl text-red-500/80">
+					<h1 className="text-3xl font-bold text-red-500/80">
 						Something Went Wrong
 					</h1>
 					<p className="mt-4 text-washed-blue-500">
@@ -25,7 +25,7 @@ export default function GlobalError({
 						Message : {error.message}
 					</p>
 				</div>
-				<div className="flex justify-center mt-6">
+				<div className="mt-6 flex justify-center">
 					<Button onClick={reset}>Try again</Button>
 				</div>
 			</div>

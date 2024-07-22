@@ -17,7 +17,7 @@ const TitleSection: React.FC<TitleSectionProp> = ({
 	return (
 		<section
 			className={
-				"flex items-start flex-col md:items-center gap-4 justify-center"
+				"flex flex-col items-start justify-center gap-4 md:items-center"
 			}
 		>
 			<Pills variant={pillVariant}>{pill}</Pills>
@@ -25,14 +25,14 @@ const TitleSection: React.FC<TitleSectionProp> = ({
 				<>
 					<h1
 						className={
-							"text-3xl sm:text-4xl sm:max-w-[750px] text-left md:text-center font-semibold"
+							"text-left text-3xl font-semibold sm:max-w-[750px] sm:text-4xl md:text-center"
 						}
 					>
 						{heading}
 					</h1>
 					<p
 						className={
-							"dark:text-washed-purple-700 sm:max-w-700 md:text-center"
+							"sm:max-w-700 dark:text-washed-purple-700 md:text-center"
 						}
 					>
 						{subheading}
@@ -41,7 +41,7 @@ const TitleSection: React.FC<TitleSectionProp> = ({
 			) : (
 				<h1
 					className={
-						"text-3xl sm:text-5xl sm:max-w-[850px] text-left md:text-center font-semibold"
+						"text-left text-3xl font-semibold sm:max-w-[850px] sm:text-5xl md:text-center"
 					}
 				>
 					{heading}

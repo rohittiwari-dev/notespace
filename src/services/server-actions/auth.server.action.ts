@@ -47,12 +47,47 @@ export async function signupServerAction({
 		password,
 		options: {
 			emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+			data: {
+				full_name: fullName,
+			},
 		},
 	});
 
 	// Handle errors including rate limit exceeded error
 	if (error) {
 		const customError = { ...error };
+		return {
+			success: false,
+			message:
+				"Something Went Wrong : " + error?.message ||
+				customError.code ||
+				"",
+			data: userSession,
+		};
+	}
+
+	return {
+		success: true,
+		data: userSession,
+		message:
+			"Successfully signed up. Please check your email to confirm your account.",
+	};
+}
+
+export async function googleOAuthSignIn() {
+	const supabase = createRouteHandlerClient({ cookies });
+
+	const { error, data: userSession } = await supabase.auth.signInWithOAuth({
+		provider: "google",
+		options: {
+			redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+		},
+	});
+
+	// Handle errors including rate limit exceeded error
+	if (error) {
+		const customError = { ...error };
+		console.log(customError);
 		return {
 			success: false,
 			message:

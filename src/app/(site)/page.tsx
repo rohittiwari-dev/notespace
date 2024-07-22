@@ -9,18 +9,7 @@ import PricingCard from "@/components/home-components/pricing-card";
 const SiteHomePage = () => {
 	return (
 		<section className={"w-full pb-6"}>
-			<div
-				className="
-				overflow-hidden
-				px-4
-				sm:px-6
-				mt-16
-				flex
-				flex-col
-				gap-4
-				md:justify-center
-				md:item-center"
-			>
+			<div className="md:item-center mt-16 flex flex-col gap-4 overflow-hidden px-4 sm:px-6 md:justify-center">
 				<TitleSection
 					heading={
 						"Collaborative Experience  in Documenting and Note Making"
@@ -31,51 +20,40 @@ const SiteHomePage = () => {
 
 				<div
 					className={
-						"bg-white cursor-pointer md:mx-auto mt-2 rounded-xl p-[2px] sm:max-w-[300px] bg-gradient-to-r from-primary to-brand-primaryBlue flex justify-center items-center"
+						"mt-2 flex cursor-pointer items-center justify-center rounded-xl bg-white bg-gradient-to-r from-primary to-brand-primaryBlue p-[2px] sm:max-w-[300px] md:mx-auto"
 					}
 				>
 					<Button
-						className={"w-full text-2xl rounded-xl p-6"}
+						className={"w-full rounded-xl p-6 text-2xl"}
 						variant={"btn-secondary"}
 					>
 						Get NoteSpace
 					</Button>
 				</div>
-				<div className={"w-full relative"}>
+				<div className={"relative w-full"}>
 					<div
 						className={
-							"w-[86%] z-[3] pointer-events-none left-1/2 -translate-x-1/2 blur-[65px] -top-[5rem] h-[10vh] rounded-full opacity-40 bg-primary absolute"
+							"pointer-events-none absolute -top-[5rem] left-1/2 z-[3] h-[10vh] w-[86%] -translate-x-1/2 rounded-full bg-primary opacity-40 blur-[65px]"
 						}
 					/>
 					<div
 						className={
-							"w-[86%] -z-1 left-1/2 -translate-x-1/2 blur-[60px] -top-[1rem] h-[8vh]  rounded-full opacity-80 bg-primary absolute"
+							"-z-1 absolute -top-[1rem] left-1/2 h-[8vh] w-[86%] -translate-x-1/2 rounded-full bg-primary opacity-80 blur-[60px]"
 						}
 					/>
 					<Image
 						src={HeaderImage}
-						className={"w-full z-[1]"}
+						className={"z-[1] w-full"}
 						alt={"Header Image"}
 					/>
 					<div
 						className={
-							"absolute bottom-0 w-full h-[10vh] from-[12%] z-10 bg-gradient-to-t from-brand-dark to-transparent"
+							"absolute bottom-0 z-10 h-[10vh] w-full bg-gradient-to-t from-brand-dark from-[12%] to-transparent"
 						}
 					/>
 				</div>
 			</div>
-			<div
-				className="
-				overflow-hidden
-				px-4
-				sm:px-6
-				mt-24
-				flex
-				flex-col
-				gap-4
-				md:justify-center
-				md:item-center"
-			>
+			<div className="md:item-center mt-24 flex flex-col gap-4 overflow-hidden px-4 sm:px-6 md:justify-center">
 				<div className={"z-[1]"}>
 					<TitleSection
 						heading={
@@ -87,30 +65,30 @@ const SiteHomePage = () => {
 					/>
 				</div>
 
-				<div className={"w-2/3 sm:1/2 mx-auto relative"}>
+				<div className={"sm:1/2 relative mx-auto w-2/3"}>
 					<div
 						className={
-							"w-[86%] z-[3] pointer-events-none left-1/2 -translate-x-1/2 blur-[65px] -top-[2rem] h-[10vh] rounded-full opacity-40 bg-primary absolute"
+							"pointer-events-none absolute -top-[2rem] left-1/2 z-[3] h-[10vh] w-[86%] -translate-x-1/2 rounded-full bg-primary opacity-40 blur-[65px]"
 						}
 					/>
 					<div
 						className={
-							"w-[86%] -z-1 left-1/2 -translate-x-1/2 blur-[60px] -top-[2rem] h-[8vh]  rounded-full opacity-80 bg-primary absolute"
+							"-z-1 absolute -top-[2rem] left-1/2 h-[8vh] w-[86%] -translate-x-1/2 rounded-full bg-primary opacity-80 blur-[60px]"
 						}
 					/>
 					<Image
 						src={CalendarImage}
-						className={"w-full z-[1]"}
+						className={"z-[1] w-full"}
 						alt={"Header Image"}
 					/>
 					<div
 						className={
-							"absolute bottom-0 w-full h-[10vh] from-[12%] z-10 bg-gradient-to-t from-brand-dark to-transparent"
+							"absolute bottom-0 z-10 h-[10vh] w-full bg-gradient-to-t from-brand-dark from-[12%] to-transparent"
 						}
 					/>
 				</div>
 			</div>
-			<div className="relative flex flex-col md:justify-center gap-4 md:item-center mt-24 px-4 sm:px-6 w-full h-full overflow-hidden">
+			<div className="md:item-center relative mt-24 flex h-full w-full flex-col gap-4 overflow-hidden px-4 sm:px-6 md:justify-center">
 				<div className={"z-[1]"}>
 					<TitleSection
 						heading={"Trusted By All"}
@@ -119,28 +97,16 @@ const SiteHomePage = () => {
 						pillVariant={"SQUARICLE"}
 					/>
 				</div>
-				<div className={"w-full p-1 flex-1 h-full mx-auto relative"}>
+				<div className={"relative mx-auto h-full w-full flex-1 p-1"}>
 					<div
 						className={
-							"w-[86%] z-[3] left-1/2 -translate-x-1/2 blur-[60px] -top-0 h-[8vh]  rounded-full opacity-80 bg-primary absolute"
+							"absolute -top-0 left-1/2 z-[3] h-[8vh] w-[86%] -translate-x-1/2 rounded-full bg-primary opacity-80 blur-[60px]"
 						}
 					/>
 					<TestimonialSection />
 				</div>
 			</div>
-			<div
-				className="
-				overflow-hidden
-				px-4
-				sm:px-6
-				mt-24
-				flex
-				flex-col
-				gap-4
-				md:justify-center
-				relative
-				md:item-center"
-			>
+			<div className="md:item-center relative mt-24 flex flex-col gap-4 overflow-hidden px-4 sm:px-6 md:justify-center">
 				<div className={"z-[1]"}>
 					<TitleSection
 						heading={"Choose the Perfect Plan for You"}
@@ -151,15 +117,15 @@ const SiteHomePage = () => {
 				</div>
 				<div
 					className={
-						"w-full z-0 flex gap-8 p-1 pb-16 mx-auto relative"
+						"relative z-0 mx-auto flex w-full gap-8 p-1 pb-16"
 					}
 				>
 					<div
 						className={
-							"w-[400px] -z-10 h-[400px]  right-48 blur-[60px] -top-10 rounded-full opacity-35 bg-primary absolute"
+							"absolute -top-10 right-48 -z-10 h-[400px] w-[400px] rounded-full bg-primary opacity-35 blur-[60px]"
 						}
 					/>
-					<div className="flex sm:flex-row flex-col justify-center items-center gap-20 mx-auto mt-2">
+					<div className="mx-auto mt-2 flex flex-col items-center justify-center gap-20 sm:flex-row">
 						<PricingCard />
 						<PricingCard variant={"PAID"} />
 					</div>

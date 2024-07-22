@@ -26,13 +26,13 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
 			<li>
 				<a
 					ref={ref}
-					className={`group block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/30 text-card-foreground/60 focus:bg-accent focus:text-accent-foreground ${className}`}
+					className={`group block select-none space-y-1 rounded-md p-3 leading-none text-card-foreground/60 no-underline outline-none transition-colors hover:bg-accent/30 focus:bg-accent focus:text-accent-foreground ${className}`}
 					{...props}
 				>
-					<div className="font-medium text-sm text-white leading-none">
+					<div className="text-sm font-medium leading-none text-white">
 						{title}
 					</div>
-					<p className="group-hover:text-white/70 line-clamp-2 text-sm text-white/40 leading-snug">
+					<p className="line-clamp-2 text-sm leading-snug text-white/40 group-hover:text-white/70">
 						{children}
 					</p>
 				</a>
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
 	const [path, setPath] = useState<string>("#products");
 	return (
 		<header
-			className={"w-full py-3 px-2 flex  items-center justify-between"}
+			className={"flex w-full items-center justify-between px-2 py-3"}
 		>
 			<Link href={"/"}>
 				<Image
@@ -57,11 +57,11 @@ const Header: React.FC = () => {
 					height={100}
 					priority={true}
 					quality={1}
-					className="w-full min-w-[120px] h-auto"
+					className="h-auto w-full min-w-[120px]"
 				/>
 			</Link>
 			<NavigationMenu
-				className={"border rounded-[10px] hidden md:block p-1"}
+				className={"hidden rounded-[10px] border p-1 md:block"}
 			>
 				<NavigationMenuList>
 					<NavigationMenuItem>
@@ -71,18 +71,18 @@ const Header: React.FC = () => {
 								"dark:text-white": path === "#resources",
 								"dark:text-white/40": path !== "#resources",
 								"font-normal": true,
-								"md:text-lg ": true,
-								"!p-2 h-8 ": true,
+								"md:text-lg": true,
+								"h-8 !p-2": true,
 							})}
 						>
 							Getting started
 						</NavigationMenuTrigger>
 						<NavigationMenuContent>
-							<ul className="gap-3 grid lg:grid-cols-[.75fr_1fr] p-4 md:w-[400px] lg:w-[500px]">
+							<ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
 								<li className="row-span-3">
 									<NavigationMenuLink asChild>
 										<a
-											className="flex flex-col justify-end bg-gradient-to-b from-muted/50 to-muted focus:shadow-md p-6 rounded-md w-full h-full no-underline select-none outline-none"
+											className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
 											href="/"
 										>
 											<Image
@@ -90,12 +90,12 @@ const Header: React.FC = () => {
 												alt={"Logo"}
 												width={100}
 												height={100}
-												className="w-full max-w-[200px] h-auto"
+												className="h-auto w-full max-w-[200px]"
 											/>
-											<div className="mt-4 mb-2 font-medium text-lg">
+											<div className="mb-2 mt-4 text-lg font-medium">
 												Notespace
 											</div>
-											<p className="text-muted-foreground text-sm leading-tight">
+											<p className="text-sm leading-tight text-muted-foreground">
 												Beautifully designed,write and
 												have notes and documents by
 												collaborating with friends and
@@ -136,8 +136,8 @@ const Header: React.FC = () => {
 										"dark:text-white/40":
 											path !== "#testimonial",
 										"font-normal": true,
-										"md:!text-lg ": true,
-										"!p-2 h-8 ": true,
+										"md:!text-lg": true,
+										"h-8 !p-2": true,
 									}),
 								})}
 							>
@@ -152,14 +152,14 @@ const Header: React.FC = () => {
 								"dark:text-white": path === "#pricing",
 								"dark:text-white/40": path !== "#pricing",
 								"font-normal": true,
-								"md:text-lg ": true,
-								"!p-2 h-8 ": true,
+								"md:text-lg": true,
+								"h-8 !p-2": true,
 							})}
 						>
 							Pricing
 						</NavigationMenuTrigger>
 						<NavigationMenuContent>
-							<ul className="gap-3 grid md:grid-row-2 p-4 w-[400px]">
+							<ul className="md:grid-row-2 grid w-[400px] gap-3 p-4">
 								<ListItem
 									title={
 										<div className="flex items-center gap-2">
@@ -187,7 +187,7 @@ const Header: React.FC = () => {
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
-			<div className={"sm:flex items-center hidden justify-center gap-4"}>
+			<div className={"hidden items-center justify-center gap-4 sm:flex"}>
 				<Link
 					href={"/login"}
 					className={buttonVariants({ variant: "outline" })}

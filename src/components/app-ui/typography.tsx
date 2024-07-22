@@ -3,7 +3,7 @@ import { ComponentProps } from "react";
 
 export const H1 = ({ className, children, ...props }: ComponentProps<"h1">) => {
 	return (
-		<h1 className={cn("text-[45px] md:text-[65px] font-bold", className)}>
+		<h1 className={cn("text-[45px] font-bold md:text-[65px]", className)}>
 			{children}
 		</h1>
 	);
@@ -12,7 +12,7 @@ export const H2 = ({ className, children, ...props }: ComponentProps<"h1">) => {
 	return (
 		<h2
 			className={cn(
-				"md:text-[55px] md:font-medium text-[35px] font-bold",
+				"text-[35px] font-bold md:text-[55px] md:font-medium",
 				className,
 			)}
 		>
@@ -38,7 +38,7 @@ export const H5 = ({ className, children, ...props }: ComponentProps<"h1">) => {
 	return (
 		<h5
 			className={cn(
-				"text-base md:text-2xl font-medium md:font-normal",
+				"text-base font-medium md:text-2xl md:font-normal",
 				className,
 			)}
 		>

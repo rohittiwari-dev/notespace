@@ -7,7 +7,7 @@ export const Diamond = ({ className }: ComponentProps<"svg">) => {
 			viewBox="0 0 30 28"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			className={cn("w-[30px] h-[28px]", className)}
+			className={cn("h-[28px] w-[30px]", className)}
 		>
 			<g filter="url(#filter0_bdi_17_2032)">
 				<path
@@ -118,7 +118,7 @@ export const Wallet = ({ className }: ComponentProps<"svg">) => {
 			viewBox="0 0 28 25"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			className={cn("w-[28px] h-[25px]", className)}
+			className={cn("h-[25px] w-[28px]", className)}
 		>
 			<g filter="url(#filter0_bdi_96_1042)">
 				<rect

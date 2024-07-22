@@ -10,7 +10,7 @@ const TestimonialCards: React.FC<TTestimonialCards> = ({ className }) => {
 	return (
 		<Card
 			className={cn(
-				"!bg-gradient-to-t from-[#110023] to-[#001439] to-[74%] w-full !min-w-[250px] !max-w-[370px] select-none",
+				"w-full !min-w-[250px] !max-w-[370px] select-none !bg-gradient-to-t from-[#110023] to-[#001439] to-[74%]",
 				className,
 			)}
 		>
@@ -27,7 +27,7 @@ const TestimonialCards: React.FC<TTestimonialCards> = ({ className }) => {
 						<h1 className="text-[16px] text-washed-blue-100">
 							Name
 						</h1>
-						<p className="text-[16px] text-washed-purple-600 italic">
+						<p className="text-[16px] italic text-washed-purple-600">
 							@rohittiwari
 						</p>
 					</div>

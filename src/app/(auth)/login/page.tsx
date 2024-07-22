@@ -25,14 +25,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
-import { loginServerActions } from "@/services/server-actions/auth.server.action";
-import { Circle } from "lucide-react";
+import {
+	googleOAuthSignIn,
+	loginServerActions,
+} from "@/services/server-actions/auth.server.action";
+import { CircleDashed } from "lucide-react";
 import { loginFormSchema } from "@/lib/form-schema/authSchema";
 
 const LoginPage = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [submitError, setSubmitError] = useState("");
+	const [isOAuthLogin, setIsOAuthLogin] = useState(false);
 
 	// Error Triggers
 	const exchangeError = useMemo(() => {
@@ -63,9 +67,22 @@ const LoginPage = () => {
 		}
 		router.replace("/dashboard");
 	}
+
+	async function googleSignIn() {
+		setIsOAuthLogin(true);
+		const { success, data, message } = await googleOAuthSignIn();
+		if (!success) {
+			setSubmitError(message);
+			form.reset();
+			setIsOAuthLogin(false);
+			return;
+		}
+		router.push(data.url as string);
+	}
+
 	return (
-		<section className="flex justify-center items-center -bg-pos-19 bg-35 bg-custom-radial px-4 py-8 w-full min-h-full">
-			<Card className="border-washed-purple-900/50 bg-brand-dark shadow-lg shadow-washed-blue-900/50 w-full min-w-[270px] max-w-[28rem]">
+		<section className="flex min-h-full w-full items-center justify-center bg-custom-radial bg-35 -bg-pos-19 px-4 py-8">
+			<Card className="w-full min-w-[270px] max-w-[28rem] border-washed-purple-900/50 bg-brand-dark shadow-lg shadow-washed-blue-900/50">
 				<CardHeader className="text-center">
 					<Link href={"/"}>
 						<Image
@@ -75,7 +92,7 @@ const LoginPage = () => {
 							height={100}
 							priority={true}
 							quality={1}
-							className="mx-auto w-[120px] h-auto"
+							className="mx-auto h-auto w-[120px]"
 						/>
 					</Link>
 					<CardTitle className="text-neutral-300">
@@ -94,7 +111,7 @@ const LoginPage = () => {
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
 						<Form {...form}>
-							<div className="gap-4 grid">
+							<div className="grid gap-4">
 								{" "}
 								<FormField
 									name="email"
@@ -152,7 +169,7 @@ const LoginPage = () => {
 									className={buttonVariants({
 										variant: "link",
 										className:
-											"text-washed-purple-600 !p-0 ",
+											"!p-0 text-washed-purple-600",
 									})}
 									href={"/forgot-password"}
 								>
@@ -163,28 +180,32 @@ const LoginPage = () => {
 								<FormMessage
 									className={cn(
 										confirmAndErrorStyle,
-										"p-2 px-3 !h-fit rounded-md my-2 flex justify-between items-center",
+										"my-2 flex !h-fit items-center justify-between rounded-md p-2 px-3",
 									)}
 								>
 									{submitError}
 									<Button
 										type="button"
 										onClick={() => setSubmitError("")}
-										className="!rounded-full !w-5 !h-8 text-lg"
+										className="!h-8 !w-5 !rounded-full text-lg"
 										variant={"ghost"}
 									>
 										x
 									</Button>
 								</FormMessage>
 							)}
-							<div className="space-y-3 w-full">
+							<div className="w-full space-y-3">
 								<Button
 									type="submit"
-									disabled={form.formState.isLoading}
+									disabled={
+										form.formState.isLoading ||
+										form.formState.isSubmitting
+									}
 									className="w-full"
 								>
-									{form.formState.isLoading ? (
-										<Circle className="animate-spin" />
+									{form.formState.isLoading ||
+									form.formState.isSubmitting ? (
+										<CircleDashed className="animate-[spin_1.5s_linear_infinite] disabled:text-washed-blue-800" />
 									) : (
 										"Login"
 									)}
@@ -192,8 +213,17 @@ const LoginPage = () => {
 							</div>
 						</Form>{" "}
 					</form>{" "}
-					<Button variant="outline" className="mt-4 w-full">
-						Login with Google
+					<Button
+						disabled={isOAuthLogin}
+						onClick={googleSignIn}
+						variant="outline"
+						className="mt-4 w-full"
+					>
+						{isOAuthLogin ? (
+							<CircleDashed className="animate-[spin_1.5s_linear_infinite] disabled:text-washed-blue-800" />
+						) : (
+							"Sign up with Google"
+						)}
 					</Button>
 					<div className="mt-4 text-center text-sm">
 						Don&apos;t have an account?{" "}

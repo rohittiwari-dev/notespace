@@ -1,5 +1,5 @@
 {
-  "id": "80b330c8-402b-4499-bc19-da38c37378fa",
+  "id": "003aea95-6f91-4a91-bb3f-e4fe535fb32b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -114,6 +114,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "files_workspace_owner_users_id_fk": {
+          "name": "files_workspace_owner_users_id_fk",
+          "tableFrom": "files",
+          "tableTo": "users",
+          "columnsFrom": [
+            "workspace_owner"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "files_workspace_id_workspaces_id_fk": {
           "name": "files_workspace_id_workspaces_id_fk",
           "tableFrom": "files",
@@ -212,6 +225,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "folders_workspace_owner_users_id_fk": {
+          "name": "folders_workspace_owner_users_id_fk",
+          "tableFrom": "folders",
+          "tableTo": "users",
+          "columnsFrom": [
+            "workspace_owner"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "folders_workspace_id_workspaces_id_fk": {
           "name": "folders_workspace_id_workspaces_id_fk",
           "tableFrom": "folders",
@@ -636,12 +662,118 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "workspaces_workspace_owner_users_id_fk": {
+          "name": "workspaces_workspace_owner_users_id_fk",
+          "tableFrom": "workspaces",
+          "tableTo": "users",
+          "columnsFrom": [
+            "workspace_owner"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "public.aal_level": {
+      "name": "aal_level",
+      "schema": "public",
+      "values": [
+        "aal3",
+        "aal2",
+        "aal1"
+      ]
+    },
+    "public.code_challenge_method": {
+      "name": "code_challenge_method",
+      "schema": "public",
+      "values": [
+        "plain",
+        "s256"
+      ]
+    },
+    "public.factor_status": {
+      "name": "factor_status",
+      "schema": "public",
+      "values": [
+        "verified",
+        "unverified"
+      ]
+    },
+    "public.factor_type": {
+      "name": "factor_type",
+      "schema": "public",
+      "values": [
+        "webauthn",
+        "totp"
+      ]
+    },
+    "public.key_status": {
+      "name": "key_status",
+      "schema": "public",
+      "values": [
+        "expired",
+        "invalid",
+        "valid",
+        "default"
+      ]
+    },
+    "public.key_type": {
+      "name": "key_type",
+      "schema": "public",
+      "values": [
+        "stream_xchacha20",
+        "secretstream",
+        "secretbox",
+        "kdf",
+        "generichash",
+        "shorthash",
+        "auth",
+        "hmacsha256",
+        "hmacsha512",
+        "aead-det",
+        "aead-ietf"
+      ]
+    },
+    "public.pricing_plan_interval": {
+      "name": "pricing_plan_interval",
+      "schema": "public",
+      "values": [
+        "year",
+        "month",
+        "week",
+        "day"
+      ]
+    },
+    "public.pricing_type": {
+      "name": "pricing_type",
+      "schema": "public",
+      "values": [
+        "recurring",
+        "one_time"
+      ]
+    },
+    "public.subscription_status": {
+      "name": "subscription_status",
+      "schema": "public",
+      "values": [
+        "unpaid",
+        "past_due",
+        "incomplete_expired",
+        "incomplete",
+        "canceled",
+        "active",
+        "trialing"
+      ]
+    }
+  },
   "schemas": {},
   "_meta": {
     "columns": {},
