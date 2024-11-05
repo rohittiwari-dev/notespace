@@ -16,8 +16,10 @@ const Dashboard = async () => {
 	if (!user) return;
 
 	const workspace = await getUserWorkspace(user.id);
+
 	const { error: subscriptionError, data: Subscription } =
 		await getUserActiveSubscription(user.id);
+
 	if (subscriptionError) return;
 	if (!workspace)
 		return <WorkspaceSetup user={user} subscription={Subscription} />;

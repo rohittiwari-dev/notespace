@@ -1,10 +1,8 @@
 import React from "react";
 
-const Page = ({
-	params: { workspaceId },
-}: {
-	params: { workspaceId: string };
-}) => {
+const Page = async (props: { params: Promise<{ workspaceId: string }> }) => {
+	const params = await props.params;
+	const { workspaceId } = params;
 	return <section>{workspaceId}</section>;
 };
 

@@ -223,3 +223,24 @@ export const subscriptions = pgTable("subscriptions", {
 		mode: "string",
 	}).default(sql`now()`),
 });
+
+export const collaborators = pgTable("collaborators", {
+	workspaceId: uuid("workspace_id")
+		.notNull()
+		.references(() => workspaces.id, {
+			onDelete: "cascade",
+			onUpdate: "cascade",
+		}),
+	createdAt: timestamp("created_at", {
+		withTimezone: true,
+		mode: "string",
+	})
+		.defaultNow()
+		.notNull(),
+	userId: uuid("user_id")
+		.notNull()
+		.references(() => users.id, {
+			onDelete: "cascade",
+			onUpdate: "cascade",
+		}),
+});

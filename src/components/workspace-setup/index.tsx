@@ -11,7 +11,7 @@ import {
 	CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import { Loader } from "lucide-react";
+import { Loader, Loader2 } from "lucide-react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -37,7 +37,7 @@ const WorkspaceSetup: React.FC<IWorkspaceSetup> = ({ user, subscription }) => {
 		register,
 		handleSubmit,
 		reset,
-		formState: { isSubmitting: isLoading, errors },
+		formState: { isSubmitting: isSubmitLoading, errors, isLoading },
 	} = useForm<FieldValues>({
 		mode: "onChange",
 		defaultValues: {
@@ -147,7 +147,7 @@ const WorkspaceSetup: React.FC<IWorkspaceSetup> = ({ user, subscription }) => {
 										id="workspaceName"
 										type="text"
 										placeholder="Workspace Name"
-										disabled={isLoading}
+										disabled={isLoading || isSubmitLoading}
 										{...register("workspaceName", {
 											required:
 												"Workspace name is required",
@@ -168,8 +168,9 @@ const WorkspaceSetup: React.FC<IWorkspaceSetup> = ({ user, subscription }) => {
 
 								<Input
 									disabled={
-										isLoading ||
-										subscription?.status !== "active"
+										isLoading || isSubmitLoading
+										// ||
+										// subscription?.status !== "active"
 									}
 									id="logo"
 									type="file"
@@ -189,11 +190,14 @@ const WorkspaceSetup: React.FC<IWorkspaceSetup> = ({ user, subscription }) => {
 							</div>
 
 							<div className="self-end">
-								<Button disabled={isLoading} type="submit">
-									{!isLoading ? (
+								<Button
+									disabled={isLoading || isSubmitLoading}
+									type="submit"
+								>
+									{!isLoading || isSubmitLoading ? (
 										"Create Workspace"
 									) : (
-										<Loader />
+										<Loader2 className="animate-spin" />
 									)}
 								</Button>
 							</div>

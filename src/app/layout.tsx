@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/lib/providers/ThemeProvider";
 import React from "react";
+import Providers from "@/lib/providers";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
@@ -19,14 +20,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" className="dark" style={{ colorScheme: "dark" }}>
 			<body className={dmSans.className}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
-				>
+				<Providers>
 					<>{children}</>
-				</ThemeProvider>
+				</Providers>
 			</body>
 		</html>
 	);
