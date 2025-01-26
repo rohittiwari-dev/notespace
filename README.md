@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="https://github.com/noodle-run/noodle/blob/main/public/logo.svg?raw=true" alt="Noodle logo" width="75">
+  <h1>Noodle <br> Rethinking Student Productivity</h1>
+  <br>
+</div>
 
-## Getting Started
+> **Warning**
+> This is a work-in-progress and not the finished product.
+>
+> Noodle is still in active development towards a minimal viable product (MVP).
+>
+> Follow me on twitter [@ixahmedxii](https://twitter.com/ixahmedxii) for updates.
 
-First, run the development server:
+![Noodle Preview](https://github.com/noodle-run/noodle/blob/main/public/_static/dark-dashboard-preview.jpg?raw=true)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<p align="center" style="color:dodgerblue;"><strong>⚠️ This is a UI design mockup of what the platform will look like, it is not the current state of the project.</strong></p>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Purpose
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Noodle as an idea came from the struggles that I faced during my university years. I was using multiple apps to try and stay on track with my studies, and I thought to myself, why is there no singular app that can do everything a student needs to stay on track with their studies? Like a GitHub but for students.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Planned MVP Features
 
-## Learn More
+- ✍️ Note Taking
+- 📚 Flashcards
 
-To learn more about Next.js, take a look at the following resources:
+The flashcards will be generated from the notes that you take, and you will be able to quiz yourself on them.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Future Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 📅 Calendar
+- 📝 Task management
+- 📊 Grade tracking
 
-## Deploy on Vercel
+Feel free to suggest more features by opening an issue, or join our [Discord server](https://discord.gg/ewKmQd8kYm) to discuss it with the community.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Star History
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[![Star History Chart](https://api.star-history.com/svg?repos=noodle-run/noodle#gh-light-mode-only)](https://star-history.com/#noodle-run/noodle#gh-light-mode-only)
+[![Star History Chart](https://api.star-history.com/svg?repos=noodle-run/noodle&theme=dark#gh-dark-mode-only)](https://star-history.com/#noodle-run/noodle#gh-dark-mode-only)
+
+## Contributing
+
+If you would like to contribute to Noodle, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file to get started.
+
+## License
+
+Noodle is open source and available under the [AGPL-3.0-or-later](./LICENSE) license.

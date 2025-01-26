@@ -6,11 +6,37 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+	baseDirectory: __dirname,
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+	...compat.config({
+		extends: ["next/core-web-vitals", "next/typescript", "prettier"],
+		plugins: ["unused-imports"],
+		rules: {
+			"react/jsx-curly-brace-presence": [
+				"error",
+				{ props: "never", children: "never" },
+			],
+			"react/self-closing-comp": [
+				"error",
+				{ component: true, html: true },
+			],
+			"@typescript-eslint/no-unused-vars": [
+				"warn",
+				{
+					vars: "all",
+					varsIgnorePattern: "^_",
+					args: "after-used",
+					argsIgnorePattern: "^_",
+					destructuredArrayIgnorePattern: "^_",
+				},
+			],
+			"unused-imports/no-unused-imports": "error",
+			"prefer-template": "error",
+			"@typescript-eslint/no-explicit-any": "off",
+		},
+	}),
 ];
 
 export default eslintConfig;
