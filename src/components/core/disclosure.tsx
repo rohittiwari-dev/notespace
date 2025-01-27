@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { createContext, useContext, useEffect, useId, useState } from "react";
 import {
 	AnimatePresence,
 	motion,
@@ -8,7 +9,6 @@ import {
 	Variant,
 	Variants,
 } from "motion/react";
-import { createContext, useContext, useState, useId, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 export type DisclosureContextType = {
@@ -189,9 +189,11 @@ export function DisclosureContent({
 	);
 }
 
-export default {
+const DisclosureComponents = {
 	Disclosure,
 	DisclosureProvider,
 	DisclosureTrigger,
 	DisclosureContent,
 };
+
+export default DisclosureComponents;

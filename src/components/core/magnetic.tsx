@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
 	motion,
+	type SpringOptions,
 	useMotionValue,
 	useSpring,
-	type SpringOptions,
 } from "motion/react";
 
 const SPRING_CONFIG = { stiffness: 26.7, damping: 4.1, mass: 0.2 };
@@ -34,8 +34,8 @@ export function Magnetic({
 	const springX = useSpring(x, springOptions);
 	const springY = useSpring(y, springOptions);
 
-	useEffect(() => {
-		const calculateDistance = (e: MouseEvent) => {
+	const calculateDistance = useCallback(
+		(e: MouseEvent) => {
 			if (ref.current) {
 				const rect = ref.current.getBoundingClientRect();
 				const centerX = rect.left + rect.width / 2;
@@ -56,14 +56,17 @@ export function Magnetic({
 					y.set(0);
 				}
 			}
-		};
+		},
+		[ref, isHovered, intensity, range, x, y],
+	);
 
+	useEffect(() => {
 		document.addEventListener("mousemove", calculateDistance);
 
 		return () => {
 			document.removeEventListener("mousemove", calculateDistance);
 		};
-	}, [ref, isHovered, intensity, range]);
+	}, [calculateDistance]); // Only calculateDistance is a dependency
 
 	useEffect(() => {
 		if (actionArea === "parent" && ref.current?.parentElement) {

@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+	AnimatePresence,
 	motion,
 	SpringOptions,
+	Transition,
 	useMotionValue,
 	useSpring,
-	AnimatePresence,
-	Transition,
 	Variant,
 } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -68,41 +68,38 @@ export function Cursor({
 
 	const cursorXSpring = useSpring(cursorX, springConfig || { duration: 0 });
 	const cursorYSpring = useSpring(cursorY, springConfig || { duration: 0 });
-
 	useEffect(() => {
 		const handleVisibilityChange = (visible: boolean) => {
 			setIsVisible(visible);
 		};
 
-		if (attachToParent && cursorRef.current) {
-			const parent = cursorRef.current.parentElement;
+		// Store cursorRef.current in a variable
+		const cursorElement = cursorRef.current;
+
+		if (attachToParent && cursorElement) {
+			const parent = cursorElement.parentElement;
 			if (parent) {
-				parent.addEventListener("mouseenter", () => {
+				// Define event handlers
+				const handleMouseEnter = () => {
 					parent.style.cursor = "none";
 					handleVisibilityChange(true);
-				});
-				parent.addEventListener("mouseleave", () => {
+				};
+				const handleMouseLeave = () => {
 					parent.style.cursor = "auto";
 					handleVisibilityChange(false);
-				});
+				};
+
+				// Add event listeners
+				parent.addEventListener("mouseenter", handleMouseEnter);
+				parent.addEventListener("mouseleave", handleMouseLeave);
+
+				// Cleanup function
+				return () => {
+					parent.removeEventListener("mouseenter", handleMouseEnter);
+					parent.removeEventListener("mouseleave", handleMouseLeave);
+				};
 			}
 		}
-
-		return () => {
-			if (attachToParent && cursorRef.current) {
-				const parent = cursorRef.current.parentElement;
-				if (parent) {
-					parent.removeEventListener("mouseenter", () => {
-						parent.style.cursor = "none";
-						handleVisibilityChange(true);
-					});
-					parent.removeEventListener("mouseleave", () => {
-						parent.style.cursor = "auto";
-						handleVisibilityChange(false);
-					});
-				}
-			}
-		};
 	}, [attachToParent]);
 
 	return (

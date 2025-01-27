@@ -6,7 +6,7 @@ import {
 	CardHeader,
 } from "@/components/ui/card";
 import Image from "next/image";
-import React, { useMemo, useState } from "react";
+import React, { use, useMemo, useState } from "react";
 import logo from "@/assets/Logo full.png";
 import {
 	Form,
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -27,16 +27,20 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Goal, Loader2 } from "lucide-react";
 
-const SigningPage = () => {
+type Props = {
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+const SigningPage: React.FC<Props> = ({ searchParams }) => {
 	const router = useRouter();
-	const searchParams = useSearchParams();
 	const [submitError, setSubmitError] = useState("");
 	const [isOAuthLogin, setIsOAuthLogin] = useState(false);
+	const shParams = use(searchParams);
 
 	const exchangeError = useMemo(() => {
-		if (!searchParams) return "";
-		return searchParams.get("error_description");
-	}, [searchParams]);
+		if (!shParams) return "";
+		return shParams.error_description;
+	}, [shParams]);
 
 	const confirmAndErrorStyle = useMemo(() => {
 		return cn("bg-brand-primaryPurple/10 px-2 text-primary", {
@@ -53,7 +57,7 @@ const SigningPage = () => {
 			password: "",
 		},
 	});
-	async function onSubmit(values: z.infer<typeof loginFormSchema>) {
+	async function onSubmit(_values: z.infer<typeof loginFormSchema>) {
 		// const { message, success } = await loginServerActions(values);
 		// if (!success) {
 		// 	setSubmitError(message);
