@@ -13,6 +13,7 @@ const eslintConfig = [
 	...compat.config({
 		extends: ["next/core-web-vitals", "next/typescript", "prettier"],
 		plugins: ["unused-imports"],
+		reportUnusedDisableDirectives: true,
 		rules: {
 			"react/jsx-curly-brace-presence": [
 				"error",
