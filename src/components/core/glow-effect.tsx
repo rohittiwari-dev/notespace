@@ -14,7 +14,7 @@ export type GlowEffectProps = {
 		| "flowHorizontal"
 		| "static";
 	blur?:
-		| number 
+		| number
 		| "softest"
 		| "soft"
 		| "medium"
