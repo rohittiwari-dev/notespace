@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginFormSchema } from "@/lib/formschemas";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Goal, Loader2 } from "lucide-react";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
@@ -81,7 +81,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 	}
 
 	return (
-		<main className="container-main relative z-0 flex h-full w-full flex-col items-center">
+		<main className="container-main relative z-0 flex h-fit min-h-full w-full flex-col items-center p-0">
 			<ThemeSwitcher className="absolute top-8 right-2" />
 			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none bg-transparent bg-none shadow-none backdrop-blur-xl">
 				<CardHeader className="items-center">
@@ -101,7 +101,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
 						<Form {...form}>
-							<div className="grid gap-4">
+							<div className="mb-2 grid grid-cols-2 gap-4">
 								<FormField
 									name="email"
 									control={form.control}
@@ -157,18 +157,63 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									}}
 								/>
 							</div>
-							<div className="my-2 w-full text-end">
-								<Link
-									className={buttonVariants({
-										variant: "link",
-										className:
-											"text-washed-purple-600 !p-0",
-									})}
-									href="/forgot-password"
-								>
-									forgot password?
-								</Link>
+							<div className="grid gap-2">
+								<FormField
+									name="email"
+									control={form.control}
+									render={({ field }) => {
+										return (
+											<FormItem>
+												<FormLabel className="text-neutral-300">
+													Enter Your Email
+												</FormLabel>
+												<FormControl className="my-2">
+													<Input
+														className="focus-visible:ring-1"
+														type="email"
+														placeholder="Email"
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage
+													className={cn(
+														confirmAndErrorStyle,
+														"text-red-500",
+													)}
+												/>
+											</FormItem>
+										);
+									}}
+								/>
+								<FormField
+									name="password"
+									control={form.control}
+									render={({ field }) => {
+										return (
+											<FormItem>
+												<FormLabel className="text-neutral-300">
+													Enter Your Password
+												</FormLabel>
+												<FormControl className="my-2">
+													<Input
+														type="password"
+														className="focus-visible:ring-1"
+														placeholder="Password"
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage
+													className={cn(
+														confirmAndErrorStyle,
+														"text-red-500",
+													)}
+												/>
+											</FormItem>
+										);
+									}}
+								/>
 							</div>
+
 							{submitError && (
 								<FormMessage
 									className={cn(
@@ -224,12 +269,12 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 					</Button>
 					<div className="bg-secondary/40 mt-3 w-full max-w-[calc(400px,90%)] rounded-xl px-5 py-3.5 text-center text-sm backdrop-blur-2xl">
 						<span>
-							Not a member ?{" "}
+							Already have a account ?{" "}
 							<Link
-								href="/signup"
+								href="/signin"
 								className="text-foreground hover:text-secondary-100"
 							>
-								Creat an account
+								Login Here
 							</Link>
 						</span>
 					</div>

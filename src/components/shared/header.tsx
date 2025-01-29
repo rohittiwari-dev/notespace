@@ -16,6 +16,8 @@ import {
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { GlowedButton } from "../app-ui/glowed-ui";
+import { Button } from "../ui/button";
+import ThemeSwitcher from "../app-ui/theme-switcher";
 
 const ListItem = forwardRef<
 	React.ElementRef<"div">,
@@ -151,11 +153,18 @@ const Header = () => {
 					</NavigationMenuList>
 				</NavigationMenu>
 				<div className="hidden items-center gap-4 md:flex">
+					<Button asChild variant="ghost">
+						<Link href="/signin">Signin</Link>
+					</Button>
+					<Button asChild>
+						<Link href="/signin">Signup</Link>
+					</Button>
 					<GlowedButton asChild>
 						<Link href="/signin">
 							Dashboard <ChevronRightIcon size={16} />
 						</Link>
 					</GlowedButton>
+					<ThemeSwitcher />
 				</div>
 				<div className="block md:hidden">
 					<button
