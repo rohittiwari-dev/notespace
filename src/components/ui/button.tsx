@@ -14,9 +14,10 @@ const buttonVariants = cva(
 				destructive: "bg-red-500 text-white hover:bg-red-400",
 				outline:
 					"border border-indigo-400  text-slate-400 hover:dark:bg-slate-800 hover:bg-slate-200 hover:text-background hover:dark:text-foreground",
-				secondary: "bg-secondary text-foreground hover:bg-secondary/80",
-				ghost: "text-foreground hover:bg-primary-100 hover:text-secondary-800  hover:dark:bg-secondary-800 hover:dark:text-foreground",
-				link: "relative bg-gradient-to-br from-primary left-0 ring-offset-1 to-purple-400 bg-clip-text text-transparent before:absolute before:bottom-0 before:h-px before:w-[100%]  before:rounded-full before:bg-gradient-to-br before:from-secondary-500 before:to-purple-400 hover:opacity-90",
+				secondary:
+					"bg-primary-300 text-background hover:bg-secondary-300/80 dark:bg-secondary dark:text-foreground dark:hover:bg-secondary/80",
+				ghost: "text-foreground hover:bg-primary-100 hover:text-secondary-800  dark:hover:bg-secondary-800 dark:hover:text-foreground",
+				link: "relative bg-gradient-to-br dark:from-primary left-0 ring-offset-1 from-violet-500 to-purple-400 bg-clip-text text-transparent before:absolute before:bottom-0 before:h-px before:w-[100%]  before:rounded-full before:bg-gradient-to-br before:from-secondary-500 before:to-purple-400 hover:opacity-90",
 			},
 			size: {
 				default: "px-4 py-2",

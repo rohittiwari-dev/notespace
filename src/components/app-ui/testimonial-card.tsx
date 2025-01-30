@@ -11,7 +11,7 @@ const TestimonialCards: React.FC<TTestimonialCards> = ({ className }) => {
 	return (
 		<Card
 			className={cn(
-				"border-primary-700/80 w-full !max-w-[370px] !min-w-[250px] bg-transparent !bg-gradient-to-t from-indigo-900/20 to-violet-900/20 to-[74%] backdrop-blur-3xl select-none",
+				"dark:border-primary-700/80 w-full !max-w-[370px] !min-w-[250px] bg-white/20 !bg-gradient-to-t to-[74%] backdrop-blur-3xl select-none dark:bg-transparent dark:from-indigo-900/20 dark:to-violet-900/20",
 				className,
 			)}
 		>
@@ -25,15 +25,17 @@ const TestimonialCards: React.FC<TTestimonialCards> = ({ className }) => {
 						<AvatarFallback>CN</AvatarFallback>
 					</Avatar>
 					<div className="flex-1">
-						<h1 className="text-primary-100 text-[16px]">Name</h1>
-						<p className="text-secondary-100 text-[16px] italic">
+						<h1 className="text-primary-900/70 dark:text-primary-100 text-[16px]">
+							Name
+						</h1>
+						<p className="text-primary-900/80 dark:text-secondary-100 text-[16px] italic">
 							@rohittiwari
 						</p>
 					</div>
-					<TextQuote className="text-primary-300 rotate-180" />
+					<TextQuote className="text-primary-800 dark:text-primary-300 rotate-180" />
 				</div>
 			</CardHeader>
-			<CardContent className="text-primary-200">
+			<CardContent className="text-primary-800 dark:text-primary-200">
 				<q>
 					Finally found the perfect real-time lightning-fast
 					synchronization, intuitive interface, and collaborative

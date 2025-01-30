@@ -11,8 +11,8 @@ const Pills: React.FC<IPills> = ({ children, variant = "ROUNDED" }) => {
 		<article
 			className={cn(
 				"flex h-fit items-center justify-center rounded-full p-[1.5px] text-center select-none",
-				"dark:bg-gradient-to-r dark:from-indigo-500",
-				"dark:to-violet-500",
+				"bg-gradient-to-r from-indigo-500",
+				"to-violet-500",
 				variant === "SQUARE" && "rounded-[3px]",
 				variant === "SQUARICLE" && "rounded-lg",
 			)}

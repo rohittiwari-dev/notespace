@@ -52,7 +52,7 @@ export const Footer = () => {
 				<div className="order-2 space-y-4 md:order-1">
 					<Link
 						href="/"
-						className="text-primary-100 flex items-center gap-3"
+						className="text-primary-400 dark:text-primary-100 flex items-center gap-3 font-semibold"
 					>
 						<Image
 							src={smallLogo}
@@ -62,7 +62,7 @@ export const Footer = () => {
 						/>
 						<span>{constants.shortName}</span>
 					</Link>
-					<p className="text-sm text-slate-400">
+					<p className="text-sm text-slate-600/80 dark:text-slate-400">
 						&copy; {new Date().getFullYear()} {constants.shortName}{" "}
 						LTD. All Rights Reserved.
 					</p>
@@ -70,8 +70,10 @@ export const Footer = () => {
 				<div className="order-1 mb-10 grid grid-cols-3 gap-0 md:order-2 md:mb-0 md:gap-12">
 					{footerLinkSections.map(({ section, links }) => (
 						<div className="text-sm" key={section}>
-							<h3 className="pb-4 text-slate-400">{section}</h3>
-							<ul className="flex flex-col gap-2 text-gray-400">
+							<h3 className="pb-4 text-slate-800/70 dark:text-slate-400">
+								{section}
+							</h3>
+							<ul className="flex flex-col gap-2 text-slate-800/70 dark:text-gray-400">
 								{links.map(({ title, url }) => (
 									<li key={title}>
 										{url.startsWith("/") ? (

@@ -108,7 +108,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel className="text-neutral-300">
+												<FormLabel className="text-gray-600 dark:text-neutral-300">
 													Enter Your Email
 												</FormLabel>
 												<FormControl className="my-2">
@@ -135,7 +135,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel className="text-neutral-300">
+												<FormLabel className="text-gray-600 dark:text-neutral-300">
 													Enter Your Password
 												</FormLabel>
 												<FormControl className="my-2">
@@ -161,8 +161,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 								<Link
 									className={buttonVariants({
 										variant: "link",
-										className:
-											"text-washed-purple-600 !p-0",
+										className: "!p-0",
 									})}
 									href="/forgot-password"
 								>
@@ -222,14 +221,14 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 							</>
 						)}
 					</Button>
-					<div className="bg-secondary/40 mt-3 w-full max-w-[calc(400px,90%)] rounded-xl px-5 py-3.5 text-center text-sm backdrop-blur-2xl">
+					<div className="bg-primary-100/50 dark:bg-secondary/40 mt-3 w-full max-w-[calc(400px,90%)] rounded-xl px-5 py-3.5 text-center text-sm backdrop-blur-2xl">
 						<span>
-							Not a member ?{" "}
+							Already have a account ?{" "}
 							<Link
-								href="/signup"
-								className="text-foreground hover:text-secondary-100"
+								href="/signin"
+								className="dark:text-foreground dark:hover:text-secondary-100 text-violet-600/80 hover:text-violet-700/90"
 							>
-								Creat an account
+								Login Here
 							</Link>
 						</span>
 					</div>

@@ -30,7 +30,7 @@ export default function ThemeSwitcher({ className }: { className?: string }) {
 				size="icon"
 				onClick={toggleTheme}
 				className={cn(
-					"dark:bg-secondary-900 rounded-full p-4 transition-colors duration-200 hover:dark:bg-indigo-950",
+					"dark:bg-secondary-900/70 rounded-full p-4 transition-colors duration-200 hover:dark:bg-indigo-950/70",
 					className,
 				)}
 			>
@@ -46,7 +46,7 @@ export default function ThemeSwitcher({ className }: { className?: string }) {
 							}}
 							transition={{ duration: 0.2 }}
 						>
-							<Moon className="h-6 w-6 transition-colors duration-200" />
+							<Moon className="text-primary-950 dark:text-primary-100 h-6 w-6 transition-colors duration-200" />
 						</motion.div>
 					) : (
 						<motion.div
@@ -59,7 +59,7 @@ export default function ThemeSwitcher({ className }: { className?: string }) {
 							}}
 							transition={{ duration: 0.2 }}
 						>
-							<Sun className="h-6 w-6 transition-colors duration-200" />
+							<Sun className="text-primary-950 dark:text-primary-100 h-6 w-6 transition-colors duration-200" />
 						</motion.div>
 					)}
 				</AnimatePresence>

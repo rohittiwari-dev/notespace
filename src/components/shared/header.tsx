@@ -29,7 +29,7 @@ const ListItem = forwardRef<
 				<div
 					ref={ref}
 					className={cn(
-						"hover:border-border hover:bg-secondary-700/60 hover:text-foreground focus:border-primary-900 focus:bg-secondary-700/40 focus:text-primary-700 z-50 flex cursor-pointer items-start gap-3 rounded-md border border-transparent px-4 py-3 leading-none no-underline transition-colors outline-none select-none",
+						"dark:hover:border-border hover:bg-primary-200/20 hover:border-primary-900/20 dark:hover:bg-secondary-700/60 dark:hover:text-foreground dark:focus:border-primary-900 dark:focus:bg-secondary-700/40 dark:focus:text-primary-700 z-50 flex cursor-pointer items-start gap-3 rounded-md border border-transparent px-4 py-3 leading-none no-underline transition-colors outline-none select-none",
 						className,
 					)}
 					{...props}
@@ -73,7 +73,7 @@ const Header = () => {
 								Features
 							</NavigationMenuTrigger>
 							<NavigationMenuContent>
-								<div className="absolute top-1/2 right-36 z-30 size-20 -translate-y-1/2 rounded-full bg-pink-400 opacity-50 blur-3xl" />
+								<div className="absolute top-1/2 right-36 z-30 size-20 -translate-y-1/2 rounded-full bg-pink-400 opacity-90 blur-3xl dark:opacity-50" />
 								<ul className="grid gap-3 p-3 md:w-[450px] lg:w-[550px] lg:grid-cols-[1fr_0.85fr]">
 									<div className="flex flex-col gap-3">
 										{features(18).map((feature) => (
@@ -88,7 +88,7 @@ const Header = () => {
 									</div>
 									<li>
 										<NavigationMenuLink asChild>
-											<div className="hover:bg-secondary-800/75 border-primary-700 bg-primary-800/50 flex size-full cursor-pointer flex-col justify-end rounded-md border px-6 py-3 pt-6 no-underline backdrop-blur-lg transition-colors outline-none select-none focus:shadow-md">
+											<div className="bg-primary-200/20 hover:bg-primary-200/40 dark:hover:bg-secondary-800/75 dark:border-primary-700 dark:bg-primary-800/50 flex size-full cursor-pointer flex-col justify-end rounded-md border px-6 py-3 pt-6 no-underline backdrop-blur-lg transition-colors outline-none select-none focus:shadow-md">
 												<Image
 													src={smallLogo}
 													width={35}
@@ -157,7 +157,7 @@ const Header = () => {
 						<Link href="/signin">Signin</Link>
 					</Button>
 					<Button asChild>
-						<Link href="/signin">Signup</Link>
+						<Link href="/signup">Signup</Link>
 					</Button>
 					<GlowedButton asChild>
 						<Link href="/signin">

@@ -19,12 +19,12 @@ const HeroSection = () => {
 			<div className="my-10 flex w-full items-center justify-center">
 				<Button className="rounded-full">Get Started Here</Button>
 			</div>
-			<div className="relative mt-24 flex h-full w-full items-center justify-center">
-				<div className="glow-bg container-main absolute z-0 m-0 h-[95%] w-[80%] rounded-4xl opacity-40 bg-blend-multiply blur-3xl" />
+			<div className="relative mt-6 flex h-full w-full items-center justify-center dark:mt-24">
+				<div className="glow-bg container-main absolute z-0 m-0 h-[95%] w-[80%] rounded-4xl opacity-25 blur-3xl dark:opacity-40 dark:bg-blend-multiply" />
 				<Image
 					src={headerImg}
 					alt="Header Hero Image"
-					className="container-main z-0 m-0 h-[95%] w-[80%] bg-transparent object-fill p-0 ring-indigo-950/80"
+					className="container-main bg-secondary-900 z-0 !m-0 h-[95%] w-[80%] overflow-clip rounded-[3rem] object-fill p-0 ring-indigo-950/80 contrast-90 saturate-200 dark:bg-transparent"
 				/>
 			</div>
 		</div>

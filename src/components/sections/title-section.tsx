@@ -67,7 +67,7 @@ const TitleSection: React.FC<TitleSectionProp> = ({
 				<>
 					<h1
 						className={cn(
-							"from-primary-200 block h-full max-w-[20ch] bg-gradient-to-b to-sky-200 bg-clip-text py-5 text-center text-5xl leading-none font-extrabold text-balance text-transparent md:text-6xl lg:text-8xl",
+							"dark:from-primary-200 from-primary-500 block h-full max-w-[20ch] bg-violet-500 bg-gradient-to-b bg-clip-text py-5 text-center text-5xl leading-none font-extrabold text-balance text-transparent md:text-6xl lg:text-8xl dark:to-sky-200",
 							headingClass,
 						)}
 					>
@@ -75,7 +75,7 @@ const TitleSection: React.FC<TitleSectionProp> = ({
 					</h1>
 					<p
 						className={cn(
-							"text-primary-100 [&>strong]:text-primary-50 max-w-[50ch] text-center text-pretty lg:text-lg [&>strong]:font-medium",
+							"text-primary-900/70 [&>strong]:text-primary-950/70 dark:text-primary-100 dark:[&>strong]:text-primary-50 max-w-[50ch] text-center text-pretty lg:text-lg [&>strong]:font-medium",
 							paragraphClass,
 						)}
 					>
@@ -85,7 +85,7 @@ const TitleSection: React.FC<TitleSectionProp> = ({
 			) : (
 				<h1
 					className={cn(
-						"from-primary-200 block h-full max-w-[20ch] bg-gradient-to-b to-sky-200 bg-clip-text py-5 text-center text-5xl leading-none font-extrabold text-balance text-transparent md:text-6xl lg:text-8xl",
+						"dark:from-primary-200 from-primary-500 block h-full max-w-[20ch] bg-violet-500 bg-gradient-to-b bg-clip-text py-5 text-center text-5xl leading-none font-extrabold text-balance text-transparent md:text-6xl lg:text-8xl dark:to-sky-200",
 						headingClass,
 					)}
 				>
