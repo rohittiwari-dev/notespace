@@ -98,11 +98,11 @@
 @layer base {
 	:root {
 		/* Main theme variables */
-		--background: var(--color-blue-50);
+		--background: var(--color-slate-50);
 		--foreground: var(--color-gray-900);
-		--card: var(--color-blue-100);
+		--card: var(--color-blue-200);
 		--card-foreground: var(--color-gray-800);
-		--popover: var(--color-blue-50);
+		--popover: var(--color-blue-200);
 		--popover-foreground: var(--color-gray-800);
 		--primary: var(--color-blue-100);
 		--primary-foreground: var(--color-gray-900);
@@ -142,13 +142,13 @@
 		--background: var(--color-primary-950);
 		--foreground: var(--color-gray-200);
 		--card: var(--color-secondary-900);
-		--card-foreground: var(--color-primary-50);
+		--card-foreground: var(--color-primary-100);
 		--popover: var(--color-gray-950);
 		--popover-foreground: var(--color-gray-200);
 		--primary: var(--color-primary-500);
-		--primary-foreground: var(--color-primary-50);
+		--primary-foreground: var(--color-primary-100);
 		--secondary: var(--color-secondary-800);
-		--secondary-foreground: var(--color-primary-50);
+		--secondary-foreground: var(--color-primary-100);
 		--muted: var(--color-primary-700);
 		--muted-foreground: var(--color-gray-500);
 		--accent: var(--color-primary-600);

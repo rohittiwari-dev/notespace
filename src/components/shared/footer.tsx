@@ -47,7 +47,7 @@ const footerLinkSections = [
 
 export const Footer = () => {
 	return (
-		<footer className="border-secondary-600/70 mt-30 border-t py-12 lg:py-16">
+		<footer className="border-secondary-400/40 dark:border-secondary-500/70 mt-30 border-t py-12 lg:py-16">
 			<div className="container-main flex flex-col justify-between md:flex-row">
 				<div className="order-2 space-y-4 md:order-1">
 					<Link
@@ -62,7 +62,7 @@ export const Footer = () => {
 						/>
 						<span>{constants.shortName}</span>
 					</Link>
-					<p className="text-sm text-slate-600/80 dark:text-slate-400">
+					<p className="text-sm text-slate-900/80 dark:text-slate-300">
 						&copy; {new Date().getFullYear()} {constants.shortName}{" "}
 						LTD. All Rights Reserved.
 					</p>
@@ -70,10 +70,10 @@ export const Footer = () => {
 				<div className="order-1 mb-10 grid grid-cols-3 gap-0 md:order-2 md:mb-0 md:gap-12">
 					{footerLinkSections.map(({ section, links }) => (
 						<div className="text-sm" key={section}>
-							<h3 className="pb-4 text-slate-800/70 dark:text-slate-400">
+							<h3 className="text-semibold pb-4 text-slate-900 dark:text-slate-300">
 								{section}
 							</h3>
-							<ul className="flex flex-col gap-2 text-slate-800/70 dark:text-gray-400">
+							<ul className="text-medium flex flex-col gap-2 text-slate-900/80 dark:text-gray-300">
 								{links.map(({ title, url }) => (
 									<li key={title}>
 										{url.startsWith("/") ? (
