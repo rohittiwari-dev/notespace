@@ -1,0 +1,9 @@
+/.vscode
+/.idea
+/node_modules
+/.next
+
+*.env
+.env
+.env.*
+commitlint.config.ts
