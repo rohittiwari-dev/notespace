@@ -17,24 +17,28 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginFormSchema } from "@/lib/formschemas";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Goal, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
+import { authClient } from "@/lib/auth";
+import { toast } from "sonner";
+import InputField from "@/components/app-ui/input-field";
+import { GoogleIcon, LockIcon, MailIcon } from "@/components/icons";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 const SigningPage: React.FC<Props> = ({ searchParams }) => {
-	const router = useRouter();
 	const [submitError, setSubmitError] = useState("");
+	const [rememberMe, setRememberMe] = useState(false);
 	const [isOAuthLogin, setIsOAuthLogin] = useState(false);
 	const shParams = use(searchParams);
 
@@ -59,31 +63,47 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 		},
 	});
 	async function onSubmit(_values: z.infer<typeof loginFormSchema>) {
-		// const { message, success } = await loginServerActions(values);
-		// if (!success) {
-		// 	setSubmitError(message);
-		// 	form.reset();
-		// 	return;
-		// }
-		router.replace("/dashboard");
+		return await authClient.signIn.email(
+			{
+				email: _values.email,
+				password: _values.password,
+				rememberMe: rememberMe,
+				callbackURL: "/dashboard",
+			},
+			{
+				onRequest: () => {},
+				onSuccess: () => {
+					toast.success("Successfully logged in");
+				},
+				onError: (ctx) => {
+					toast.error(ctx.error.message);
+				},
+			},
+		);
 	}
 
 	async function googleSignIn() {
-		setIsOAuthLogin(true);
-		// const { success, data, message } = await googleOAuthSignIn();
-		// if (!success) {
-		// 	setSubmitError(message);
-		// 	form.reset();
-		// 	setIsOAuthLogin(false);
-		// 	return;
-		// }
-		// router.push(data.url as string);
+		await authClient.signIn.social(
+			{
+				provider: "google",
+				callbackURL: "/dashboard",
+			},
+			{
+				onRequest: () => {
+					setIsOAuthLogin(true);
+				},
+				onError: (ctx) => {
+					setIsOAuthLogin(false);
+					toast.error(ctx.error.message);
+				},
+			},
+		);
 	}
 
 	return (
 		<main className="relative z-0 container flex h-full w-full flex-col items-center">
 			<ThemeSwitcher className="absolute top-8 right-10" />
-			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none bg-transparent bg-none shadow-none backdrop-blur-xl">
+			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
 				<CardHeader className="items-center">
 					<Image src={logo} alt="Logo" className="m-0 -ml-2 p-0" />
 					<div className="mt-5 text-center">
@@ -108,13 +128,15 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel className="text-gray-600 dark:text-neutral-300">
+												<FormLabel className="text-foreground">
 													Enter Your Email
 												</FormLabel>
 												<FormControl className="my-2 mb-0">
-													<Input
-														className="focus-visible:ring-1"
+													<InputField
 														type="email"
+														leftIcon={
+															<MailIcon className="size-5" />
+														}
 														placeholder="Email"
 														{...field}
 													/>
@@ -135,13 +157,15 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel className="text-gray-600 dark:text-neutral-300">
+												<FormLabel className="text-foreground">
 													Enter Your Password
 												</FormLabel>
 												<FormControl className="my-2 mb-0">
-													<Input
+													<InputField
+														leftIcon={
+															<LockIcon className="size-5" />
+														}
 														type="password"
-														className="focus-visible:ring-1"
 														placeholder="Password"
 														{...field}
 													/>
@@ -157,7 +181,17 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									}}
 								/>
 							</div>
-							<div className="my-2 w-full text-end">
+							<div className="my-2 flex w-full items-center justify-between text-end">
+								<Label className="flex items-center gap-2">
+									<Checkbox
+										title="Remember me"
+										checked={rememberMe}
+										onCheckedChange={(checked) => {
+											setRememberMe(checked as any);
+										}}
+									/>
+									<span>Remember me</span>
+								</Label>
 								<Link
 									className={buttonVariants({
 										variant: "link",
@@ -211,13 +245,13 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						disabled={isOAuthLogin}
 						onClick={googleSignIn}
 						variant="secondary"
-						className="w-full cursor-pointer"
+						className="w-full"
 					>
 						{isOAuthLogin ? (
 							<Loader2 className="size-5 animate-[spin_1.5s_linear_infinite] disabled:text-blue-800/40" />
 						) : (
 							<>
-								<Goal /> Sign up with Google
+								<GoogleIcon /> <span>Sign up with Google</span>
 							</>
 						)}
 					</Button>
@@ -225,7 +259,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						<span>
 							Don&apos;t have a account ?{" "}
 							<Link
-								href="/signup"
+								href="/sign-up"
 								className="dark:text-foreground dark:hover:text-tertiary-150 text-violet-600/80 hover:text-violet-700/90"
 							>
 								Sign Up Here

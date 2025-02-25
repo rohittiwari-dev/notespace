@@ -3,7 +3,7 @@
 /node_modules
 /.next
 
-*.env
 .env
-.env.*
+.env
+.env
 commitlint.config.ts

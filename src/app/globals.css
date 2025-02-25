@@ -171,7 +171,7 @@
 	--destructive-foreground: var(--color-red-50);
 	--border: var(--color-primary-300);
 	--input: var(--color-secondary-100);
-	--ring: var(--color-secondary-400);
+	--ring: var(--color-primary-400);
 
 	/* Dark mode chart colors */
 	--chart-1: hsl(12 76% 61%);
@@ -220,7 +220,7 @@
 	--destructive-foreground: var(--color-red-50);
 	--border: var(--color-primary-800);
 	--input: var(--color-secondary-800);
-	--ring: var(--color-secondary-700);
+	--ring: var(--color-primary-600);
 
 	/* Dark mode chart colors */
 	--chart-1: hsl(220 70% 50%);
@@ -249,16 +249,9 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-	*,
-	::after,
-	::before,
-	::backdrop,
-	::file-selector-button {
-		border-color: var(--color-gray-200, currentColor);
-	}
-
 	* {
-		@apply border-border outline-ring/50;
+		margin: 0;
+		padding: 0;
 	}
 	body {
 		@apply bg-background text-foreground h-svh w-screen overflow-hidden;

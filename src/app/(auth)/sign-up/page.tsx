@@ -17,23 +17,24 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { loginFormSchema } from "@/lib/formschemas";
+import { SignUpFormSchema } from "@/lib/formschemas";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Goal, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
+import { authClient } from "@/lib/auth";
+import { toast } from "sonner";
+import InputField from "@/components/app-ui/input-field";
+import { GoogleIcon, LockIcon, MailIcon, UserIcon } from "@/components/icons";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 const SigningPage: React.FC<Props> = ({ searchParams }) => {
-	const router = useRouter();
 	const [submitError, setSubmitError] = useState("");
 	const [isOAuthLogin, setIsOAuthLogin] = useState(false);
 	const shParams = use(searchParams);
@@ -51,39 +52,60 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 		});
 	}, [exchangeError, submitError]);
 
-	const form = useForm<z.infer<typeof loginFormSchema>>({
-		resolver: zodResolver(loginFormSchema),
+	const form = useForm<z.infer<typeof SignUpFormSchema>>({
+		resolver: zodResolver(SignUpFormSchema),
 		defaultValues: {
 			email: "",
 			password: "",
+			firstName: "",
+			lastName: "",
+			confirmPassword: "",
 		},
 	});
-	async function onSubmit(_values: z.infer<typeof loginFormSchema>) {
-		// const { message, success } = await loginServerActions(values);
-		// if (!success) {
-		// 	setSubmitError(message);
-		// 	form.reset();
-		// 	return;
-		// }
-		router.replace("/dashboard");
+	async function onSubmit(_values: z.infer<typeof SignUpFormSchema>) {
+		await authClient.signUp.email(
+			{
+				email: _values.email,
+				password: _values.password,
+				name: `${_values.firstName} ${_values.lastName}`,
+				callbackURL: "/dashboard",
+			},
+			{
+				onRequest: () => {},
+				onSuccess: () => {
+					toast.success(
+						`Verification Email sent to ${_values.email}`,
+					);
+				},
+				onError: (ctx) => {
+					toast.error(ctx.error.statusText);
+				},
+			},
+		);
 	}
 
 	async function googleSignIn() {
-		setIsOAuthLogin(true);
-		// const { success, data, message } = await googleOAuthSignIn();
-		// if (!success) {
-		// 	setSubmitError(message);
-		// 	form.reset();
-		// 	setIsOAuthLogin(false);
-		// 	return;
-		// }
-		// router.push(data.url as string);
+		await authClient.signIn.social(
+			{
+				provider: "google",
+				callbackURL: "/dashboard",
+			},
+			{
+				onRequest: () => {
+					setIsOAuthLogin(true);
+				},
+				onError: (ctx) => {
+					setIsOAuthLogin(false);
+					toast.error(ctx.error.message);
+				},
+			},
+		);
 	}
 
 	return (
 		<main className="relative z-0 container flex h-fit min-h-full w-full flex-col items-center p-0">
 			<ThemeSwitcher className="absolute top-8 right-2" />
-			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none bg-transparent bg-none shadow-none backdrop-blur-xl">
+			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
 				<CardHeader className="items-center">
 					<Image src={logo} alt="Logo" className="m-0 -ml-2 p-0" />
 					<div className="mt-5 text-center">
@@ -101,21 +123,23 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
 						<Form {...form}>
-							<div className="mb-2 grid grid-cols-2 gap-4">
+							<div className="mb-5 grid grid-cols-2 gap-4">
 								<FormField
-									name="email"
+									name="firstName"
 									control={form.control}
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel className="text-gray-600 dark:text-neutral-300">
-													Enter Your Email
+												<FormLabel className="text-foreground">
+													Your First Name
 												</FormLabel>
 												<FormControl className="my-2 mb-0">
-													<Input
-														className="focus-visible:ring-1"
-														type="email"
-														placeholder="Email"
+													<InputField
+														type="text"
+														leftIcon={
+															<UserIcon className="size-4" />
+														}
+														placeholder="Enter Your First Name"
 														{...field}
 													/>
 												</FormControl>
@@ -130,19 +154,21 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									}}
 								/>
 								<FormField
-									name="password"
+									name="lastName"
 									control={form.control}
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel className="text-gray-600 dark:text-neutral-300">
-													Enter Your Password
+												<FormLabel className="text-foreground">
+													Your Last Name
 												</FormLabel>
 												<FormControl className="my-2 mb-0">
-													<Input
-														type="password"
-														className="focus-visible:ring-1"
-														placeholder="Password"
+													<InputField
+														leftIcon={
+															<UserIcon className="size-4" />
+														}
+														type="text"
+														placeholder="Enter Your Last Name"
 														{...field}
 													/>
 												</FormControl>
@@ -157,21 +183,54 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									}}
 								/>
 							</div>
-							<div className="grid gap-2">
+
+							{/*Password Fields*/}
+							<div className="mb-5 grid grid-cols-2 gap-4">
 								<FormField
-									name="email"
+									name="password"
 									control={form.control}
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel className="text-gray-600 dark:text-neutral-300">
-													Enter Your Email
+												<FormLabel className="text-foreground">
+													Your Password
 												</FormLabel>
 												<FormControl className="my-2">
-													<Input
-														className="focus-visible:ring-1"
-														type="email"
-														placeholder="Email"
+													<InputField
+														leftIcon={
+															<LockIcon className="size-5" />
+														}
+														type="password"
+														placeholder="Your Password"
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage
+													className={cn(
+														confirmAndErrorStyle,
+														"text-red-500",
+													)}
+												/>
+											</FormItem>
+										);
+									}}
+								/>{" "}
+								<FormField
+									name="confirmPassword"
+									control={form.control}
+									render={({ field }) => {
+										return (
+											<FormItem>
+												<FormLabel className="text-foreground">
+													Confirm Password
+												</FormLabel>
+												<FormControl className="my-2">
+													<InputField
+														leftIcon={
+															<LockIcon className="size-5" />
+														}
+														type="password"
+														placeholder="Confirm Your Password"
 														{...field}
 													/>
 												</FormControl>
@@ -185,20 +244,25 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 										);
 									}}
 								/>
+							</div>
+
+							<div className="mb-6 grid gap-5">
 								<FormField
-									name="password"
+									name="email"
 									control={form.control}
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel className="text-gray-600 dark:text-neutral-300">
-													Enter Your Password
+												<FormLabel className="text-foreground">
+													Enter Your Email
 												</FormLabel>
 												<FormControl className="my-2">
-													<Input
-														type="password"
-														className="focus-visible:ring-1"
-														placeholder="Password"
+													<InputField
+														type="email"
+														leftIcon={
+															<MailIcon className="size-5" />
+														}
+														placeholder="Enter Your Email"
 														{...field}
 													/>
 												</FormControl>
@@ -257,13 +321,13 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						disabled={isOAuthLogin}
 						onClick={googleSignIn}
 						variant="secondary"
-						className="w-full rounded-lg"
+						className="w-full"
 					>
 						{isOAuthLogin ? (
-							<Loader2 className="size-1 animate-[spin_1.5s_linear_infinite] disabled:text-blue-800/40" />
+							<Loader2 className="size-5 animate-[spin_1.5s_linear_infinite] disabled:text-blue-800/40" />
 						) : (
 							<>
-								<Goal /> Sign up with Google
+								<GoogleIcon /> <span>Sign up with Google</span>
 							</>
 						)}
 					</Button>
@@ -271,7 +335,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						<span>
 							Already have a account ?{" "}
 							<Link
-								href="/signup"
+								href="/sign-in"
 								className="dark:text-foreground dark:hover:text-tertiary-150 text-violet-600/80 hover:text-violet-700/90"
 							>
 								Login Here
@@ -279,7 +343,12 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						</span>
 					</div>
 				</CardFooter>
+
 				<p className="scale-80 text-center">&copy; 2025 NoteSpace</p>
+				<p className="text-muted-foreground text-center">
+					By clicking continue, you agree to our <br /> Terms of
+					Service and Privacy Policy.
+				</p>
 			</Card>
 		</main>
 	);

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { ThemeProvider } from "./ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 type TProviders = {
 	children: React.ReactNode;
@@ -15,6 +16,7 @@ const Providers: React.FC<TProviders> = ({ children }) => {
 			enableColorScheme
 			disableTransitionOnChange
 		>
+			<Toaster />
 			{children}
 		</ThemeProvider>
 	);
