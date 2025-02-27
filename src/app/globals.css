@@ -2,11 +2,14 @@
 
 /* Plugins Declarations */
 @plugin "tailwindcss-animate";
-@plugin "tailwind-scrollbar";
 @plugin "@tailwindcss/container-queries";
 @plugin "@tailwindcss/aspect-ratio";
 @plugin "@tailwindcss/typography";
 @plugin "@eioluseyi/tailwind-fade";
+@plugin "tailwind-scrollbar" {
+	nocompatible: true;
+	preferredstrategy: "pseudoelements";
+}
 
 /* Dark class Selector */
 @custom-variant dark (&:is(.dark *));
@@ -181,8 +184,8 @@
 	--chart-5: hsl(27 87% 67%);
 
 	/* Sidebar colors */
-	--sidebar-background: var(--background);
-	--sidebar-foreground: var(--foreground);
+	--sidebar: var(--light);
+	--sidebar-foreground: var(--card-foreground);
 	--sidebar-primary: var(--primary);
 	--sidebar-primary-foreground: var(--primary-foreground);
 	--sidebar-accent: var(--accent);
@@ -197,6 +200,8 @@
 /* Dark Color Replacements */
 .dark {
 	/* Colors Declaration */
+	--dark: #1d1f21;
+	--light: #f3f4f9;
 	--accent-purple: #5542a8;
 	--accent-orange: #db5c1d;
 	--accent-pink: #d3164b;
@@ -206,7 +211,7 @@
 	--background: #0e0f11;
 	--card: var(--dark);
 	--card-foreground: var(--light);
-	--popover: var(--color-secondary-900);
+	--popover: var(--color-secondary-800);
 	--popover-foreground: var(--color-gray-100);
 	--primary: var(--color-primary-500);
 	--primary-foreground: var(--color-primary-100);
@@ -230,8 +235,8 @@
 	--chart-5: hsl(340 75% 55%);
 
 	/* Sidebar colors */
-	--sidebar-background: var(--background);
-	--sidebar-foreground: var(--foreground);
+	--sidebar: hsla(240, 14%, 11%, 0.6);
+	--sidebar-foreground: var(--card-foreground);
 	--sidebar-primary: var(--primary);
 	--sidebar-primary-foreground: var(--primary-foreground);
 	--sidebar-accent: var(--accent);

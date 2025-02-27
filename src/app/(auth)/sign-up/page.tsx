@@ -89,6 +89,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 			{
 				provider: "google",
 				callbackURL: "/dashboard",
+				errorCallbackURL: "/sign-up",
 			},
 			{
 				onRequest: () => {

@@ -23,7 +23,6 @@ import { z } from "zod";
 import { loginFormSchema } from "@/lib/formschemas";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
 import { authClient } from "@/lib/auth";
 import { toast } from "sonner";
@@ -31,6 +30,7 @@ import InputField from "@/components/app-ui/input-field";
 import { GoogleIcon, LockIcon, MailIcon } from "@/components/icons";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import Spinner from "@/components/app-ui/spinner";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -87,6 +87,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 			{
 				provider: "google",
 				callbackURL: "/dashboard",
+				errorCallbackURL: "/sign-in",
 			},
 			{
 				onRequest: () => {
@@ -231,9 +232,12 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 								>
 									{form.formState.isLoading ||
 									form.formState.isSubmitting ? (
-										<Loader2 className="animate-[spin_1.5s_linear_infinite] disabled:text-blue-800/40" />
+										<Spinner
+											className="disabled:text-blue-800/40"
+											loadingLabel="Signing in..."
+										/>
 									) : (
-										"Login"
+										"Sign in"
 									)}
 								</Button>
 							</div>
@@ -248,10 +252,13 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						className="w-full"
 					>
 						{isOAuthLogin ? (
-							<Loader2 className="size-5 animate-[spin_1.5s_linear_infinite] disabled:text-blue-800/40" />
+							<Spinner
+								className="disabled:text-blue-800/40"
+								loadingLabel="Signing in with Google..."
+							/>
 						) : (
 							<>
-								<GoogleIcon /> <span>Sign up with Google</span>
+								<GoogleIcon /> <span>Sign in with Google</span>
 							</>
 						)}
 					</Button>

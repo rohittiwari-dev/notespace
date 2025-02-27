@@ -3,12 +3,13 @@ import { CreateEmailOptions, Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const sendEmail = async ({
-	...props
-}: Exclude<CreateEmailOptions, "from">) => {
+type ISendEmail = Omit<CreateEmailOptions, "from">;
+
+export const sendEmail = async ({ ...props }: ISendEmail) => {
 	const { data, error } = await resend.emails.send({
-		...props,
 		from: "Acme <onboarding@resend.dev>",
+		text: "",
+		...props,
 	});
 
 	if (error) {

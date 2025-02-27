@@ -6,6 +6,7 @@ import { sendEmail } from "@/lib/emails";
 
 // Server Auth
 export const auth = betterAuth({
+	appName: "Notespace",
 	database: drizzleAdapter(db, {
 		provider: "pg",
 		schema: {
@@ -20,6 +21,13 @@ export const auth = betterAuth({
 		enabled: true,
 		autoSignIn: true,
 		requireEmailVerification: true,
+		sendResetPassword: async ({ user, url }) => {
+			await sendEmail({
+				to: user.email,
+				subject: "Reset Your Password | Notespace",
+				text: `Click the link to verify your email: ${url}`,
+			});
+		},
 	},
 	emailVerification: {
 		sendOnSignUp: true,
@@ -27,7 +35,7 @@ export const auth = betterAuth({
 		sendVerificationEmail: async ({ user, url }) => {
 			await sendEmail({
 				to: user.email,
-				subject: "Verify your email address",
+				subject: "Verify your email address | Notespace",
 				text: `Click the link to verify your email: ${url}`,
 			});
 		},
