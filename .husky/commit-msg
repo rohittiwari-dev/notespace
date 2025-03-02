@@ -5,7 +5,7 @@ allowed_types="feat|fix|docs|style|refactor|test|chore|removed|deleted|updated|m
 commit_msg=$(cat "$1")
 
 # Check for commit type in uppercase, valid type, and message length
-if ! echo "$commit_msg" | grep -Eq "^($allowed_types): .{1,50}$"; then
+if ! echo "$commit_msg" | grep -Eq "^($allowed_types) .{1,50}$"; then
   echo "Invalid commit message format. Valid : 'TYPE: Short description'"
   echo "Valid types are: feat, fix, docs, style, refactor, test, chore, removed, deleted, updated, merged, changed, added, add"
   echo "Example: 'feat: Add login' and length of commit message should be within 50 char"

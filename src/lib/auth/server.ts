@@ -5,7 +5,7 @@ import { openAPI } from "better-auth/plugins";
 import { sendEmail } from "@/lib/emails";
 
 // Server Auth
-export const auth = betterAuth({
+export const authServerApi = betterAuth({
 	appName: "Notespace",
 	database: drizzleAdapter(db, {
 		provider: "pg",
@@ -42,9 +42,13 @@ export const auth = betterAuth({
 	},
 	socialProviders: {
 		google: {
+			disableSignUp: true,
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
 		},
+	},
+	onAPIError: {
+		errorURL: "/sign-in",
 	},
 	plugins: [openAPI()],
 } satisfies BetterAuthOptions);

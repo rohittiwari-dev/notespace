@@ -2,6 +2,7 @@
 import React from "react";
 import { ThemeProvider } from "./ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { TRPCProvider } from "./TRPCProvider";
 
 type TProviders = {
 	children: React.ReactNode;
@@ -9,16 +10,18 @@ type TProviders = {
 
 const Providers: React.FC<TProviders> = ({ children }) => {
 	return (
-		<ThemeProvider
-			attribute="class"
-			defaultTheme="system"
-			enableSystem
-			enableColorScheme
-			disableTransitionOnChange
-		>
-			<Toaster />
-			{children}
-		</ThemeProvider>
+		<TRPCProvider>
+			<ThemeProvider
+				attribute="class"
+				defaultTheme="system"
+				enableSystem
+				enableColorScheme
+				disableTransitionOnChange
+			>
+				<Toaster />
+				{children}
+			</ThemeProvider>
+		</TRPCProvider>
 	);
 };
 

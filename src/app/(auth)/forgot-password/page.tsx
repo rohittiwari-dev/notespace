@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { AlertCircle, ArrowLeft, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
-import { authClient } from "@/lib/auth";
+import { authClient } from "@/lib/server";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
 
 export default function Component() {

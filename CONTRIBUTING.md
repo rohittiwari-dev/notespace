@@ -121,7 +121,7 @@ You can checkout which variables are needed and which are optional in the `src/e
 ### Running stuff
 
 ```bash
-# Run the project's dev server
+# Run the project's dev trpc
 bun dev
 
 # Build the project

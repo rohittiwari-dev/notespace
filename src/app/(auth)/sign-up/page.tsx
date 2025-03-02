@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
-import { authClient } from "@/lib/auth";
+import { authClientApi } from "@/lib/auth/client";
 import { toast } from "sonner";
 import InputField from "@/components/app-ui/input-field";
 import { GoogleIcon, LockIcon, MailIcon, UserIcon } from "@/components/icons";
@@ -63,7 +63,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 		},
 	});
 	async function onSubmit(_values: z.infer<typeof SignUpFormSchema>) {
-		await authClient.signUp.email(
+		await authClientApi.signUp.email(
 			{
 				email: _values.email,
 				password: _values.password,
@@ -85,11 +85,12 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 	}
 
 	async function googleSignIn() {
-		await authClient.signIn.social(
+		await authClientApi.signIn.social(
 			{
 				provider: "google",
 				callbackURL: "/dashboard",
-				errorCallbackURL: "/sign-up",
+				errorCallbackURL: "/sign-in",
+				requestSignUp: true,
 			},
 			{
 				onRequest: () => {

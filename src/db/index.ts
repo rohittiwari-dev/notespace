@@ -1,19 +1,15 @@
-import * as dotenv from "dotenv";
+import "server-only";
 import { drizzle } from "drizzle-orm/neon-http";
-import { neon, neonConfig } from "@neondatabase/serverless";
-import * as ws from "ws";
+import { neon } from "@neondatabase/serverless";
 import * as schema from "./schemas";
+import { env } from "@/env";
 
-dotenv.config({ path: ".env" });
-
-neonConfig.webSocketConstructor = ws;
-
-if (!process.env.DATABASE_URL) {
+if (!env.DATABASE_URL) {
 	console.log("🔴 no database URL");
 }
 
-const sql = neon(process.env.DATABASE_URL!);
-const db = drizzle({ client: sql });
+const sql = neon(env.DATABASE_URL);
+const db = drizzle({ client: sql, schema: schema });
 
 export { schema };
 export default db;

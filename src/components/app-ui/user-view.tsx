@@ -22,9 +22,45 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@/components/app-ui/avatar";
 import { getInitialsFromName } from "@/utils";
+import { authClientApi } from "@/lib/auth/client";
+import { redirect } from "next/navigation";
+import Spinner from "@/components/app-ui/spinner";
+
+const LogoutMenuItem = () => {
+	const [loading, setLoading] = useState(false);
+	return (
+		<DropdownMenuItem
+			onClick={async () => {
+				setLoading(true);
+				await authClientApi.signOut({
+					fetchOptions: {
+						onRequest: () => {
+							setLoading(true);
+						},
+						onSuccess: () => {
+							redirect("/sign-in");
+							setLoading(false);
+						},
+						onError: () => {
+							setLoading(false);
+						},
+					},
+				});
+			}}
+			className="hover:!bg-accent/30 cursor-pointer"
+		>
+			{loading ? (
+				<Spinner className="!text-primary-200/60" />
+			) : (
+				<LogOut />
+			)}
+			Log out
+		</DropdownMenuItem>
+	);
+};
 
 function UserView({
 	email,
@@ -91,31 +127,28 @@ function UserView({
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
-							<DropdownMenuItem>
+							<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
 								<Sparkles />
 								Upgrade to Pro
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
-							<DropdownMenuItem>
+							<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
 								<BadgeCheck />
 								Account
 							</DropdownMenuItem>
-							<DropdownMenuItem>
+							<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
 								<CreditCard />
 								Billing
 							</DropdownMenuItem>
-							<DropdownMenuItem>
+							<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
 								<Bell />
 								Notifications
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
-							<LogOut />
-							Log out
-						</DropdownMenuItem>
+						<LogoutMenuItem />
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</SidebarMenuItem>

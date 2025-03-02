@@ -15,7 +15,7 @@ import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import InputField from "@/components/app-ui/input-field";
-import { authClient } from "@/lib/auth";
+import { authClient } from "@/lib/server";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
 import Spinner from "@/components/app-ui/spinner";
 
