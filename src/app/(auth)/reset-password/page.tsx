@@ -15,7 +15,7 @@ import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import InputField from "@/components/app-ui/input-field";
-import { authClient } from "@/lib/server";
+import { authClientApi } from "@/lib/auth/client";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
 import Spinner from "@/components/app-ui/spinner";
 
@@ -37,7 +37,7 @@ export default function ResetPassword() {
 		e.preventDefault();
 		setIsSubmitting(true);
 		setError("");
-		const res = await authClient.resetPassword({
+		const res = await authClientApi.resetPassword({
 			newPassword: password,
 			token: new URLSearchParams(window.location.search).get("token")!,
 		});

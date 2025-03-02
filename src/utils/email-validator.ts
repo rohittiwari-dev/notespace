@@ -1,4 +1,3 @@
-// lib/email-validator.ts
 import { levenshteinEditDistance as leven } from "levenshtein-edit-distance";
 
 // Auto-updating disposable domains (client-safe)

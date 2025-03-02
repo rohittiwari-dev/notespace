@@ -41,8 +41,8 @@ const LogoutMenuItem = () => {
 							setLoading(true);
 						},
 						onSuccess: () => {
-							redirect("/sign-in");
 							setLoading(false);
+							redirect("/sign-in");
 						},
 						onError: () => {
 							setLoading(false);

@@ -39,7 +39,7 @@ export const useInViewObserver = (
 				observer.disconnect();
 			}
 		};
-	}, [node]);
+	}, [node, root]);
 
 	return {
 		ref: setRef,

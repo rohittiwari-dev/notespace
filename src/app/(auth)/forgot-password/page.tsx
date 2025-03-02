@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { AlertCircle, ArrowLeft, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
-import { authClient } from "@/lib/server";
+import { authClientApi } from "@/lib/auth/client";
 import ThemeSwitcher from "@/components/app-ui/theme-switcher";
 
 export default function Component() {
@@ -30,13 +30,13 @@ export default function Component() {
 		setError("");
 
 		try {
-			const res = await authClient.forgetPassword({
+			await authClientApi.forgetPassword({
 				email,
 				redirectTo: "/reset-password",
 			});
 			setIsSubmitted(true);
-		} catch (err) {
-			setError("An error occurred. Please try again.");
+		} catch (err: any) {
+			setError(`An error occurred. Please try again. ${err.message}`);
 		} finally {
 			setIsSubmitting(false);
 		}
