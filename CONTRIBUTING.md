@@ -9,18 +9,18 @@ In this guide, you will get an overview of the project structure and setup, as w
 ## Table of contents
 
 - [NoteSpace's contributing guidelines](#notespaces-contributing-guidelines)
-  - [Table of contents](#table-of-contents)
-  - [New contributor guide](#new-contributor-guide)
-  - [Getting your foot in](#getting-your-foot-in)
-    - [Some simple rules](#some-simple-rules)
-  - [The tech stack](#the-tech-stack)
-  - [Getting stuff running](#getting-stuff-running)
-    - [Cloning the repo](#cloning-the-repo)
-    - [Bun](#bun)
-    - [Installing dependencies](#installing-dependencies)
-    - [Environment Variables](#environment-variables)
-    - [Running stuff](#running-stuff)
-  - [Closing notes](#closing-notes)
+    - [Table of contents](#table-of-contents)
+    - [New contributor guide](#new-contributor-guide)
+    - [Getting your foot in](#getting-your-foot-in)
+        - [Some simple rules](#some-simple-rules)
+    - [The tech stack](#the-tech-stack)
+    - [Getting stuff running](#getting-stuff-running)
+        - [Cloning the repo](#cloning-the-repo)
+        - [Bun](#bun)
+        - [Installing dependencies](#installing-dependencies)
+        - [Environment Variables](#environment-variables)
+        - [Running stuff](#running-stuff)
+    - [Closing notes](#closing-notes)
 
 ## New contributor guide
 

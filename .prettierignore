@@ -1,9 +1,10 @@
-/.vscode
-/.idea
-/node_modules
-/.next
+.prettierignore
+node_modules
+.next
+next-env.d.ts
+.husky
+bun.lockb
+bun.lock
+*.toml
+drizzle
 
-.env
-.env
-.env
-commitlint.config.ts
