@@ -1,13 +1,27 @@
-"use client";
+'use client';
+
+import React, { use, useMemo, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import type { z } from 'zod';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
+import logo from '@/assets/Logo_Full.png';
+import InputField from '@/components/app-ui/input-field';
+import ThemeSwitcher from '@/components/app-ui/theme-switcher';
+import { GoogleIcon, LockIcon, MailIcon, UserIcon } from '@/components/icons';
+import { Button } from '@/components/ui/button';
 import {
 	Card,
 	CardContent,
 	CardFooter,
 	CardHeader,
-} from "@/components/ui/card";
-import Image from "next/image";
-import React, { use, useMemo, useState } from "react";
-import logo from "@/assets/Logo_Full.png";
+} from '@/components/ui/card';
 import {
 	Form,
 	FormControl,
@@ -15,51 +29,40 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { SignUpFormSchema } from "@/lib/formschemas";
-import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import ThemeSwitcher from "@/components/app-ui/theme-switcher";
-import { authClientApi } from "@/lib/auth/client";
-import { toast } from "sonner";
-import InputField from "@/components/app-ui/input-field";
-import { GoogleIcon, LockIcon, MailIcon, UserIcon } from "@/components/icons";
+} from '@/components/ui/form';
+import { authClientApi } from '@/lib/auth/client';
+import { SignUpFormSchema } from '@/lib/formschemas';
+import { cn } from '@/lib/utils';
 
-type Props = {
-	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
+interface Props {
+	searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
 
 const SigningPage: React.FC<Props> = ({ searchParams }) => {
-	const [submitError, setSubmitError] = useState("");
+	const [submitError, setSubmitError] = useState('');
 	const [isOAuthLogin, setIsOAuthLogin] = useState(false);
 	const shParams = use(searchParams);
 
 	const exchangeError = useMemo(() => {
-		if (!shParams) return "";
-		return shParams.error_description;
+		return shParams['error_description'] ?? '';
 	}, [shParams]);
 
 	const confirmAndErrorStyle = useMemo(() => {
-		return cn("bg-brand-primaryPurple/10 px-2 text-primary", {
-			"bg-red-500/10": exchangeError || submitError,
-			"border-red-500/50": exchangeError || submitError,
-			"text-red-500": exchangeError || submitError,
+		return cn('bg-brand-primaryPurple/10 px-2 text-primary', {
+			'bg-red-500/10': exchangeError || submitError,
+			'border-red-500/50': exchangeError || submitError,
+			'text-red-500': exchangeError || submitError,
 		});
 	}, [exchangeError, submitError]);
 
 	const form = useForm<z.infer<typeof SignUpFormSchema>>({
 		resolver: zodResolver(SignUpFormSchema),
 		defaultValues: {
-			email: "",
-			password: "",
-			firstName: "",
-			lastName: "",
-			confirmPassword: "",
+			email: '',
+			password: '',
+			firstName: '',
+			lastName: '',
+			confirmPassword: '',
 		},
 	});
 	async function onSubmit(_values: z.infer<typeof SignUpFormSchema>) {
@@ -68,10 +71,9 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 				email: _values.email,
 				password: _values.password,
 				name: `${_values.firstName} ${_values.lastName}`,
-				callbackURL: "/dashboard",
+				callbackURL: '/dashboard',
 			},
 			{
-				onRequest: () => {},
 				onSuccess: () => {
 					toast.success(
 						`Verification Email sent to ${_values.email}`,
@@ -87,9 +89,9 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 	async function googleSignIn() {
 		await authClientApi.signIn.social(
 			{
-				provider: "google",
-				callbackURL: "/dashboard",
-				errorCallbackURL: "/sign-in",
+				provider: 'google',
+				callbackURL: '/dashboard',
+				errorCallbackURL: '/sign-in',
 				requestSignUp: true,
 			},
 			{
@@ -120,7 +122,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 				<CardContent>
 					<form
 						onChange={() => {
-							if (submitError) setSubmitError("");
+							if (submitError) setSubmitError('');
 						}}
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
@@ -148,7 +150,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												<FormMessage
 													className={cn(
 														confirmAndErrorStyle,
-														"text-red-500",
+														'text-red-500',
 													)}
 												/>
 											</FormItem>
@@ -177,7 +179,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												<FormMessage
 													className={cn(
 														confirmAndErrorStyle,
-														"text-red-500",
+														'text-red-500',
 													)}
 												/>
 											</FormItem>
@@ -210,13 +212,13 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												<FormMessage
 													className={cn(
 														confirmAndErrorStyle,
-														"text-red-500",
+														'text-red-500',
 													)}
 												/>
 											</FormItem>
 										);
 									}}
-								/>{" "}
+								/>{' '}
 								<FormField
 									name="confirmPassword"
 									control={form.control}
@@ -239,7 +241,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												<FormMessage
 													className={cn(
 														confirmAndErrorStyle,
-														"text-red-500",
+														'text-red-500',
 													)}
 												/>
 											</FormItem>
@@ -271,7 +273,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												<FormMessage
 													className={cn(
 														confirmAndErrorStyle,
-														"text-red-500",
+														'text-red-500',
 													)}
 												/>
 											</FormItem>
@@ -284,13 +286,15 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 								<FormMessage
 									className={cn(
 										confirmAndErrorStyle,
-										"my-2 flex !h-fit items-center justify-between rounded-md p-2 px-3",
+										'my-2 flex !h-fit items-center justify-between rounded-md p-2 px-3',
 									)}
 								>
 									{submitError}
 									<Button
 										type="button"
-										onClick={() => setSubmitError("")}
+										onClick={() => {
+											setSubmitError('');
+										}}
 										className="!h-8 !w-5 !rounded-full text-lg"
 										variant="ghost"
 									>
@@ -311,7 +315,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									form.formState.isSubmitting ? (
 										<Loader2 className="animate-[spin_1.5s_linear_infinite] disabled:text-blue-800/40" />
 									) : (
-										"Login"
+										'Login'
 									)}
 								</Button>
 							</div>
@@ -335,7 +339,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 					</Button>
 					<div className="bg-primary-100/50 dark:bg-secondary-800/40 mt-3 w-full max-w-[calc(400px,90%)] rounded-xl px-5 py-3.5 text-center text-sm backdrop-blur-2xl">
 						<span>
-							Already have a account ?{" "}
+							Already have a account ?{' '}
 							<Link
 								href="/sign-in"
 								className="dark:text-foreground dark:hover:text-tertiary-150 text-violet-600/80 hover:text-violet-700/90"

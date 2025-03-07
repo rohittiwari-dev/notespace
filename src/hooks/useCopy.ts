@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function useCopy() {
 	const [isCopied, setIsCopied] = useState(false);
@@ -10,7 +10,7 @@ export function useCopy() {
 		options: { onSuccess?: () => void; onFailure?: () => void } = {},
 	) => {
 		const { onSuccess = noop, onFailure = noop } = options;
-		if (typeof navigator !== "undefined" && navigator.clipboard) {
+		if (typeof navigator !== 'undefined' && navigator.clipboard) {
 			navigator.clipboard
 				.writeText(text)
 				.then(() => {
@@ -19,11 +19,11 @@ export function useCopy() {
 				})
 				.catch((error) => {
 					onFailure();
-					console.error("Copy to clipboard failed:", error);
+					console.error('Copy to clipboard failed:', error);
 				});
 		} else {
 			console.warn(
-				"You need to use a secure context to use clipboard \n Please use the following link: ",
+				'You need to use a secure context to use clipboard \n Please use the following link: ',
 				text,
 			);
 			onFailure();
@@ -34,27 +34,33 @@ export function useCopy() {
 		setIsCopied(false);
 	};
 
-	/** @see https://wolfgangrittner.dev/how-to-use-clipboard-api-in-safari/ */
-	const fetchAndCopyToClipboard = (
+	/**
+	 * @param promise takes promise
+	 * @param options takes options to modify params
+	 * @param options.onSuccess
+	 * @param options.onFailure
+	 * @see https://wolfgangrittner.dev/how-to-use-clipboard-api-in-safari/
+	 */
+	const fetchAndCopyToClipboard = async (
 		promise: Promise<string>,
 		options: { onSuccess?: () => void; onFailure?: () => void } = {},
 	) => {
 		const { onSuccess = noop, onFailure = noop } = options;
-		if (typeof ClipboardItem && navigator.clipboard?.write) {
+		if (ClipboardItem && navigator.clipboard?.write) {
 			// NOTE: Safari locks down the clipboard API to only work when triggered
 			//   by a direct user interaction. You can't use it async in a promise.
 			//   But! You can wrap the promise in a ClipboardItem, and give that to
 			//   the clipboard API.
 			//   Found this on https://developer.apple.com/forums/thread/691873
 			const text = new ClipboardItem({
-				"text/plain": promise
-					.then((text) => new Blob([text], { type: "text/plain" }))
+				'text/plain': promise
+					.then((text) => new Blob([text], { type: 'text/plain' }))
 					.catch(() => {
 						onFailure();
-						return "";
+						return '';
 					}),
 			});
-			navigator.clipboard.write([text]);
+			await navigator.clipboard.write([text]);
 			onSuccess();
 		} else {
 			// NOTE: Firefox has support for ClipboardItem and navigator.clipboard.write,
@@ -62,15 +68,21 @@ export function useCopy() {
 			//   Good news is that other than Safari, Firefox does not care about
 			//   Clipboard API being used async in a Promise.
 			promise
-				.then((text) => copyToClipboard(text, options))
-				.catch(() => onFailure());
+				.then((text) => {
+					copyToClipboard(text, options);
+				})
+				.catch(() => {
+					onFailure();
+				});
 		}
 	};
 
 	useEffect(() => {
 		if (isCopied) {
 			const timer = setTimeout(resetCopyStatus, 3000); // Reset copy status after 3 seconds
-			return () => clearTimeout(timer);
+			return () => {
+				clearTimeout(timer);
+			};
 		}
 	}, [isCopied]);
 

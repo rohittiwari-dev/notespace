@@ -1,5 +1,5 @@
-import React from "react";
-import { api } from "@/lib/trpc/server";
+import React from 'react';
+import { api } from '@/lib/trpc/server';
 
 const DashboardPage = async () => {
 	const { greeting } = await api.hello.getGreetings();

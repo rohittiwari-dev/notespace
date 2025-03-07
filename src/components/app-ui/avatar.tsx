@@ -1,8 +1,10 @@
-import React from "react";
-import * as CoreAvatar from "@/components/ui/avatar";
+import React from 'react';
+
+import * as CoreAvatar from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
 
 interface AvatarProps {
-	size?: "small" | "default" | "large";
+	size?: 'small' | 'default' | 'large';
 	ring?: boolean;
 	ringColor?: string;
 	initial?: string;
@@ -14,18 +16,25 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({
-	href = "https://github.com/shadcn.png",
-	initial = "UR",
-	size = "default",
+	href = 'https://github.com/shadcn.png',
+	initial = 'UR',
+	size = 'default',
 	ring = true,
-	ringColor = "text-primary-500",
+	ringColor = 'text-primary-500',
 	className,
-	alt = "@shadcn",
+	alt = '@shadcn',
 	imageClassName,
 	fallbackClassName,
 }) => {
 	return (
-		<CoreAvatar.Avatar className={className}>
+		<CoreAvatar.Avatar
+			className={cn(
+				className,
+				size && `size-[${size}]`,
+				ring && 'ring-1',
+				ringColor && `ring-[${ringColor}]`,
+			)}
+		>
 			<CoreAvatar.AvatarImage
 				className={imageClassName}
 				src={href}

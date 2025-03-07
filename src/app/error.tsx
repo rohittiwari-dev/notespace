@@ -1,7 +1,7 @@
-"use client"; // Error boundaries must be Client Components
+'use client'; // Error boundaries must be Client Components
 
-import { Button } from "@/components/ui/button";
-import { constants } from "@/lib/local.data";
+import { Button } from '@/components/ui/button';
+import { constants } from '@/lib/local.data';
 
 export default function GlobalError({
 	error,

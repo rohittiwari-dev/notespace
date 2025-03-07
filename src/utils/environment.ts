@@ -1,13 +1,13 @@
 export enum Environment {
-	beta = "beta",
-	dev = "dev",
-	local = "local",
-	preprod = "preprod",
-	preview = "preview",
-	prod = "prod",
-	release = "release",
-	testing = "testing",
-	staging = "staging",
+	beta = 'beta',
+	dev = 'dev',
+	local = 'local',
+	preprod = 'preprod',
+	preview = 'preview',
+	prod = 'prod',
+	release = 'release',
+	testing = 'testing',
+	staging = 'staging',
 }
 
 export const CURRENT_ENV = process.env.NODE_ENV
@@ -17,8 +17,8 @@ export const CURRENT_ENV = process.env.NODE_ENV
 	: Environment.dev;
 
 export const isValidEnv = (env?: string) =>
-	(Object.values(Environment) as any).includes(
-		env || (process.env.NODE_ENV?.toLowerCase() as string) || "",
+	(Object.values(Environment) as string[]).includes(
+		env || process.env.NODE_ENV?.toLowerCase() || '',
 	);
 
 export const IS_PRODUCTION = Environment.prod === CURRENT_ENV;

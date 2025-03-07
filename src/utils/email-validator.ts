@@ -1,82 +1,82 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const nonHumanEmailDomains = [
-	"@no-reply",
-	"@noreply",
-	"@notifications",
-	"@alerts",
-	"@mailer",
-	"@updates",
-	"@system",
-	"@bot",
-	"@mailchimp.com",
-	"@sendgrid.net",
-	"@postmarkapp.com",
-	"@amazonaws.com",
-	"@mailgun.org",
-	"@constantcontact.com",
-	"@sendinblue.com",
-	"@intercom.io",
-	"@intercom-mail.com",
-	"@zendesk.com",
-	"@freshdesk.com",
-	"@helpscout.net",
-	"@tawk.to",
-	"@hubspot.com",
-	"@salesforce.com",
-	"@marketo.com",
-	"@pipedrive.com",
-	"@drip.com",
-	"@activecampaign.com",
-	"@autopilotmail.com",
-	"@slack.com",
-	"@jira.com",
-	"@trello.com",
-	"@asana.com",
-	"@monday.com",
-	"@github.com",
-	"@gitlab.com",
-	"@bitbucket.org",
-	"@paypal.com",
-	"@stripe.com",
-	"@shopify.com",
-	"@bigcommerce.com",
-	"@facebookmail.com",
-	"@linkedin.com",
-	"@twitter.com",
-	"@pinterest.com",
-	"@redditmail.com",
-	"@medium.com",
+	'@no-reply',
+	'@noreply',
+	'@notifications',
+	'@alerts',
+	'@mailer',
+	'@updates',
+	'@system',
+	'@bot',
+	'@mailchimp.com',
+	'@sendgrid.net',
+	'@postmarkapp.com',
+	'@amazonaws.com',
+	'@mailgun.org',
+	'@constantcontact.com',
+	'@sendinblue.com',
+	'@intercom.io',
+	'@intercom-mail.com',
+	'@zendesk.com',
+	'@freshdesk.com',
+	'@helpscout.net',
+	'@tawk.to',
+	'@hubspot.com',
+	'@salesforce.com',
+	'@marketo.com',
+	'@pipedrive.com',
+	'@drip.com',
+	'@activecampaign.com',
+	'@autopilotmail.com',
+	'@slack.com',
+	'@jira.com',
+	'@trello.com',
+	'@asana.com',
+	'@monday.com',
+	'@github.com',
+	'@gitlab.com',
+	'@bitbucket.org',
+	'@paypal.com',
+	'@stripe.com',
+	'@shopify.com',
+	'@bigcommerce.com',
+	'@facebookmail.com',
+	'@linkedin.com',
+	'@twitter.com',
+	'@pinterest.com',
+	'@redditmail.com',
+	'@medium.com',
 ];
 
 const automatedKeywordsInUsername = [
-	"noreply",
-	"no-reply",
-	"admin",
-	"support",
-	"system",
-	"notifications",
-	"bot",
-	"helpdesk",
-	"service",
-	"info",
-	"alerts",
-	"updates",
-	"newsletter",
-	"mailer",
-	"auto",
-	"daemon",
-	"bounce",
-	"team",
-	"noreplys",
-	"customerservice",
-	"contact",
-	"autoresponder",
+	'noreply',
+	'no-reply',
+	'admin',
+	'support',
+	'system',
+	'notifications',
+	'bot',
+	'helpdesk',
+	'service',
+	'info',
+	'alerts',
+	'updates',
+	'newsletter',
+	'mailer',
+	'auto',
+	'daemon',
+	'bounce',
+	'team',
+	'noreplys',
+	'customerservice',
+	'contact',
+	'autoresponder',
 ];
 
 function isEmailGibberish(username: string): boolean {
-	const vowelCount = username.replace(/[^aeiou]/gi, "").length;
-	const consonantCount = username.replace(/[^bcdfghj-np-tv-z]/gi, "").length;
+	const vowelCount = username.replace(/[^aeiou]/gi, '').length;
+	const consonantCount = username.replace(/[^bcdfghj-np-tv-z]/gi, '').length;
 
 	return (
 		vowelCount === 0 ||
@@ -94,7 +94,7 @@ function hasAlternatingCharsAndNumbers(username: string): boolean {
 function scoreEmail(email: string): number {
 	let score = 0;
 
-	const [username, domain] = email.split("@");
+	const [username, domain] = email.split('@');
 
 	if (!username || !domain) {
 		return 100;
@@ -117,7 +117,7 @@ function scoreEmail(email: string): number {
 		score += 5;
 	}
 
-	const numberCount = username.replace(/\D/g, "").length;
+	const numberCount = username.replace(/\D/g, '').length;
 	const numberDensity = numberCount / username.length;
 	if (numberDensity > 0.5) {
 		score += 15;
@@ -135,7 +135,7 @@ function scoreEmail(email: string): number {
 		score += 15;
 	}
 
-	const specialCharCount = username.replace(/[a-z0-9]/gi, "").length;
+	const specialCharCount = username.replace(/[a-z0-9]/gi, '').length;
 	const specialCharDensity = specialCharCount / username.length;
 	if (specialCharDensity > 0.3) {
 		score += 15;
@@ -156,8 +156,8 @@ export function isLikelyHuman(email: string, threshold = 30): boolean {
 export default function (email: string) {
 	const validationSchema = z
 		.string()
-		.describe("email")
-		.email("must be a valid email")
+		.describe('email')
+		.email('must be a valid email')
 		.refine(
 			(data) => {
 				if (data) {
@@ -166,8 +166,8 @@ export default function (email: string) {
 				return true;
 			},
 			{
-				message: "must not be disposable or temporary email.",
-				path: ["email"],
+				message: 'must not be disposable or temporary email.',
+				path: ['email'],
 			},
 		);
 	return validationSchema.parse(email);

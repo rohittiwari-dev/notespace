@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import {
 	Card,
 	CardContent,
@@ -9,34 +9,37 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { AlertCircle, ArrowLeft, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
-import { authClientApi } from "@/lib/auth/client";
-import ThemeSwitcher from "@/components/app-ui/theme-switcher";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { AlertCircle, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import ThemeSwitcher from '@/components/app-ui/theme-switcher';
+import type { BetterAuthError } from 'better-auth';
+import { authClientApi } from '@/lib/auth/client';
 
 export default function Component() {
-	const [email, setEmail] = useState("");
+	const [email, setEmail] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
-	const [error, setError] = useState("");
+	const [error, setError] = useState('');
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setIsSubmitting(true);
-		setError("");
+		setError('');
 
 		try {
 			await authClientApi.forgetPassword({
 				email,
-				redirectTo: "/reset-password",
+				redirectTo: '/reset-password',
 			});
 			setIsSubmitted(true);
-		} catch (err: any) {
-			setError(`An error occurred. Please try again. ${err.message}`);
+		} catch (err) {
+			setError(
+				`An error occurred. Please try again. ${(err as BetterAuthError).message}`,
+			);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -66,7 +69,9 @@ export default function Component() {
 						<Button
 							variant="outline"
 							className="w-full"
-							onClick={() => setIsSubmitted(false)}
+							onClick={() => {
+								setIsSubmitted(false);
+							}}
 						>
 							<ArrowLeft className="mr-2 h-4 w-4" /> Back to reset
 							password
@@ -97,7 +102,9 @@ export default function Component() {
 									type="email"
 									placeholder="Enter your email"
 									value={email}
-									onChange={(e) => setEmail(e.target.value)}
+									onChange={(e) => {
+										setEmail(e.target.value);
+									}}
 									required
 								/>
 							</div>
@@ -113,7 +120,7 @@ export default function Component() {
 							type="submit"
 							disabled={isSubmitting}
 						>
-							{isSubmitting ? "Sending..." : "Send reset link"}
+							{isSubmitting ? 'Sending...' : 'Send reset link'}
 						</Button>
 					</form>
 				</CardContent>

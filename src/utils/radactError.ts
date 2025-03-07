@@ -1,6 +1,6 @@
-import { IS_PRODUCTION } from "@/utils/environment";
-import { DrizzleError, TransactionRollbackError } from "drizzle-orm";
-import { logger } from "@/utils/logger";
+import { IS_PRODUCTION } from '@/utils/environment';
+import { DrizzleError, TransactionRollbackError } from 'drizzle-orm';
+import { logger } from '@/utils/logger';
 
 function shouldRedact<T extends Error>(error: T) {
 	return (
@@ -9,14 +9,15 @@ function shouldRedact<T extends Error>(error: T) {
 	);
 }
 
-export const redactError = <T extends Error | unknown>(error: T) => {
+// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+export const redactError = <T extends Error | unknown | any>(error: T) => {
 	if (!(error instanceof Error)) {
 		return error;
 	}
-	logger.debug("[RedactError] Type of Error: ", error.constructor);
+	logger.debug('[RedactError] Type of Error: ', error.constructor);
 	if (shouldRedact(error) && IS_PRODUCTION) {
-		logger.error("[RedactError] Error: ", JSON.stringify(error));
-		return new Error("An error occurred while querying the database.");
+		logger.error('[RedactError] Error: ', JSON.stringify(error));
+		return new Error('An error occurred while querying the database.');
 	}
 	return error;
 };

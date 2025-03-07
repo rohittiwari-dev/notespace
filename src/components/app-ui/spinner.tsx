@@ -1,5 +1,8 @@
-import React, { SVGProps } from "react";
-import { cn } from "@/lib/utils";
+import React from 'react';
+
+import type { SVGProps } from 'react';
+
+import { cn } from '@/lib/utils';
 
 const Spinner = ({
 	className,
@@ -15,7 +18,7 @@ const Spinner = ({
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			className={cn(
-				"text-foreground h-6 w-6 animate-spin duration-500",
+				'text-foreground h-6 w-6 animate-spin duration-500',
 				className,
 			)}
 			fill="none"
@@ -28,10 +31,10 @@ const Spinner = ({
 				strokeLinejoin="round"
 				stroke="currentColor"
 			/>
-		</svg>{" "}
+		</svg>{' '}
 		{loadingLabel &&
-			(typeof loadingLabel === "string" ? (
-				<span className={cn("text-base", textClassName)}>
+			(typeof loadingLabel === 'string' ? (
+				<span className={cn('text-base', textClassName)}>
 					{loadingLabel}
 				</span>
 			) : (

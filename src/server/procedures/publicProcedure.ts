@@ -1,5 +1,5 @@
-import { createProcedure } from "../trpc";
-import captureErrorsMiddleware from "../middlewares/error.middleware";
+import { createProcedure } from '../trpc';
+import captureErrorsMiddleware from '../middlewares/error.middleware';
 
 export const publicProcedure = createProcedure;
 

@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
-import { getBaseUrl } from "@/utils/getBaseUrl";
-import { constants } from "@/lib/local.data";
+import type { Metadata } from 'next';
+import { getBaseUrl } from '@/utils/getBaseUrl';
+import { constants } from '@/lib/local.data';
 
 /**
  * A utility function to construct metadata for the application which can be
@@ -22,35 +22,35 @@ export function constructMetadata({
 	image = `${getBaseUrl()}/thumbnail.jpg`,
 	icons = [
 		{
-			rel: "apple-touch-icon",
-			sizes: "32x32",
-			url: "/apple-touch-icon.png",
+			rel: 'apple-touch-icon',
+			sizes: '32x32',
+			url: '/apple-touch-icon.png',
 		},
 		{
-			rel: "icon",
-			type: "image/png",
-			sizes: "32x32",
-			url: "/favicon-32x32.png",
+			rel: 'icon',
+			type: 'image/png',
+			sizes: '32x32',
+			url: '/favicon-32x32.png',
 		},
 		{
-			rel: "icon",
-			type: "image/png",
-			sizes: "16x16",
-			url: "/favicon-16x16.png",
+			rel: 'icon',
+			type: 'image/png',
+			sizes: '16x16',
+			url: '/favicon-16x16.png',
 		},
 	],
 	noIndex = false,
 	url = getBaseUrl(),
-	type = "website",
+	type = 'website',
 	publishedTime,
 }: {
 	title?: string;
 	description?: string;
 	image?: string | null;
-	icons?: Metadata["icons"];
+	icons?: Metadata['icons'];
 	noIndex?: boolean;
 	url?: string;
-	type?: "website" | "article";
+	type?: 'website' | 'article';
 	publishedTime?: string;
 } = {}): Metadata {
 	return {
@@ -74,7 +74,7 @@ export function constructMetadata({
 			title,
 			description,
 			...(image && {
-				card: "summary_large_image",
+				card: 'summary_large_image',
 				images: [image],
 			}),
 			creator: constants.twitter_handle,

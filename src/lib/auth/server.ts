@@ -1,14 +1,16 @@
-import { betterAuth, BetterAuthOptions } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import db, { schema } from "@/db";
-import { openAPI } from "better-auth/plugins";
-import { sendEmail } from "@/lib/emails";
+import { betterAuth, type BetterAuthOptions } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { openAPI } from 'better-auth/plugins';
+
+import db, { schema } from '@/db';
+import { env } from '@/env';
+import { sendEmail } from '@/lib/emails';
 
 // Server Auth
 export const authServerApi = betterAuth({
-	appName: "Notespace",
+	appName: 'Notespace',
 	database: drizzleAdapter(db, {
-		provider: "pg",
+		provider: 'pg',
 		schema: {
 			...schema,
 			user: schema.UserTable,
@@ -24,7 +26,7 @@ export const authServerApi = betterAuth({
 		sendResetPassword: async ({ user, url }) => {
 			await sendEmail({
 				to: user.email,
-				subject: "Reset Your Password | Notespace",
+				subject: 'Reset Your Password | Notespace',
 				text: `Click the link to verify your email: ${url}`,
 			});
 		},
@@ -35,7 +37,7 @@ export const authServerApi = betterAuth({
 		sendVerificationEmail: async ({ user, url }) => {
 			await sendEmail({
 				to: user.email,
-				subject: "Verify your email address | Notespace",
+				subject: 'Verify your email address | Notespace',
 				text: `Click the link to verify your email: ${url}`,
 			});
 		},
@@ -43,12 +45,12 @@ export const authServerApi = betterAuth({
 	socialProviders: {
 		google: {
 			disableSignUp: true,
-			clientId: process.env.GOOGLE_CLIENT_ID as string,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
 		},
 	},
 	onAPIError: {
-		errorURL: "/sign-in",
+		errorURL: '/sign-in',
 	},
 	plugins: [openAPI()],
 } satisfies BetterAuthOptions);

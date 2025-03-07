@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
 	BadgeCheck,
 	Bell,
@@ -6,7 +6,7 @@ import {
 	CreditCard,
 	LogOut,
 	Sparkles,
-} from "lucide-react";
+} from 'lucide-react';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,19 +15,19 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/ui/sidebar";
-import React, { useState } from "react";
-import Avatar from "@/components/app-ui/avatar";
-import { getInitialsFromName } from "@/utils";
-import { authClientApi } from "@/lib/auth/client";
-import { redirect } from "next/navigation";
-import Spinner from "@/components/app-ui/spinner";
+} from '@/components/ui/sidebar';
+import React, { useState } from 'react';
+import Avatar from '@/components/app-ui/avatar';
+import { getInitialsFromName } from '@/utils';
+import { authClientApi } from '@/lib/auth/client';
+import { redirect } from 'next/navigation';
+import Spinner from '@/components/app-ui/spinner';
 
 const LogoutMenuItem = () => {
 	const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ const LogoutMenuItem = () => {
 						},
 						onSuccess: () => {
 							setLoading(false);
-							redirect("/sign-in");
+							redirect('/sign-in');
 						},
 						onError: () => {
 							setLoading(false);
@@ -102,7 +102,7 @@ function UserView({
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
 						className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-						side={isMobile ? "bottom" : "right"}
+						side={isMobile ? 'bottom' : 'right'}
 						align="end"
 						sideOffset={4}
 					>

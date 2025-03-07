@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { ChevronsUpDown, Plus } from "lucide-react";
+import * as React from 'react';
+
+import { ChevronsUpDown, Plus } from 'lucide-react';
 
 import {
 	DropdownMenu,
@@ -11,13 +12,13 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
 
 function SpaceSwitcher({
 	teams,
@@ -57,7 +58,7 @@ function SpaceSwitcher({
 					<DropdownMenuContent
 						className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
 						align="start"
-						side={isMobile ? "bottom" : "right"}
+						side={isMobile ? 'bottom' : 'right'}
 						sideOffset={4}
 					>
 						<DropdownMenuLabel className="text-muted-foreground text-xs">
@@ -66,7 +67,9 @@ function SpaceSwitcher({
 						{teams.map((team, index) => (
 							<DropdownMenuItem
 								key={team.name}
-								onClick={() => setActiveTeam(team)}
+								onClick={() => {
+									setActiveTeam(team);
+								}}
 								className="gap-2 p-2"
 							>
 								<div className="border-secondary-500/50 flex size-6 items-center justify-center rounded-sm border">

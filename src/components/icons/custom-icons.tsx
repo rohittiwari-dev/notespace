@@ -1,5 +1,6 @@
-import { SVGProps } from "react";
-import { cn } from "@/lib/utils";
+import { type SVGProps } from 'react';
+
+import { cn } from '@/lib/utils';
 
 type IIcons = SVGProps<SVGSVGElement>;
 
@@ -8,7 +9,7 @@ export const UsernameIcon = ({ className, ...props }: IIcons) => {
 		<svg
 			viewBox="0 0 24 24"
 			fill="none"
-			className={cn("text-foreground h-6 w-6", className)}
+			className={cn('text-foreground h-6 w-6', className)}
 			xmlns="http://www.w3.org/2000/svg"
 			{...props}
 		>
@@ -39,7 +40,7 @@ export const LockIcon = ({ className, ...props }: IIcons) => {
 		<svg
 			viewBox="0 0 24 24"
 			fill="none"
-			className={cn("text-foreground h-6 w-5", className)}
+			className={cn('text-foreground h-6 w-5', className)}
 			xmlns="http://www.w3.org/2000/svg"
 			{...props}
 		>
@@ -82,7 +83,7 @@ export const UserIcon = ({ className, ...props }: IIcons) => {
 		<svg
 			viewBox="0 0 24 24"
 			fill="none"
-			className={cn("text-foreground h-6 w-6", className)}
+			className={cn('text-foreground h-6 w-6', className)}
 			xmlns="http://www.w3.org/2000/svg"
 			{...props}
 		>
@@ -107,7 +108,7 @@ export const GoogleIcon = ({ className, ...props }: IIcons) => {
 		<svg
 			viewBox="0 0 48 48"
 			fill="none"
-			className={cn("text-foreground h-6 w-6", className)}
+			className={cn('text-foreground h-6 w-6', className)}
 			xmlns="http://www.w3.org/2000/svg"
 			{...props}
 		>
@@ -128,7 +129,7 @@ export const MailIcon = ({ className, ...props }: IIcons) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 24 24"
-		className={cn("text-foreground h-6 w-6", className)}
+		className={cn('text-foreground h-6 w-6', className)}
 		fill="none"
 		{...props}
 	>

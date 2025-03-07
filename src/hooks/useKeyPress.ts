@@ -1,5 +1,5 @@
-import type { RefObject } from "react";
-import { useEffect, useState } from "react";
+import type { RefObject } from 'react';
+import { useEffect, useState } from 'react';
 
 export function useKeyPress(
 	targetKey: string,
@@ -25,19 +25,19 @@ export function useKeyPress(
 	// Add event listeners
 	useEffect(() => {
 		if (ref && placeHolderRef) {
-			placeHolderRef.addEventListener("keydown", downHandler);
-			placeHolderRef.addEventListener("keyup", upHandler);
+			placeHolderRef.addEventListener('keydown', downHandler);
+			placeHolderRef.addEventListener('keyup', upHandler);
 			return () => {
-				placeHolderRef?.removeEventListener("keydown", downHandler);
-				placeHolderRef?.removeEventListener("keyup", upHandler);
+				placeHolderRef?.removeEventListener('keydown', downHandler);
+				placeHolderRef?.removeEventListener('keyup', upHandler);
 			};
 		} else {
-			window.addEventListener("keydown", downHandler);
-			window.addEventListener("keyup", upHandler);
+			window.addEventListener('keydown', downHandler);
+			window.addEventListener('keyup', upHandler);
 			// Remove event listeners on cleanup
 			return () => {
-				window.removeEventListener("keydown", downHandler);
-				window.removeEventListener("keyup", upHandler);
+				window.removeEventListener('keydown', downHandler);
+				window.removeEventListener('keyup', upHandler);
 			};
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

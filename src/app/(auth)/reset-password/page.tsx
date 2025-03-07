@@ -1,51 +1,55 @@
-"use client";
+'use client';
 
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import React, { useEffect, useState } from 'react';
+import { redirect, useRouter } from 'next/navigation';
+
+import { AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
+
+import InputField from '@/components/app-ui/input-field';
+import Spinner from '@/components/app-ui/spinner';
+import ThemeSwitcher from '@/components/app-ui/theme-switcher';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { AlertCircle } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
-import InputField from "@/components/app-ui/input-field";
-import { authClientApi } from "@/lib/auth/client";
-import ThemeSwitcher from "@/components/app-ui/theme-switcher";
-import Spinner from "@/components/app-ui/spinner";
+} from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { authClientApi } from '@/lib/auth/client';
 
 export default function ResetPassword() {
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [error, setError] = useState("");
+	const [error, setError] = useState('');
 	const router = useRouter();
 
 	useEffect(() => {
-		const token = new URLSearchParams(window.location.search).get("token")!;
+		const token =
+			new URLSearchParams(window.location.search).get('token') ?? '';
 		if (!token) {
-			redirect("/sign-in");
+			redirect('/sign-in');
 		}
 	}, []);
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		setIsSubmitting(true);
-		setError("");
+		setError('');
 		const res = await authClientApi.resetPassword({
 			newPassword: password,
-			token: new URLSearchParams(window.location.search).get("token")!,
+			token:
+				new URLSearchParams(window.location.search).get('token') ?? '',
 		});
 		if (res.error) {
 			toast.error(res.error.message);
 		}
 		setIsSubmitting(false);
-		router.push("/sign-in");
+		router.push('/sign-in');
 	}
 	return (
 		<div className="relative z-0 container flex h-full w-full flex-col items-center">
@@ -66,9 +70,9 @@ export default function ResetPassword() {
 									type="password"
 									id="password"
 									value={password}
-									onChange={(e) =>
-										setPassword(e.target.value)
-									}
+									onChange={(e) => {
+										setPassword(e.target.value);
+									}}
 									autoComplete="password"
 									placeholder="Password"
 								/>
@@ -79,9 +83,9 @@ export default function ResetPassword() {
 									type="password"
 									id="password"
 									value={confirmPassword}
-									onChange={(e) =>
-										setConfirmPassword(e.target.value)
-									}
+									onChange={(e) => {
+										setConfirmPassword(e.target.value);
+									}}
 									autoComplete="password"
 									placeholder="Password"
 								/>
@@ -99,7 +103,7 @@ export default function ResetPassword() {
 							disabled={isSubmitting}
 						>
 							{isSubmitting && <Spinner />}
-							{isSubmitting ? "Resetting..." : "Reset password"}
+							{isSubmitting ? 'Resetting...' : 'Reset password'}
 						</Button>
 					</form>
 				</CardContent>

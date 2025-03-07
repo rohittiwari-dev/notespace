@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 const isInteractionObserverSupported =
-	typeof window !== "undefined" && "IntersectionObserver" in window;
+	typeof window !== 'undefined' && 'IntersectionObserver' in window;
 
 export const useInViewObserver = (
 	onInViewCallback: () => void,
@@ -19,7 +19,7 @@ export const useInViewObserver = (
 		}
 
 		let observer: IntersectionObserver;
-		if (node && node.parentElement) {
+		if (node?.parentElement) {
 			observer = new IntersectionObserver(
 				([entry]) => {
 					if (entry.isIntersecting) {

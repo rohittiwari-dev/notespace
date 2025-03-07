@@ -1,14 +1,14 @@
-type BrowserInfo = {
+interface BrowserInfo {
 	url: string;
 	path: string;
 	referrer: string;
 	title: string;
 	query: string;
 	origin: string;
-};
+}
 
 export const getBrowserInfo = (): Partial<BrowserInfo> => {
-	if (typeof window === "undefined") {
+	if (typeof window === 'undefined') {
 		return {};
 	}
 	return {

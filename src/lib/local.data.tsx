@@ -3,46 +3,46 @@ import {
 	DiamondIcon,
 	Edit3Icon,
 	ListChecksIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
 export const constants = {
-	name: "NoteSpace - Rethinking Student Productivity",
-	shortName: "NoteSpace",
-	tagline: "Rethinking Student Productivity",
+	name: 'NoteSpace - Rethinking Student Productivity',
+	shortName: 'NoteSpace',
+	tagline: 'Rethinking Student Productivity',
 	description:
-		"NoteSpace is a productivity platform including many tools students need to be productive and stay on top of their work such as note taking, task management, and more.",
-	twitter_handle: "@notespace",
-	github_repo: "https://github.com/rohittiwari-dev/notespace",
-	domain: "noodle.run",
-	discord: "https://discord.gg/ewKmQd8kYm",
-	twitter: "https://x.com/noodle_run",
-	feedback: "mailto:feedback@notespace.com",
-	support: "mailto:support@notespace.com",
+		'NoteSpace is a productivity platform including many tools students need to be productive and stay on top of their work such as note taking, task management, and more.',
+	twitter_handle: '@notespace',
+	github_repo: 'https://github.com/rohittiwari-dev/notespace',
+	domain: 'noodle.run',
+	discord: 'https://discord.gg/ewKmQd8kYm',
+	twitter: 'https://x.com/noodle_run',
+	feedback: 'mailto:feedback@notespace.com',
+	support: 'mailto:support@notespace.com',
 };
 
 export const features = (iconSize: number) => [
 	{
 		icon: <Edit3Icon size={iconSize} />,
-		title: "Note Taking",
+		title: 'Note Taking',
 		description:
-			"Write your study notes and let Noodle take care of the rest.",
+			'Write your study notes and let Noodle take care of the rest.',
 	},
 	{
 		icon: <DiamondIcon size={iconSize} />,
-		title: "Flashcards",
+		title: 'Flashcards',
 		description:
-			"Create flashcards with reminders or let AI auto-suggest them for you.",
+			'Create flashcards with reminders or let AI auto-suggest them for you.',
 	},
 	{
 		icon: <ListChecksIcon size={iconSize} />,
-		title: "Task Management",
+		title: 'Task Management',
 		description:
-			"Create module specific tasks to keep on track with what you need to do.",
+			'Create module specific tasks to keep on track with what you need to do.',
 	},
 	{
 		icon: <ClipboardCheckIcon size={iconSize} />,
-		title: "Grade Tracking",
+		title: 'Grade Tracking',
 		description:
-			"Find out what you need to achieve to stay in progression.",
+			'Find out what you need to achieve to stay in progression.',
 	},
 ];

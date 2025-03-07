@@ -1,9 +1,9 @@
-import { TRPCError } from "@trpc/server";
-import { createMiddleware } from "../trpc";
+import { TRPCError } from '@trpc/server';
+import { createMiddleware } from '../trpc';
 
 export const withAuth = createMiddleware(async ({ ctx, next }) => {
 	if (!ctx.session) {
-		throw new TRPCError({ code: "UNAUTHORIZED" });
+		throw new TRPCError({ code: 'UNAUTHORIZED' });
 	}
 
 	return next({

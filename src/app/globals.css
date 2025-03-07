@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Plugins Declarations */
 @plugin "tailwindcss-animate";
@@ -8,7 +8,7 @@
 @plugin "@eioluseyi/tailwind-fade";
 @plugin "tailwind-scrollbar" {
 	nocompatible: true;
-	preferredstrategy: "pseudoelements";
+	preferredstrategy: 'pseudoelements';
 }
 
 /* Dark class Selector */

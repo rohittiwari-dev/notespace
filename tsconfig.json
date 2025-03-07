@@ -2,22 +2,13 @@
 	"compilerOptions": {
 		"strict": true,
 		"allowUnusedLabels": false,
-		"allowUnreachableCode": false,
-		"exactOptionalPropertyTypes": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
-		"noImplicitReturns": true,
 		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"checkJs": true,
-
 		"forceConsistentCasingInFileNames": true,
-
-		"moduleDetection": "force",
-		"allowImportingTsExtensions": true,
-
 		"module": "esnext",
 		"target": "es2022",
 		"lib": ["dom", "dom.iterable", "esnext"],
@@ -43,9 +34,11 @@
 		"next-env.d.ts",
 		"reset.d.ts",
 		"eslint.d.ts",
+		"eslint.config.js",
 		"**/*.ts",
-		"**/*.js",
 		"**/*.tsx",
+		"**/*.js",
+		"**/*.jsx",
 		".next/types/**/*.ts"
 	],
 	"exclude": ["node_modules"]

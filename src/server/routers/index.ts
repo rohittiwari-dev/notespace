@@ -1,5 +1,5 @@
-import helloRouter from "./hello.routes";
-import { createRouter } from "../trpc";
+import helloRouter from './hello.routes';
+import { createRouter } from '../trpc';
 
 export default createRouter({
 	hello: helloRouter,

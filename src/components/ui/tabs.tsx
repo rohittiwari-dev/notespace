@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import * as TabsPrimitive from "@radix-ui/react-tabs";
+import * as React from 'react';
+import * as TabsPrimitive from '@radix-ui/react-tabs';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 function Tabs({
 	className,
@@ -12,7 +12,7 @@ function Tabs({
 	return (
 		<TabsPrimitive.Root
 			data-slot="tabs"
-			className={cn("flex flex-col gap-2", className)}
+			className={cn('flex flex-col gap-2', className)}
 			{...props}
 		/>
 	);
@@ -26,7 +26,7 @@ function TabsList({
 		<TabsPrimitive.List
 			data-slot="tabs-list"
 			className={cn(
-				"bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-1",
+				'bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-1',
 				className,
 			)}
 			{...props}
@@ -58,7 +58,7 @@ function TabsContent({
 		<TabsPrimitive.Content
 			data-slot="tabs-content"
 			className={cn(
-				"ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 flex-1 transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1 aria-invalid:focus-visible:ring-0",
+				'ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 flex-1 transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1 aria-invalid:focus-visible:ring-0',
 				className,
 			)}
 			{...props}

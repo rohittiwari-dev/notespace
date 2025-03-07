@@ -10,7 +10,6 @@
 		"packages/*"
 	],
 	"scripts": {
-		"dev": "next dev --turbo",
 		"build": "next build",
 		"clean": "bun run rm -rf .next node_modules *.tsbuildinfo next-env.d.ts",
 		"commit": "git-cz",
@@ -22,17 +21,41 @@
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio",
 		"db:up": "drizzle-kit up",
+		"dev": "next dev --turbo",
 		"email:dev": "SKIP_ENV_VALIDATION=true email dev --port 3001 --dir src/emails/templates",
 		"format": "pnpm format:write",
 		"format:check": "prettier \"**/*\" --ignore-unknown --list-different",
 		"format:write": "prettier \"**/*\" --ignore-unknown --list-different --write",
-		"lint": "bun lint:js && bun lint:md && bun lint:spell",
+		"lint": "bun lint:js && bun lint:md && bun lint:spell ",
 		"lint:js": "eslint . --max-warnings 0",
 		"lint:md": "markdownlint \"**/*.md\" \".github/**/*.md\" --ignore node_modules",
 		"lint:spell": "cspell \"**/*\" --no-summary --no-progress",
+		"list:inspect": "eslint . --inspect-config",
 		"prepare": "husky",
 		"start": "next start",
 		"typecheck": "tsc"
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	},
+	"lint-staged": {
+		"*": [
+			"cspell --no-must-find-files",
+			"prettier --list-different"
+		],
+		"**/*.{ts,tsx,js,jsx,cjs,mjs}": [
+			"eslint"
+		],
+		"**/*.{md,mdx}": [
+			"markdownlint"
+		]
+	},
+	"config": {
+		"commitizen": {
+			"path": "@commitlint/cz-commitlint"
+		}
 	},
 	"dependencies": {
 		"@eioluseyi/tailwind-fade": "^1.0.1",
@@ -60,12 +83,13 @@
 		"@trpc/client": "^11.0.0-rc.819",
 		"@trpc/react-query": "^11.0.0-rc.819",
 		"@trpc/server": "^11.0.0-rc.819",
-		"better-auth": "v1.2.1-beta.8",
+		"better-auth": "^1.2.1",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"drizzle-cuid2": "^2.0.0",
 		"drizzle-orm": "^0.40.0",
 		"drizzle-zod": "^0.7.0",
+		"greatenv": "^1.0.0",
 		"jiti": "^2.4.2",
 		"levenshtein-edit-distance": "^3.0.1",
 		"lucide-react": "^0.476.0",
@@ -125,10 +149,12 @@
 		"markdownlint": "^0.37.4",
 		"markdownlint-cli": "^0.44.0",
 		"postcss": "^8.5.3",
+		"postcss-load-config": "^6.0.1",
 		"prettier": "^3.5.2",
 		"prettier-plugin-curly": "^0.3.1",
 		"prettier-plugin-packagejson": "^2.5.9",
 		"prettier-plugin-tailwindcss": "^0.6.11",
+		"prettier-remove-unused-imports": "^1.1.21",
 		"tailwind-scrollbar": "^4.0.1",
 		"tailwindcss": "^4.0.9",
 		"tailwindcss-animate": "^1.0.7",
@@ -137,31 +163,9 @@
 		"typescript-eslint": "^8.25.0"
 	},
 	"engines": {
+		"bun": ">= 1.2.4",
 		"node": ">=18.x",
 		"npm": ">=7.0.0",
-		"yarn": "3.4.1",
-		"bun": ">= 1.2.4"
-	},
-	"commitlint": {
-		"extends": [
-			"@commitlint/config-conventional"
-		]
-	},
-	"lint-staged": {
-		"*": [
-			"cspell --no-must-find-files",
-			"prettier --list-different"
-		],
-		"**/*.{ts,tsx,js,jsx,cjs,mjs}": [
-			"eslint"
-		],
-		"**/*.{md,mdx}": [
-			"markdownlint"
-		]
-	},
-	"config": {
-		"commitizen": {
-			"path": "@commitlint/cz-commitlint"
-		}
+		"yarn": "3.4.1"
 	}
 }

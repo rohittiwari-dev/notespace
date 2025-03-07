@@ -1,14 +1,18 @@
-"use server";
-import { CreateEmailOptions, Resend } from "resend";
+'use server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+import type { CreateEmailOptions } from 'resend';
+import { Resend } from 'resend';
 
-type ISendEmail = Omit<CreateEmailOptions, "from">;
+import { env } from '@/env';
+
+const resend = new Resend(env.RESEND_API_KEY);
+
+type ISendEmail = Omit<CreateEmailOptions, 'from'>;
 
 export const sendEmail = async ({ ...props }: ISendEmail) => {
 	const { data, error } = await resend.emails.send({
-		from: "Acme <onboarding@resend.dev>",
-		text: "",
+		from: 'Acme <onboarding@resend.dev>',
+		text: '',
 		...props,
 	});
 
@@ -22,7 +26,7 @@ export const sendEmail = async ({ ...props }: ISendEmail) => {
 
 	return {
 		success: true,
-		message: "Message sent successfully",
+		message: 'Message sent successfully',
 		data,
 	};
 };

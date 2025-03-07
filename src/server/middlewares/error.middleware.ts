@@ -1,5 +1,5 @@
-import { createMiddleware } from "../trpc";
-import { redactError } from "@/utils/radactError";
+import { createMiddleware } from '../trpc';
+import { redactError } from '@/utils/radactError';
 
 export const captureErrorsMiddleware = createMiddleware(async ({ next }) => {
 	const result = await next();

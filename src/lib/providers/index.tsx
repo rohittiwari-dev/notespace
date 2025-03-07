@@ -1,12 +1,12 @@
-"use client";
-import React from "react";
-import { ThemeProvider } from "./ThemeProvider";
-import { Toaster } from "@/components/ui/sonner";
-import { TRPCProvider } from "./TRPCProvider";
+'use client';
+import React from 'react';
+import { ThemeProvider } from './ThemeProvider';
+import { Toaster } from '@/components/ui/sonner';
+import { TRPCProvider } from './TRPCProvider';
 
-type TProviders = {
+interface TProviders {
 	children: React.ReactNode;
-};
+}
 
 const Providers: React.FC<TProviders> = ({ children }) => {
 	return (

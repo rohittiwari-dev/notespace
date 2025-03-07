@@ -1,13 +1,28 @@
-"use client";
+'use client';
+
+import React, { use, useMemo, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import type { z } from 'zod';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
+import logo from '@/assets/Logo_Full.png';
+import InputField from '@/components/app-ui/input-field';
+import Spinner from '@/components/app-ui/spinner';
+import ThemeSwitcher from '@/components/app-ui/theme-switcher';
+import { GoogleIcon, LockIcon, MailIcon } from '@/components/icons';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
 	Card,
 	CardContent,
 	CardFooter,
 	CardHeader,
-} from "@/components/ui/card";
-import Image from "next/image";
-import React, { use, useMemo, useState } from "react";
-import logo from "@/assets/Logo_Full.png";
+} from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Form,
 	FormControl,
@@ -15,51 +30,39 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { loginFormSchema } from "@/lib/formschemas";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import ThemeSwitcher from "@/components/app-ui/theme-switcher";
-import { authClientApi } from "@/lib/auth/client";
-import { toast } from "sonner";
-import InputField from "@/components/app-ui/input-field";
-import { GoogleIcon, LockIcon, MailIcon } from "@/components/icons";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import Spinner from "@/components/app-ui/spinner";
+} from '@/components/ui/form';
+import { Label } from '@/components/ui/label';
+import { authClientApi } from '@/lib/auth/client';
+import { loginFormSchema } from '@/lib/formschemas';
+import { cn } from '@/lib/utils';
 
-type Props = {
-	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
+interface Props {
+	searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
 
 const SigningPage: React.FC<Props> = ({ searchParams }) => {
-	const [submitError, setSubmitError] = useState("");
+	const [submitError, setSubmitError] = useState('');
 	const [rememberMe, setRememberMe] = useState(false);
 	const [isOAuthLogin, setIsOAuthLogin] = useState(false);
 	const shParams = use(searchParams);
 
 	const exchangeError = useMemo(() => {
-		if (!shParams) return "";
-		return shParams.error_description;
+		return shParams['error_description'] ?? '';
 	}, [shParams]);
 
 	const confirmAndErrorStyle = useMemo(() => {
-		return cn("bg-brand-primaryPurple/10 px-2 text-primary", {
-			"bg-red-500/10": exchangeError || submitError,
-			"border-red-500/50": exchangeError || submitError,
-			"text-red-500": exchangeError || submitError,
+		return cn('bg-brand-primaryPurple/10 px-2 text-primary', {
+			'bg-red-500/10': exchangeError || submitError,
+			'border-red-500/50': exchangeError || submitError,
+			'text-red-500': exchangeError || submitError,
 		});
 	}, [exchangeError, submitError]);
 
 	const form = useForm<z.infer<typeof loginFormSchema>>({
 		resolver: zodResolver(loginFormSchema),
 		defaultValues: {
-			email: "",
-			password: "",
+			email: '',
+			password: '',
 		},
 	});
 	async function onSubmit(_values: z.infer<typeof loginFormSchema>) {
@@ -68,12 +71,11 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 				email: _values.email,
 				password: _values.password,
 				rememberMe: rememberMe,
-				callbackURL: "/dashboard",
+				callbackURL: '/dashboard',
 			},
 			{
-				onRequest: () => {},
 				onSuccess: () => {
-					toast.success("Successfully logged in");
+					toast.success('Successfully logged in');
 				},
 				onError: (ctx) => {
 					toast.error(ctx.error.message);
@@ -85,9 +87,9 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 	async function googleSignIn() {
 		await authClientApi.signIn.social(
 			{
-				provider: "google",
-				callbackURL: "/dashboard",
-				errorCallbackURL: "/sign-in",
+				provider: 'google',
+				callbackURL: '/dashboard',
+				errorCallbackURL: '/sign-in',
 			},
 			{
 				onRequest: () => {
@@ -117,7 +119,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 				<CardContent>
 					<form
 						onChange={() => {
-							if (submitError) setSubmitError("");
+							if (submitError) setSubmitError('');
 						}}
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
@@ -145,7 +147,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												<FormMessage
 													className={cn(
 														confirmAndErrorStyle,
-														"p-0 text-red-500",
+														'p-0 text-red-500',
 													)}
 												/>
 											</FormItem>
@@ -174,7 +176,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												<FormMessage
 													className={cn(
 														confirmAndErrorStyle,
-														"text-red-500",
+														'text-red-500',
 													)}
 												/>
 											</FormItem>
@@ -188,15 +190,15 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 										title="Remember me"
 										checked={rememberMe}
 										onCheckedChange={(checked) => {
-											setRememberMe(checked as any);
+											setRememberMe(checked === true);
 										}}
 									/>
 									<span>Remember me</span>
 								</Label>
 								<Link
 									className={buttonVariants({
-										variant: "link",
-										className: "!p-0",
+										variant: 'link',
+										className: '!p-0',
 									})}
 									href="/forgot-password"
 								>
@@ -207,13 +209,15 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 								<FormMessage
 									className={cn(
 										confirmAndErrorStyle,
-										"my-2 flex !h-fit items-center justify-between rounded-md p-2 px-3",
+										'my-2 flex !h-fit items-center justify-between rounded-md p-2 px-3',
 									)}
 								>
 									{submitError}
 									<Button
 										type="button"
-										onClick={() => setSubmitError("")}
+										onClick={() => {
+											setSubmitError('');
+										}}
 										className="!h-8 !w-5 !rounded-full text-lg"
 										variant="ghost"
 									>
@@ -237,7 +241,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 											loadingLabel="Signing in..."
 										/>
 									) : (
-										"Sign in"
+										'Sign in'
 									)}
 								</Button>
 							</div>
@@ -264,7 +268,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 					</Button>
 					<div className="bg-primary-100/50 dark:bg-secondary-800/40 mt-3 w-full max-w-[calc(400px,90%)] rounded-xl px-5 py-3.5 text-center text-sm backdrop-blur-2xl">
 						<span>
-							Don&apos;t have a account ?{" "}
+							Don&apos;t have a account ?{' '}
 							<Link
 								href="/sign-up"
 								className="dark:text-foreground dark:hover:text-tertiary-150 text-violet-600/80 hover:text-violet-700/90"
