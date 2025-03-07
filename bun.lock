@@ -35,7 +35,6 @@
         "drizzle-cuid2": "^2.0.0",
         "drizzle-orm": "^0.40.0",
         "drizzle-zod": "^0.7.0",
-        "greatenv": "^1.0.0",
         "jiti": "^2.4.2",
         "levenshtein-edit-distance": "^3.0.1",
         "lucide-react": "^0.476.0",
@@ -1312,8 +1311,6 @@
     "graceful-fs": ["graceful-fs@4.2.11", "", {}, "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="],
 
     "graphemer": ["graphemer@1.4.0", "", {}, "sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag=="],
-
-    "greatenv": ["greatenv@1.0.0", "", { "peerDependencies": { "zod": ">=3.24.1" } }, "sha512-Z8D17hhhN1vl1MiALXE/orQyOzePp6XCOeA+tkp8VxwbkrX1fAr3RnQJHWsZS8PaBcQlfw56ngvgNpZWBgzG/Q=="],
 
     "has-bigints": ["has-bigints@1.1.0", "", {}, "sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg=="],
 

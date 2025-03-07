@@ -89,7 +89,6 @@
 		"drizzle-cuid2": "^2.0.0",
 		"drizzle-orm": "^0.40.0",
 		"drizzle-zod": "^0.7.0",
-		"greatenv": "^1.0.0",
 		"jiti": "^2.4.2",
 		"levenshtein-edit-distance": "^3.0.1",
 		"lucide-react": "^0.476.0",
