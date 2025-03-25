@@ -9,7 +9,6 @@ function shouldRedact<T extends Error>(error: T) {
 	);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 export const redactError = <T extends Error | unknown | any>(error: T) => {
 	if (!(error instanceof Error)) {
 		return error;

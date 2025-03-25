@@ -5,7 +5,7 @@ if (!env.DATABASE_URL) console.log('🔴 Cannot Find Database Url');
 
 export default defineConfig({
 	out: './drizzle',
-	schema: './src/db.ts/schemas',
+	schema: './src/db/schemas',
 	dialect: 'postgresql',
 	dbCredentials: {
 		url: env.DATABASE_URL,

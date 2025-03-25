@@ -86,7 +86,6 @@ function isEmailGibberish(username: string): boolean {
 }
 
 function hasAlternatingCharsAndNumbers(username: string): boolean {
-	// eslint-disable-next-line security/detect-unsafe-regex, regexp/no-super-linear-backtracking
 	const alternatingPattern = /^(?:[a-z]+\d+|\d+[a-z]+)+$/i;
 	return alternatingPattern.test(username);
 }
@@ -153,7 +152,7 @@ export function isLikelyHuman(email: string, threshold = 30): boolean {
 	return emailScore < threshold;
 }
 
-export default function (email: string) {
+export default function validateEmail(email: string) {
 	const validationSchema = z
 		.string()
 		.describe('email')

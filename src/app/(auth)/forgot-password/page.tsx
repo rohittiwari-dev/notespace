@@ -18,8 +18,11 @@ import React, { useState } from 'react';
 import ThemeSwitcher from '@/components/app-ui/theme-switcher';
 import type { BetterAuthError } from 'better-auth';
 import { authClientApi } from '@/lib/auth/client';
+import { ShineBorder } from '@/components/primitives/shine-border';
+import { useTheme } from 'next-themes';
 
 export default function Component() {
+	const { theme } = useTheme();
 	const [email, setEmail] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
@@ -50,6 +53,21 @@ export default function Component() {
 			<main className="relative z-0 container flex h-full w-full flex-col items-center">
 				<ThemeSwitcher className="absolute top-8 right-10" />
 				<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
+					<ShineBorder
+						shineColor={
+							theme == 'dark'
+								? [
+										'var(--color-primary-800)',
+										'var(--color-primary-900)',
+										'var(--color-primary-700)',
+									]
+								: [
+										'var(--color-primary-100)',
+										'var(--color-primary-200)',
+										'var(--color-primary-100)',
+									]
+						}
+					/>
 					<CardHeader>
 						<CardTitle>Check your email</CardTitle>
 						<CardDescription>
@@ -86,6 +104,21 @@ export default function Component() {
 		<main className="relative z-0 container flex h-full w-full flex-col items-center">
 			<ThemeSwitcher className="absolute top-8 right-10" />
 			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
+				<ShineBorder
+					shineColor={
+						theme == 'dark'
+							? [
+									'var(--color-primary-800)',
+									'var(--color-primary-900)',
+									'var(--color-primary-700)',
+								]
+							: [
+									'var(--color-primary-100)',
+									'var(--color-primary-200)',
+									'var(--color-primary-100)',
+								]
+					}
+				/>
 				<CardHeader className="gap-4">
 					<CardTitle>Forgot password</CardTitle>
 					<CardDescription>

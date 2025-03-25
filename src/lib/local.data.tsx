@@ -1,9 +1,4 @@
-import {
-	ClipboardCheckIcon,
-	DiamondIcon,
-	Edit3Icon,
-	ListChecksIcon,
-} from 'lucide-react';
+import { ClipboardCheckIcon, Edit3Icon, ListChecksIcon } from 'lucide-react';
 
 export const constants = {
 	name: 'NoteSpace - Rethinking Student Productivity',
@@ -26,12 +21,6 @@ export const features = (iconSize: number) => [
 		title: 'Note Taking',
 		description:
 			'Write your study notes and let Noodle take care of the rest.',
-	},
-	{
-		icon: <DiamondIcon size={iconSize} />,
-		title: 'Flashcards',
-		description:
-			'Create flashcards with reminders or let AI auto-suggest them for you.',
 	},
 	{
 		icon: <ListChecksIcon size={iconSize} />,

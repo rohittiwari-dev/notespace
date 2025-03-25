@@ -20,8 +20,11 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { authClientApi } from '@/lib/auth/client';
+import { ShineBorder } from '@/components/primitives/shine-border';
+import { useTheme } from 'next-themes';
 
 export default function ResetPassword() {
+	const { theme } = useTheme();
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,6 +58,21 @@ export default function ResetPassword() {
 		<div className="relative z-0 container flex h-full w-full flex-col items-center">
 			<ThemeSwitcher className="absolute top-8 right-10" />
 			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
+				<ShineBorder
+					shineColor={
+						theme == 'dark'
+							? [
+									'var(--color-primary-800)',
+									'var(--color-primary-900)',
+									'var(--color-primary-700)',
+								]
+							: [
+									'var(--color-primary-100)',
+									'var(--color-primary-200)',
+									'var(--color-primary-100)',
+								]
+					}
+				/>
 				<CardHeader>
 					<CardTitle>Reset password</CardTitle>
 					<CardDescription>

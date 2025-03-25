@@ -14,30 +14,40 @@ ignorePaths:
     - branch_out
 words:
     - activecampaign
+    - adipisicing
     - aeiou
     - Arcjet
     - asana
     - autopilotmail
     - autoresponder
+    - banlist
+    - Banlist
+    - BANLIST
     - bcdfghj
     - bigcommerce
     - callees
     - classname
     - clsx
+    - cmdk
     - commitlint
     - compat
     - constantcontact
     - customerservice
+    - eioluseyi
+    - embla
+    - Embla
     - esbenp
     - facebookmail
     - freshdesk
     - frontmatter
+    - greatenv
     - healthcheck
     - helpdesk
     - helpscout
     - hookform
     - hubspot
     - ianvs
+    - identifer
     - ixahmedxi
     - ixahmedxii
     - jiti
@@ -47,18 +57,29 @@ words:
     - mailgun
     - marketo
     - mitigations
+    - mpin
     - neondatabase
     - nextjs
+    - nocompatible
     - noreplys
+    - notespace
+    - nums
     - packagejson
     - paralleldrive
     - pinterest
     - pipedrive
     - Posthog
     - postmarkapp
+    - preferredstrategy
+    - preprod
+    - PREPROD
+    - pseudoelements
+    - Quisquam
+    - radact
     - ratelimit
     - redditmail
     - Registrator
+    - Rohit
     - sendgrid
     - sendinblue
     - serviceworker
@@ -66,40 +87,22 @@ words:
     - Signin
     - Signup
     - Sonner
+    - SQUARICLE
     - sslmode
     - superjson
     - tailwindcss
     - tanstack
     - tawk
     - timeago
+    - Tiwari
     - Todos
     - trpc
     - tsbuildinfo
     - tseslint
+    - turbopack
     - typecheck
     - Uploadthing
     - Upstash
     - usehooks
-    - eioluseyi
-    - turbopack
-    - Tiwari
-    - Rohit
-    - notespace
-    - greatenv
-    - nocompatible
-    - preferredstrategy
-    - pseudoelements
-    - mpin
-    - BANLIST
-    - radact
-    - preprod
-    - PREPROD
-    - banlist
-    - Banlist
-    - identifer
-    - webstorage
-    - Embla
-    - embla
-    - nums
-    - cmdk
     - vaul
+    - webstorage

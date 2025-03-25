@@ -1,6 +1,7 @@
 import { createEnv } from '@t3-oss/env-nextjs';
-import { vercel } from '@t3-oss/env-nextjs/presets-zod';
 import { z } from 'zod';
+import { vercel } from '@t3-oss/env-core/presets-zod';
+import { StandardSchemaV1 } from '@t3-oss/env-core';
 
 export const env = createEnv({
 	extends: [vercel()],
@@ -27,14 +28,15 @@ export const env = createEnv({
 	skipValidation: !!process.env['SKIP_ENV_VALIDATION'],
 	isServer: typeof window === 'undefined',
 	emptyStringAsUndefined: true,
-	onValidationError: (issues: unknown) => {
+	onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {
 		console.error('❌ Invalid environment variables:', issues);
-		throw new Error('Invalid environment variables');
+		process.exit(1);
 	},
 	// Called when server variables are accessed on the client.
 	onInvalidAccess: (variable: string) => {
-		throw new Error(
+		console.error(
 			`❌ Attempted to access a server-side environment variable ${variable} on the client`,
 		);
+		process.exit(1);
 	},
 });

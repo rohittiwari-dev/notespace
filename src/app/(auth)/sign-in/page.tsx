@@ -106,7 +106,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 	return (
 		<main className="relative z-0 container flex h-full w-full flex-col items-center">
 			<ThemeSwitcher className="absolute top-8 right-10" />
-			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
+			<Card className="my-auto relative min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
 				<CardHeader className="items-center">
 					<Image src={logo} alt="Logo" className="m-0 -ml-2 p-0" />
 					<div className="mt-5 text-center">
