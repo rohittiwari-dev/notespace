@@ -19,8 +19,8 @@ import {
 	Settings2,
 	SquareTerminal,
 } from 'lucide-react';
-import { NavMain } from '@/components/shared/sidebar-component/nav-main';
-import { NavProjects } from '@/components/shared/sidebar-component/nav-projects';
+import { NavMain } from '@/components/dashboard/sidebar-component/nav-main';
+import { NavProjects } from '@/components/dashboard/sidebar-component/nav-projects';
 import SpaceSwitcher from '@/components/app-ui/space-switcher';
 import UserView from '@/components/app-ui/user-view';
 
