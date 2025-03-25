@@ -9,9 +9,7 @@ const nextConfig: NextConfig = {
 		'next-mdx-remote',
 	],
 	/* config options here */
-	images: {
-		unoptimized: true,
-	},
+	images: {},
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
