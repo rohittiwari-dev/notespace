@@ -1,6 +1,8 @@
-import helloRouter from './hello.routes';
+import newsletterRouter from './newsletter.routes';
 import { createRouter } from '../trpc';
+import workspaceRouter from './workspace.routes';
 
 export default createRouter({
-	hello: helloRouter,
+	newsletter: newsletterRouter,
+	workspace: workspaceRouter,
 });

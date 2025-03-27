@@ -4,6 +4,7 @@ import type { NextRequest } from 'next/server';
 import { env } from '@/env';
 import { createTRPCContext } from '@/server/trpc';
 import { appRouter } from '@/server';
+import { logger } from '@/utils';
 
 // export const runtime = "edge"; // Optional for Edge runtime
 const createContextNext = (req: NextRequest) => {
@@ -20,8 +21,8 @@ const handler = (req: NextRequest) =>
 		createContext: () => createContextNext(req),
 		onError: ({ path, error }) => {
 			if (env.NODE_ENV === 'development') {
-				console.error(
-					`❌ tRPC failed on ${path ?? '<no-path>'}: ${error.message}`,
+				logger.error(
+					`TRPC Error : ${path ?? '<no-path>'}: ${error.message}`,
 				);
 			}
 		},

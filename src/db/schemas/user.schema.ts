@@ -12,7 +12,7 @@ import {
 	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import { SpaceTable } from '@/db/schemas/space.schema';
+import { WorkspaceTable } from '@/db/schemas/workspace.schema';
 
 export const GenderEnum = pgEnum('gender_enum', [
 	'Male',
@@ -30,7 +30,6 @@ export const UserTable = pgTable('users', {
 	countryCode: varchar('country_code', { length: 128 }),
 	phone: varchar('phone', { length: 128 }).unique(),
 	dateOfBirth: date('date_of_birth'),
-	paymentMethod: jsonb('payment_method'),
 	mpin: varchar('mpin', { length: 256 }),
 	emailVerified: boolean('email_verified').default(false),
 	phoneVerified: boolean('phone_verified').default(false),
@@ -47,7 +46,7 @@ export const UserTable = pgTable('users', {
 
 export const CollaboratorTable = pgTable('collaborators', {
 	id: uuid('id').defaultRandom().primaryKey(),
-	space: uuid('space').references(() => SpaceTable.id, {
+	space: uuid('space').references(() => WorkspaceTable.id, {
 		onDelete: 'cascade',
 		onUpdate: 'cascade',
 	}),

@@ -4,7 +4,7 @@ import * as CoreAvatar from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
 interface AvatarProps {
-	size?: 'small' | 'default' | 'large';
+	size?: number;
 	ring?: boolean;
 	ringColor?: string;
 	initial?: string;
@@ -18,7 +18,7 @@ interface AvatarProps {
 const Avatar: React.FC<AvatarProps> = ({
 	href = 'https://github.com/shadcn.png',
 	initial = 'UR',
-	size = 'default',
+	size = 24,
 	ring = true,
 	ringColor = 'text-primary-500',
 	className,
@@ -29,10 +29,11 @@ const Avatar: React.FC<AvatarProps> = ({
 	return (
 		<CoreAvatar.Avatar
 			className={cn(
-				className,
 				size && `size-[${size}]`,
 				ring && 'ring-1',
-				ringColor && `ring-[${ringColor}]`,
+				ringColor && `ring-accent`,
+				'border-accent',
+				className,
 			)}
 		>
 			<CoreAvatar.AvatarImage
@@ -40,7 +41,9 @@ const Avatar: React.FC<AvatarProps> = ({
 				src={href}
 				alt={alt}
 			/>
-			<CoreAvatar.AvatarFallback className={fallbackClassName}>
+			<CoreAvatar.AvatarFallback
+				className={cn('w-full h-full', fallbackClassName)}
+			>
 				{initial}
 			</CoreAvatar.AvatarFallback>
 		</CoreAvatar.Avatar>

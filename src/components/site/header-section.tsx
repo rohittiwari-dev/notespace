@@ -1,5 +1,5 @@
 'use client';
-import { ArrowRightIcon } from 'lucide-react';
+
 import Pill from '../app-ui/pills';
 import React from 'react';
 import { Button } from '../ui/button';
@@ -10,25 +10,28 @@ import { useTheme } from 'next-themes';
 
 function HeaderSection() {
 	const { theme } = useTheme();
+
 	return (
 		<div className="w-full space-y-8 md:space-y-16 mt-10">
 			<div className="flex md:items-end items-center mt-4 flex-col md:flex-row md:gap-16 gap-8 justify-between">
 				<div className="flex flex-col gap-4 w-full md:w-[70%] items-start justify-center">
-					<Pill>
-						<span>✨ Introducing Magic UI</span>
-						<ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+					<Pill
+						variant="SQUARICLE"
+						href="https://github.com/rohittiwari-dev/notespace"
+					>
+						<span>✨ Star on Github</span>
 					</Pill>
 					<h1 className="font-semibold text-3xl md:text-4xl">
-						Welcome to the future of AI-powered productivity and
-						collaborative note taking app focused on simplicity for
-						students
+						Welcome to the Future of Note Taking and student Mind
+						space with collaborative environment. NoteSpace!
 					</h1>
 				</div>
 				<div className="flex flex-col gap-4 items-start w-full md:w-[30%] justify-center">
 					<p className="text-accent-foreground/60">
-						Lorem ipsum dolor sit abet consectetur adipisicing edit.
-						Quisquam, quos. Lorem ipsum dolor sit abet consectetur
-						adipisicing edit. Quisquam, quos.
+						Capture ideas, share notes, and work with friends in
+						real time. Plus, enjoy collaborative project management,
+						whiteboards, and a student-focused digital workspace—all
+						in one place! 🚀
 					</p>
 					<div className="flex items-center gap-2">
 						<Button size="sm">Get Started</Button>

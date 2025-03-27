@@ -67,7 +67,7 @@ const TitleSection: React.FC<TitleSectionProp> = ({
 				<>
 					<h1
 						className={cn(
-							'dark:from-accent to-accent-purple from-primary-500 block h-full max-w-[10ch] bg-violet-500 bg-gradient-to-b bg-clip-text py-1 text-center text-4xl leading-none font-extrabold text-balance text-transparent md:text-5xl lg:text-7xl dark:to-accent-purple',
+							'dark:from-accent to-accent-purple from-primary-500 block h-full max-w-[20ch] bg-violet-500 bg-gradient-to-b bg-clip-text py-3.5 text-center text-4xl leading-none font-extrabold text-balance text-transparent md:text-5xl lg:text-7xl dark:to-accent-purple',
 							headingClass,
 						)}
 					>
@@ -75,7 +75,7 @@ const TitleSection: React.FC<TitleSectionProp> = ({
 					</h1>
 					<p
 						className={cn(
-							'text-primary-900/70 [&>strong]:text-primary-950/70 dark:text-primary-100 dark:[&>strong]:text-primary-50 max-w-[50ch] text-center text-pretty lg:text-lg [&>strong]:font-medium',
+							'text-primary-900/70 [&>strong]:text-primary-950/70 dark:text-primary-100 dark:[&>strong]:text-primary-50 max-w-[100ch] text-center text-pretty lg:text-lg [&>strong]:font-medium',
 							paragraphClass,
 						)}
 					>

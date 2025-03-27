@@ -22,10 +22,13 @@ export const FileTypeEnum = pgEnum('file_type_enum', [
 	'routines',
 ]);
 
-export const SpaceTable = pgTable('spaces', {
+export const WorkspaceTable = pgTable('workspaces', {
 	id: uuid().defaultRandom().primaryKey(),
 	name: varchar({ length: 128 }).notNull(),
 	icon: varchar({ length: 128 }),
+	thumb_nail: text(),
+	bio: text(),
+	purpose: text(),
 	owner: text()
 		.notNull()
 		.references(() => UserTable.id, {
@@ -63,9 +66,9 @@ export const ModuleTable = pgTable('modules', {
 	tags: varchar({ length: 128 })
 		.array()
 		.default(sql`ARRAY[]::varchar[]`),
-	space: uuid()
+	workspace: uuid()
 		.notNull()
-		.references(() => SpaceTable.id, {
+		.references(() => WorkspaceTable.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -94,8 +97,8 @@ export const FileTable = pgTable('files', {
 		.notNull(),
 	type: FileTypeEnum().default('page'),
 	reference_id: uuid().notNull(),
-	space: uuid()
-		.references(() => SpaceTable.id, {
+	workspace: uuid()
+		.references(() => WorkspaceTable.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		})

@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import React from 'react';
 import { AnimatedShinyText } from '../primitives/animated-shiny-text';
 import { ArrowRightIcon } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 interface PillProps {
 	children?: React.ReactNode;
@@ -30,18 +30,24 @@ function Pill({
 				className,
 			)}
 			onClick={() => {
-				if (href) {
-					redirect(href);
-				} else {
+				if (onClick && !href) {
 					onClick?.();
 				}
 			}}
 		>
 			<AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
-				{children || (
+				{href ? (
+					<Link href={href} target="_blank" rel="noopener noreferrer">
+						{children || (
+							<>
+								<span>✨ Introducing Magic UI</span>
+								<ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+							</>
+						)}
+					</Link>
+				) : (
 					<>
-						{' '}
-						<span>✨ Introducing Magic UI</span>{' '}
+						<span>✨ Introducing Magic UI</span>
 						<ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
 					</>
 				)}

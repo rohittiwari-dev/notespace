@@ -14,6 +14,23 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 	};
 };
 
+interface CommonError {
+	code: string;
+	message: string;
+	issues?: Array<any>;
+	timestamp?: string;
+}
+function formatZodError(error: ZodError): CommonError {
+	const errors = error.errors.map(
+		(error) => `${error.path.join('.')}: ${error.message}`,
+	);
+	return {
+		code: 'BAD_REQUEST',
+		message: `Invalid input data: [${errors.join(', ')}]`,
+		issues: error.errors,
+	};
+}
+
 const t = initTRPC.context<typeof createTRPCContext>().create({
 	transformer: superjson,
 	errorFormatter({ shape, error }) {
@@ -23,7 +40,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 				...shape.data,
 				zodError:
 					error.cause instanceof ZodError
-						? error.cause.flatten()
+						? formatZodError(error.cause)
 						: null,
 			},
 		};

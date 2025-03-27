@@ -84,7 +84,7 @@ function UserView({
 						>
 							<Avatar
 								className="h-8 w-8 rounded-lg"
-								fallbackClassName="rounded-lg"
+								fallbackClassName="rounded-lg h-8 w-8"
 								href={avatar}
 								alt={name}
 								initial={getInitialsFromName(name)}

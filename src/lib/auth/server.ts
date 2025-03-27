@@ -5,6 +5,7 @@ import { openAPI } from 'better-auth/plugins';
 import db, { schema } from '@/db';
 import { env } from '@/env';
 import { sendEmail } from '@/lib/emails';
+import { redis } from '../redis';
 
 // Server Auth
 export const authServerApi = betterAuth({
@@ -51,6 +52,19 @@ export const authServerApi = betterAuth({
 	},
 	onAPIError: {
 		errorURL: '/sign-in',
+	},
+	secondaryStorage: {
+		get: async (key) => {
+			const value = await redis.get(key);
+			return value ? value : null;
+		},
+		set: async (key, value, ttl) => {
+			if (ttl) await redis.set(key, value, 'EX', ttl);
+			else await redis.set(key, value);
+		},
+		delete: async (key) => {
+			await redis.del(key);
+		},
 	},
 	plugins: [openAPI()],
 } satisfies BetterAuthOptions);

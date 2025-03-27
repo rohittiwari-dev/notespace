@@ -9,7 +9,13 @@ const nextConfig: NextConfig = {
 		'next-mdx-remote',
 	],
 	/* config options here */
-	images: {},
+	images: {
+		remotePatterns: [
+			{
+				hostname: '**',
+			},
+		],
+	},
 	eslint: {
 		ignoreDuringBuilds: true,
 	},

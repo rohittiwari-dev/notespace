@@ -12,11 +12,10 @@ function BoardViewSection() {
 	const { theme } = useTheme();
 
 	return (
-		<div className="flex flex-col mt-10 items-center justify-center ">
+		<div className="flex flex-col mt-30 items-center justify-center ">
 			<TitleSection
-				pill="✨ Introducing Magic UI"
-				heading="Notespace"
-				subheading="The AI-powered note-taking app"
+				heading="Project Management"
+				subheading="Manage your academic projects effortlessly with our student-friendly project management system. Plan, collaborate, and track progress—all in one place!"
 			/>
 			<div className="w-full h-full flex md:mt-12 flex-col md:flex-row gap-8 md:gap-16  mt-8">
 				<div className="w-full h-full">
@@ -32,19 +31,20 @@ function BoardViewSection() {
 				</div>
 				<div className="w-full h-full space-y-8">
 					<h2 className="text-3xl md:text-4xl font-bold">
-						Added Fully Featured Project management Board to boost
-						your productivity
+						Take Notes, Collaborate & Stay Productive!
 					</h2>
 					<p className="text-accent-foreground/60">
-						Notespace is a note-taking app that allows you to create
-						notes with AI-powered search and organization. Lorem
-						ipsum dolor sit amat consectetur adipisicing edit.
+						Stay organized and manage projects effortlessly with our
+						fully featured project management board. Plan tasks,
+						collaborate in real time, and track progress—all in one
+						intuitive workspace designed for students.
 					</p>
 
 					<p className="text-accent-foreground/60">
-						Notespace is a note-taking app that allows you to create
-						notes with AI-powered search and organization. Lorem
-						ipsum dolor sit abet consectetur adipisicing elia.
+						Boost your productivity with a powerful project
+						management board designed for students. Organize tasks
+						efficiently and collaborate seamlessly with your peers.
+						Stay on top of deadlines and manage projects with ease!
 					</p>
 					<div className="space-y-2 block">
 						<p>Getting Started with Notespace is not regrettable</p>

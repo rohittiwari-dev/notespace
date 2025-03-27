@@ -35,3 +35,5 @@ export const features = (iconSize: number) => [
 			'Find out what you need to achieve to stay in progression.',
 	},
 ];
+
+export const SELECTED_SPACE_COOKIE_NAME = 'selected_workspace';

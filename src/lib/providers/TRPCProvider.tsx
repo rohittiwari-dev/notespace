@@ -7,6 +7,7 @@ import { loggerLink, httpBatchStreamLink } from '@trpc/client';
 import superjson from 'superjson';
 import { getBaseUrl } from '@/utils/getBaseUrl';
 import { api } from '@/lib/trpc/client';
+import { IS_DEV } from '@/utils';
 
 const createQueryClient = () => new QueryClient();
 
@@ -34,7 +35,7 @@ export function TRPCProvider(props: { children: React.ReactNode }) {
 			links: [
 				loggerLink({
 					enabled: (op) =>
-						process.env.NODE_ENV === 'development' ||
+						IS_DEV ||
 						(op.direction === 'down' && op.result instanceof Error),
 				}),
 				httpBatchStreamLink({

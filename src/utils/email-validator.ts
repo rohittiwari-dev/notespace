@@ -47,6 +47,7 @@ const nonHumanEmailDomains = [
 	'@pinterest.com',
 	'@redditmail.com',
 	'@medium.com',
+	'@yopmail.com',
 ];
 
 const automatedKeywordsInUsername = [

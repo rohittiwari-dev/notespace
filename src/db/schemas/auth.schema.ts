@@ -7,7 +7,10 @@ export const ConnectedAuthProvidersTable = pgTable('connected_auth_providers', {
 	providerId: text('provider_id').notNull(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => UserTable.id, { onDelete: 'cascade' }),
+		.references(() => UserTable.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 	accessToken: text('access_token'),
 	refreshToken: text('refresh_token'),
 	idToken: text('id_token'),
@@ -29,7 +32,10 @@ export const UserAuthSessionTable = pgTable('user_auth_sessions', {
 	userAgent: text('user_agent'),
 	userId: text('user_id')
 		.notNull()
-		.references(() => UserTable.id, { onDelete: 'cascade' }),
+		.references(() => UserTable.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 });
 
 export const UserAuthVerificationTable = pgTable('user_auth_verifications', {
