@@ -15,7 +15,7 @@ import {
 	navigationMenuTriggerStyle,
 } from '../ui/navigation-menu';
 import { cn } from '@/lib/utils';
-import { constants, features } from '@/lib/local.data';
+import { constants, features } from '@/lib/constants';
 import { ChevronRightIcon, MenuIcon } from 'lucide-react';
 import { Session, User } from 'better-auth';
 

@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { getBaseUrl } from '@/utils/getBaseUrl';
-import { constants } from '@/lib/local.data';
+import { constants } from '@/lib/constants';
 
 /**
  * A utility function to construct metadata for the application which can be
@@ -25,6 +25,7 @@ export function constructMetadata({
 			rel: 'apple-touch-icon',
 			sizes: '32x32',
 			url: '/apple-touch-icon.png',
+			type: 'image/png',
 		},
 		{
 			rel: 'icon',
@@ -39,6 +40,7 @@ export function constructMetadata({
 			url: '/favicon-16x16.png',
 		},
 	],
+	keywords = [],
 	noIndex = false,
 	url = getBaseUrl(),
 	type = 'website',
@@ -52,10 +54,57 @@ export function constructMetadata({
 	url?: string;
 	type?: 'website' | 'article';
 	publishedTime?: string;
+	keywords?: string[];
 } = {}): Metadata {
 	return {
 		title,
 		description,
+		manifest: '/manifest.json',
+		referrer: 'origin-when-cross-origin',
+		keywords: [
+			'digital note-taking',
+			'best note-taking app',
+			'cloud notes',
+			'online note organizer',
+			'AI-powered notes',
+			'smart note management',
+			'student productivity tools',
+			'study planner app',
+			'efficient note-taking',
+			'cross-platform notes',
+			'collaborative workspace',
+			'team notes and collaboration',
+			'encrypted note storage',
+			'quick note capture',
+			'mind mapping tool',
+			'to-do list and notes',
+			'task management with notes',
+			'research and writing app',
+			'academic note-taking app',
+			'secure cloud notebook',
+			'intelligent search for notes',
+			'study and exam preparation app',
+			'note-taking for professionals',
+			'meeting notes organizer',
+			'digital journal and planner',
+			'AI notes assistant',
+			'workflow optimization tool',
+			'shared digital whiteboard',
+			'voice-to-text note app',
+			'notebook with cloud sync',
+			'tagging system for notes',
+			'document editing and notes',
+			'structured note storage',
+			'best app for students',
+			'idea brainstorming tool',
+			'efficient document organization',
+			'project management with notes',
+			'automated reminders and notes',
+			'secure and private note app',
+			'writing and research platform',
+			'remote work productivity app',
+			...keywords,
+		],
 		openGraph: {
 			title,
 			description,
@@ -79,8 +128,17 @@ export function constructMetadata({
 			}),
 			creator: constants.twitter_handle,
 		},
+		appleWebApp: {
+			title,
+			capable: true,
+			startupImage: './apple-icon.png',
+			statusBarStyle: 'default',
+		},
 		icons,
-		metadataBase: new URL(getBaseUrl()),
+		alternates: {
+			canonical: new URL(url),
+		},
+		metadataBase: new URL(url),
 		...(noIndex && {
 			robots: {
 				index: false,
@@ -89,3 +147,11 @@ export function constructMetadata({
 		}),
 	};
 }
+
+export const generateViewport = (): Viewport => {
+	return {
+		width: 'device-width',
+		initialScale: 1,
+		maximumScale: 1,
+	};
+};

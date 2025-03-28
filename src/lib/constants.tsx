@@ -1,16 +1,16 @@
 import { ClipboardCheckIcon, Edit3Icon, ListChecksIcon } from 'lucide-react';
 
 export const constants = {
-	name: 'NoteSpace - Rethinking Student Productivity',
+	name: 'NoteSpace - Shaping the Future of Student Productivity',
 	shortName: 'NoteSpace',
-	tagline: 'Rethinking Student Productivity',
+	tagline: 'Shaping the Future of Student Productivity',
 	description:
-		'NoteSpace is a productivity platform including many tools students need to be productive and stay on top of their work such as note taking, task management, and more.',
+		'Welcome to the Future of Note Taking and student Mind space with collaborative environment. NoteSpace! An all-in-one note-taking and project management app designed for students. Capture ideas, collaborate effortlessly, and stay organized with powerful productivity tools',
 	twitter_handle: '@notespace',
 	github_repo: 'https://github.com/rohittiwari-dev/notespace',
-	domain: 'noodle.run',
-	discord: 'https://discord.gg/ewKmQd8kYm',
-	twitter: 'https://x.com/noodle_run',
+	domain: 'devnotespace.netlify.app',
+	discord: 'https://discord.gg/FWKcsXeeC5',
+	twitter: 'https://x.com/notespace',
 	feedback: 'mailto:feedback@notespace.com',
 	support: 'mailto:support@notespace.com',
 };
@@ -37,3 +37,6 @@ export const features = (iconSize: number) => [
 ];
 
 export const SELECTED_SPACE_COOKIE_NAME = 'selected_workspace';
+
+export const MAX_FILE_SIZE = 1024 * 1024 * 1; // 1MB
+export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];

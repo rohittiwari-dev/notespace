@@ -22,6 +22,11 @@ const nextConfig: NextConfig = {
 	typescript: {
 		ignoreBuildErrors: true,
 	},
-};
+	logging: {
+		fetches: {
+			fullUrl: true,
+		},
+	},
+} satisfies NextConfig;
 
 export default nextConfig;

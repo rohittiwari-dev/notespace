@@ -7,13 +7,18 @@ import { buttonVariants } from '../ui/button';
 import { DiscordIcon, GithubIcon } from '../icons';
 import Link from 'next/link';
 import NewsLetter from '../app-ui/newsletter';
+import { constants } from '@/lib/constants';
 
 function Footer() {
 	return (
 		<div className="w-full flex justify-between items-center gap-4 mt-30">
 			<div className="flex flex-col gap-4">
 				<div>
-					<Image src={Logo} alt="full size logo" />
+					<Image
+						src={Logo}
+						alt="full size logo"
+						className="h-10 my-2 w-auto"
+					/>
 					<p className="text-accent-foreground/60 max-w-[60ch]">
 						An all-in-one note-taking and project management app
 						designed for students. Capture ideas, collaborate
@@ -25,13 +30,13 @@ function Footer() {
 					<NewsLetter />
 					<div className="flex items-center  gap-2">
 						<Link
-							href="https://github.com/rohittiwari-dev/notespace"
+							href={constants.github_repo}
 							className="hover:scale-110 transition-all"
 						>
 							<GithubIcon className="text-foreground" />
 						</Link>
 						<Link
-							href="https://discord.gg/notespace"
+							href={constants.discord}
 							className="hover:scale-110 transition-all"
 						>
 							<DiscordIcon className="text-foreground" />

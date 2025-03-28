@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { constants } from '@/lib/local.data';
+import { constants } from '@/lib/constants';
 
 export default function NotFoundPage() {
 	return (
