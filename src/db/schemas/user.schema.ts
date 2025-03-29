@@ -9,10 +9,10 @@ import {
 	pgTable,
 	text,
 	timestamp,
-	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { WorkspaceTable } from '@/db/schemas/workspace.schema';
+import { createId } from '@paralleldrive/cuid2';
 
 export const GenderEnum = pgEnum('gender_enum', [
 	'Male',
@@ -21,7 +21,9 @@ export const GenderEnum = pgEnum('gender_enum', [
 ]);
 
 export const UserTable = pgTable('users', {
-	id: text('id').primaryKey(),
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
 	name: varchar('name', { length: 128 }).notNull(),
 	email: varchar('email', { length: 128 }).notNull().unique(),
 	image: varchar('image', { length: 128 }),
@@ -45,8 +47,10 @@ export const UserTable = pgTable('users', {
 });
 
 export const CollaboratorTable = pgTable('collaborators', {
-	id: uuid('id').defaultRandom().primaryKey(),
-	space: uuid('space').references(() => WorkspaceTable.id, {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
+	space: text('space').references(() => WorkspaceTable.id, {
 		onDelete: 'cascade',
 		onUpdate: 'cascade',
 	}),

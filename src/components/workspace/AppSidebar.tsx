@@ -2,23 +2,18 @@
 
 import * as React from 'react';
 import {
-	AudioWaveform,
-	BarChartIcon,
 	CameraIcon,
 	ClipboardListIcon,
-	Command,
 	DatabaseIcon,
 	FileCodeIcon,
 	FileIcon,
 	FileTextIcon,
-	FolderIcon,
-	GalleryVerticalEnd,
 	HelpCircleIcon,
+	InboxIcon,
 	LayoutDashboardIcon,
-	ListIcon,
-	SearchIcon,
 	SettingsIcon,
-	UsersIcon,
+	SquareStack,
+	WorkflowIcon,
 } from 'lucide-react';
 import {
 	Sidebar,
@@ -28,41 +23,35 @@ import {
 } from '@/components/ui/sidebar';
 import UserView from '../app-ui/user-view';
 import { NavMain } from './sidebar-component/nav-main';
-import { NavDocuments } from './sidebar-component/nav-document';
+
 import { NavSecondary } from './sidebar-component/nav-secondary';
 import SpaceSwitcher from '../app-ui/space-switcher';
 
+import { IWorkSpace } from '@/db/schemas';
+import { User } from 'better-auth';
+import { NavModules } from './sidebar-component/nav-modules';
+
 const data = {
-	user: {
-		name: 'shadcn',
-		email: 'm@example.com',
-		avatar: '/avatars/shadcn.jpg',
-	},
 	navMain: [
 		{
 			title: 'Dashboard',
-			url: '#',
+			url: '/space',
 			icon: LayoutDashboardIcon,
 		},
 		{
-			title: 'Lifecycle',
+			title: 'Inbox',
 			url: '#',
-			icon: ListIcon,
+			icon: InboxIcon,
 		},
 		{
-			title: 'Analytics',
+			title: 'Task Management',
 			url: '#',
-			icon: BarChartIcon,
+			icon: SquareStack,
 		},
 		{
-			title: 'Projects',
+			title: 'Workflows',
 			url: '#',
-			icon: FolderIcon,
-		},
-		{
-			title: 'Team',
-			url: '#',
-			icon: UsersIcon,
+			icon: WorkflowIcon,
 		},
 	],
 	navClouds: [
@@ -124,11 +113,6 @@ const data = {
 			url: '#',
 			icon: HelpCircleIcon,
 		},
-		{
-			title: 'Search',
-			url: '#',
-			icon: SearchIcon,
-		},
 	],
 	documents: [
 		{
@@ -147,26 +131,18 @@ const data = {
 			icon: FileIcon,
 		},
 	],
-	teams: [
-		{
-			name: 'Acme Inc',
-			logo: GalleryVerticalEnd,
-			plan: 'Enterprise',
-		},
-		{
-			name: 'Acme Corp.',
-			logo: AudioWaveform,
-			plan: 'Startup',
-		},
-		{
-			name: 'Evil Corp.',
-			logo: Command,
-			plan: 'Free',
-		},
-	],
 };
 
-function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+function AppSidebar({
+	currentWorkspace,
+	workspaces,
+	user,
+	...props
+}: React.ComponentProps<typeof Sidebar> & {
+	currentWorkspace: IWorkSpace;
+	workspaces: IWorkSpace[];
+	user: User;
+}) {
 	return (
 		<Sidebar
 			collapsible="icon"
@@ -175,15 +151,22 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			{...props}
 		>
 			<SidebarHeader>
-				<SpaceSwitcher teams={data.teams} />
+				<SpaceSwitcher
+					workspaces={workspaces ?? []}
+					activeWorkspace={currentWorkspace}
+				/>
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.navMain} />
-				<NavDocuments items={data.documents} />
+				<NavModules items={data.documents} />
 				<NavSecondary items={data.navSecondary} className="mt-auto" />
 			</SidebarContent>
 			<SidebarFooter>
-				<UserView {...data.user} />
+				<UserView
+					name={user.name ?? ''}
+					email={user.email ?? ''}
+					avatar={user.image ?? ''}
+				/>
 			</SidebarFooter>
 		</Sidebar>
 	);

@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Providers from '@/lib/providers';
 import { constructMetadata, generateViewport } from '@/utils/generateMetadata';
-import Head from 'next/head';
 
 const geistSans = Geist({
 	variable: '--font-sans',
@@ -29,9 +28,6 @@ export default function RootLayout({
 			suppressHydrationWarning
 			className={`${geistSans.variable} ${geistMono.variable}`}
 		>
-			<Head>
-				<meta name="apple-mobile-web-app-title" content="Notespace" />
-			</Head>
 			<body>
 				<Providers>{children}</Providers>
 			</body>

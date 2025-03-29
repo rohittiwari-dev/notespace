@@ -37,8 +37,16 @@ CREATE TABLE "user_auth_verifications" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
+CREATE TABLE "newsletter" (
+	"id" text PRIMARY KEY NOT NULL,
+	"email" varchar(255) NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "newsletter_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
 CREATE TABLE "files" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(128) NOT NULL,
 	"icon" varchar(128),
 	"in_trash" boolean DEFAULT false,
@@ -46,15 +54,15 @@ CREATE TABLE "files" (
 	"tags" varchar(128)[] DEFAULT ARRAY[]::varchar[],
 	"owner" text NOT NULL,
 	"type" "file_type_enum" DEFAULT 'page',
-	"reference_id" uuid NOT NULL,
-	"space" uuid NOT NULL,
-	"module" uuid NOT NULL,
+	"reference_id" text NOT NULL,
+	"workspace" text NOT NULL,
+	"module" text NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now(),
 	"updated_at" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "modules" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(128) NOT NULL,
 	"icon" varchar(128),
 	"owner" text NOT NULL,
@@ -63,15 +71,18 @@ CREATE TABLE "modules" (
 	"in_trash" boolean DEFAULT false,
 	"thumb_nail" text,
 	"tags" varchar(128)[] DEFAULT ARRAY[]::varchar[],
-	"space" uuid NOT NULL,
+	"workspace" text NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now(),
 	"created_at" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
-CREATE TABLE "spaces" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+CREATE TABLE "workspaces" (
+	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(128) NOT NULL,
-	"icon" varchar(128),
+	"icon" varchar(128) NOT NULL,
+	"thumb_nail" text,
+	"bio" text,
+	"purpose" text,
 	"owner" text NOT NULL,
 	"tags" varchar(128)[] DEFAULT ARRAY[]::varchar[],
 	"description" text NOT NULL,
@@ -82,8 +93,8 @@ CREATE TABLE "spaces" (
 );
 --> statement-breakpoint
 CREATE TABLE "collaborators" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"space" uuid,
+	"id" text PRIMARY KEY NOT NULL,
+	"space" text,
 	"user" text,
 	"created_at" timestamp with time zone DEFAULT now()
 );
@@ -98,7 +109,6 @@ CREATE TABLE "users" (
 	"country_code" varchar(128),
 	"phone" varchar(128),
 	"date_of_birth" date,
-	"payment_method" jsonb,
 	"mpin" varchar(256),
 	"email_verified" boolean DEFAULT false,
 	"phone_verified" boolean DEFAULT false,
@@ -109,13 +119,14 @@ CREATE TABLE "users" (
 	CONSTRAINT "users_phone_unique" UNIQUE("phone")
 );
 --> statement-breakpoint
-ALTER TABLE "connected_auth_providers" ADD CONSTRAINT "connected_auth_providers_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "user_auth_sessions" ADD CONSTRAINT "user_auth_sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "connected_auth_providers" ADD CONSTRAINT "connected_auth_providers_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE "user_auth_sessions" ADD CONSTRAINT "user_auth_sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 ALTER TABLE "files" ADD CONSTRAINT "files_owner_users_id_fk" FOREIGN KEY ("owner") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE "files" ADD CONSTRAINT "files_space_spaces_id_fk" FOREIGN KEY ("space") REFERENCES "public"."spaces"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE "files" ADD CONSTRAINT "files_workspace_workspaces_id_fk" FOREIGN KEY ("workspace") REFERENCES "public"."workspaces"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 ALTER TABLE "files" ADD CONSTRAINT "files_module_modules_id_fk" FOREIGN KEY ("module") REFERENCES "public"."modules"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 ALTER TABLE "modules" ADD CONSTRAINT "modules_owner_users_id_fk" FOREIGN KEY ("owner") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE "modules" ADD CONSTRAINT "modules_space_spaces_id_fk" FOREIGN KEY ("space") REFERENCES "public"."spaces"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE "spaces" ADD CONSTRAINT "spaces_owner_users_id_fk" FOREIGN KEY ("owner") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE "collaborators" ADD CONSTRAINT "collaborators_space_spaces_id_fk" FOREIGN KEY ("space") REFERENCES "public"."spaces"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE "collaborators" ADD CONSTRAINT "collaborators_user_users_id_fk" FOREIGN KEY ("user") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ALTER TABLE "modules" ADD CONSTRAINT "modules_workspace_workspaces_id_fk" FOREIGN KEY ("workspace") REFERENCES "public"."workspaces"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE "workspaces" ADD CONSTRAINT "workspaces_owner_users_id_fk" FOREIGN KEY ("owner") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE "collaborators" ADD CONSTRAINT "collaborators_space_workspaces_id_fk" FOREIGN KEY ("space") REFERENCES "public"."workspaces"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE "collaborators" ADD CONSTRAINT "collaborators_user_users_id_fk" FOREIGN KEY ("user") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+CREATE UNIQUE INDEX "user_unique_workspace" ON "workspaces" USING btree ("name","owner");

@@ -71,7 +71,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 				email: _values.email,
 				password: _values.password,
 				name: `${_values.firstName} ${_values.lastName}`,
-				callbackURL: '/dashboard',
+				callbackURL: '/space',
 			},
 			{
 				onSuccess: () => {
@@ -90,7 +90,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 		await authClientApi.signIn.social(
 			{
 				provider: 'google',
-				callbackURL: '/dashboard',
+				callbackURL: '/space',
 				errorCallbackURL: '/sign-in',
 				requestSignUp: true,
 			},
@@ -111,7 +111,11 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 			<ThemeSwitcher className="absolute top-8 right-2" />
 			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
 				<CardHeader className="items-center">
-					<Image src={logo} alt="Logo" className="m-0 -ml-2 p-0" />
+					<Image
+						src={logo}
+						alt="Logo"
+						className="m-0 h-8 w-auto -ml-2 p-0"
+					/>
 					<div className="mt-5 text-center">
 						<h1>
 							<strong>Welcome back!</strong>

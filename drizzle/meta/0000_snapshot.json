@@ -1,5 +1,5 @@
 {
-  "id": "1e2e10df-43bd-47ea-95ef-2de1392b17fa",
+  "id": "04ee3727-bb1f-4b16-b5a9-f1e249f2e5d7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -100,7 +100,7 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -175,7 +175,7 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -241,16 +241,62 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.newsletter": {
+      "name": "newsletter",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "newsletter_email_unique": {
+          "name": "newsletter_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.files": {
       "name": "files",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -301,19 +347,19 @@
         },
         "reference_id": {
           "name": "reference_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "space": {
-          "name": "space",
-          "type": "uuid",
+        "workspace": {
+          "name": "workspace",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
         "module": {
           "name": "module",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -347,12 +393,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "files_space_spaces_id_fk": {
-          "name": "files_space_spaces_id_fk",
+        "files_workspace_workspaces_id_fk": {
+          "name": "files_workspace_workspaces_id_fk",
           "tableFrom": "files",
-          "tableTo": "spaces",
+          "tableTo": "workspaces",
           "columnsFrom": [
-            "space"
+            "workspace"
           ],
           "columnsTo": [
             "id"
@@ -386,10 +432,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -441,9 +486,9 @@
           "notNull": false,
           "default": "ARRAY[]::varchar[]"
         },
-        "space": {
-          "name": "space",
-          "type": "uuid",
+        "workspace": {
+          "name": "workspace",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -477,12 +522,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "modules_space_spaces_id_fk": {
-          "name": "modules_space_spaces_id_fk",
+        "modules_workspace_workspaces_id_fk": {
+          "name": "modules_workspace_workspaces_id_fk",
           "tableFrom": "modules",
-          "tableTo": "spaces",
+          "tableTo": "workspaces",
           "columnsFrom": [
-            "space"
+            "workspace"
           ],
           "columnsTo": [
             "id"
@@ -497,16 +542,15 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.spaces": {
-      "name": "spaces",
+    "public.workspaces": {
+      "name": "workspaces",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -517,6 +561,24 @@
         "icon": {
           "name": "icon",
           "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "thumb_nail": {
+          "name": "thumb_nail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "purpose": {
+          "name": "purpose",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -567,11 +629,33 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "user_unique_workspace": {
+          "name": "user_unique_workspace",
+          "columns": [
+            {
+              "expression": "name",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "owner",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
-        "spaces_owner_users_id_fk": {
-          "name": "spaces_owner_users_id_fk",
-          "tableFrom": "spaces",
+        "workspaces_owner_users_id_fk": {
+          "name": "workspaces_owner_users_id_fk",
+          "tableFrom": "workspaces",
           "tableTo": "users",
           "columnsFrom": [
             "owner"
@@ -595,14 +679,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "space": {
           "name": "space",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -622,10 +705,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "collaborators_space_spaces_id_fk": {
-          "name": "collaborators_space_spaces_id_fk",
+        "collaborators_space_workspaces_id_fk": {
+          "name": "collaborators_space_workspaces_id_fk",
           "tableFrom": "collaborators",
-          "tableTo": "spaces",
+          "tableTo": "workspaces",
           "columnsFrom": [
             "space"
           ],
@@ -710,12 +793,6 @@
         "date_of_birth": {
           "name": "date_of_birth",
           "type": "date",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "payment_method": {
-          "name": "payment_method",
-          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         },

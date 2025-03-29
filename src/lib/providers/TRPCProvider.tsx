@@ -9,14 +9,15 @@ import { getBaseUrl } from '@/utils/getBaseUrl';
 import { api } from '@/lib/trpc/client';
 import { IS_DEV } from '@/utils';
 
-const createQueryClient = () => new QueryClient();
-
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
+const createQueryClient = () => clientQueryClientSingleton ?? new QueryClient();
+
 const getQueryClient = () => {
-	if (typeof window === 'undefined') {
-		return createQueryClient();
+	if (!clientQueryClientSingleton || typeof window === 'undefined') {
+		clientQueryClientSingleton = createQueryClient();
+		return clientQueryClientSingleton;
 	}
-	return (clientQueryClientSingleton ??= createQueryClient());
+	return clientQueryClientSingleton;
 };
 
 /**
@@ -28,7 +29,7 @@ const getQueryClient = () => {
  *   integration for the client.
  */
 export function TRPCProvider(props: { children: React.ReactNode }) {
-	const queryClient = getQueryClient();
+	const [queryClient] = useState(() => getQueryClient());
 
 	const [trpcClient] = useState(() =>
 		api.createClient({

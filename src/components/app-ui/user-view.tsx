@@ -2,10 +2,10 @@
 import {
 	BadgeCheck,
 	Bell,
-	ChevronsUpDown,
 	CreditCard,
 	LogOut,
 	Sparkles,
+	Users2,
 } from 'lucide-react';
 import {
 	DropdownMenu,
@@ -97,7 +97,6 @@ function UserView({
 									{email}
 								</span>
 							</div>
-							<ChevronsUpDown className="ml-auto size-4" />
 						</SidebarMenuButton>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
@@ -137,6 +136,10 @@ function UserView({
 							<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
 								<BadgeCheck />
 								Account
+							</DropdownMenuItem>
+							<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
+								<Users2 />
+								Collaborators
 							</DropdownMenuItem>
 							<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
 								<CreditCard />

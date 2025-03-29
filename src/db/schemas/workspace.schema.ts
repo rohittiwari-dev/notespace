@@ -6,10 +6,11 @@ import {
 	pgTable,
 	text,
 	timestamp,
-	uuid,
+	uniqueIndex,
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { UserTable } from '@/db/schemas/user.schema';
+import { createId } from '@paralleldrive/cuid2';
 
 // Enum Declaration
 
@@ -22,35 +23,45 @@ export const FileTypeEnum = pgEnum('file_type_enum', [
 	'routines',
 ]);
 
-export const WorkspaceTable = pgTable('workspaces', {
-	id: uuid().defaultRandom().primaryKey(),
-	name: varchar({ length: 128 }).notNull(),
-	icon: varchar({ length: 128 }),
-	thumb_nail: text(),
-	bio: text(),
-	purpose: text(),
-	owner: text()
-		.notNull()
-		.references(() => UserTable.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-	tags: varchar({ length: 128 })
-		.array()
-		.default(sql`ARRAY[]::varchar[]`),
-	description: text().notNull(),
-	logo: text(),
-	in_trash: boolean().default(false),
-	updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-		sql`now()`,
-	),
-	created_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-		sql`now()`,
-	),
-});
+export const WorkspaceTable = pgTable(
+	'workspaces',
+	{
+		id: text()
+			.primaryKey()
+			.$defaultFn(() => createId()),
+		name: varchar({ length: 128 }).notNull(),
+		icon: varchar({ length: 128 }).notNull(),
+		thumb_nail: text(),
+		bio: text(),
+		purpose: text(),
+		owner: text()
+			.notNull()
+			.references(() => UserTable.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		tags: varchar({ length: 128 })
+			.array()
+			.default(sql`ARRAY[]::varchar[]`),
+		description: text().notNull(),
+		logo: text(),
+		in_trash: boolean().default(false),
+		updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
+			sql`now()`,
+		),
+		created_at: timestamp({ withTimezone: true, mode: 'string' }).default(
+			sql`now()`,
+		),
+	},
+	(t) => ({
+		unique_name: uniqueIndex('user_unique_workspace').on(t.name, t.owner),
+	}),
+);
 
 export const ModuleTable = pgTable('modules', {
-	id: uuid().defaultRandom().primaryKey(),
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
 	name: varchar({ length: 128 }).notNull(),
 	icon: varchar({ length: 128 }),
 	owner: text()
@@ -66,7 +77,7 @@ export const ModuleTable = pgTable('modules', {
 	tags: varchar({ length: 128 })
 		.array()
 		.default(sql`ARRAY[]::varchar[]`),
-	workspace: uuid()
+	workspace: text()
 		.notNull()
 		.references(() => WorkspaceTable.id, {
 			onDelete: 'cascade',
@@ -81,7 +92,9 @@ export const ModuleTable = pgTable('modules', {
 });
 
 export const FileTable = pgTable('files', {
-	id: uuid().defaultRandom().primaryKey(),
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
 	name: varchar({ length: 128 }).notNull(),
 	icon: varchar({ length: 128 }),
 	in_trash: boolean().default(false),
@@ -96,14 +109,14 @@ export const FileTable = pgTable('files', {
 		})
 		.notNull(),
 	type: FileTypeEnum().default('page'),
-	reference_id: uuid().notNull(),
-	workspace: uuid()
+	reference_id: text().notNull(),
+	workspace: text()
 		.references(() => WorkspaceTable.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		})
 		.notNull(),
-	module: uuid()
+	module: text()
 		.references(() => ModuleTable.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',

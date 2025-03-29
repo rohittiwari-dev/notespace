@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1740467350269,
-      "tag": "0000_cooing_morph",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1742970185807,
-      "tag": "0001_concerned_human_torch",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1743037706287,
-      "tag": "0002_loose_beyonder",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1743048516908,
-      "tag": "0003_panoramic_freak",
+      "when": 1743225434641,
+      "tag": "0000_overjoyed_diamondback",
       "breakpoints": true
     }
   ]

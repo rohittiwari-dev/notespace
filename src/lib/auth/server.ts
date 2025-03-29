@@ -6,6 +6,7 @@ import db, { schema } from '@/db';
 import { env } from '@/env';
 import { sendEmail } from '@/lib/emails';
 import { redis } from '../redis';
+import { nextCookies } from 'better-auth/next-js';
 
 // Server Auth
 export const authServerApi = betterAuth({
@@ -45,7 +46,7 @@ export const authServerApi = betterAuth({
 	},
 	socialProviders: {
 		google: {
-			disableSignUp: true,
+			disableImplicitSignUp: true,
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
 		},
@@ -66,5 +67,5 @@ export const authServerApi = betterAuth({
 			await redis.del(key);
 		},
 	},
-	plugins: [openAPI()],
+	plugins: [openAPI(), nextCookies()],
 } satisfies BetterAuthOptions);

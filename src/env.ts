@@ -20,6 +20,9 @@ export const env = createEnv({
 		GOOGLE_CLIENT_SECRET: z.string(),
 		BETTER_AUTH_URL: z.string(),
 		IP_BANLIST: z.string().optional(),
+		CLOUDINARY_CLOUD_NAME: z.string(),
+		CLOUDINARY_API_KEY: z.string(),
+		CLOUDINARY_API_SECRET: z.string(),
 	},
 	client: {},
 	experimental__runtimeEnv: {
@@ -39,7 +42,7 @@ export const env = createEnv({
 	// Called when server variables are accessed on the client.
 	onInvalidAccess: (variable: string) => {
 		console.error(
-			`❌ Attempted to access a server-side environment variable ${variable} on the client`,
+			`❌ Attempted to access a server-side environment variable "${variable}" on the client`,
 		);
 		process.exit(1);
 	},

@@ -183,7 +183,7 @@ const SiteNavigationHeader = ({
 					) : (
 						<Button asChild size="sm">
 							<Link href="/sign-in">
-								Dashboard <ChevronRightIcon size={16} />
+								Space <ChevronRightIcon size={16} />
 							</Link>
 						</Button>
 					)}

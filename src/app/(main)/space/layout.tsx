@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const SpaceLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<main className="bg-background relative z-0 h-full w-full overflow-hidden">
 			<div className="bg-accent-pink/70 absolute -top-30 right-1 -z-10 h-50 w-96 opacity-45 bg-blend-multiply blur-[100px] dark:opacity-30" />
@@ -13,4 +13,4 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
-export default DashboardLayout;
+export default SpaceLayout;

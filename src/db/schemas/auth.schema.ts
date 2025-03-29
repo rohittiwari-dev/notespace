@@ -1,8 +1,11 @@
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { UserTable } from '@/db/schemas/user.schema';
+import { createId } from '@paralleldrive/cuid2';
 
 export const ConnectedAuthProvidersTable = pgTable('connected_auth_providers', {
-	id: text('id').primaryKey(),
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
 	accountId: text('account_id').notNull(),
 	providerId: text('provider_id').notNull(),
 	userId: text('user_id')
@@ -23,7 +26,9 @@ export const ConnectedAuthProvidersTable = pgTable('connected_auth_providers', {
 });
 
 export const UserAuthSessionTable = pgTable('user_auth_sessions', {
-	id: text('id').primaryKey(),
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
 	expiresAt: timestamp('expires_at').notNull(),
 	token: text('token').notNull().unique(),
 	createdAt: timestamp('created_at').notNull(),
@@ -39,7 +44,9 @@ export const UserAuthSessionTable = pgTable('user_auth_sessions', {
 });
 
 export const UserAuthVerificationTable = pgTable('user_auth_verifications', {
-	id: text('id').primaryKey(),
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
 	identifier: text('identifier').notNull(),
 	value: text('value').notNull(),
 	expiresAt: timestamp('expires_at').notNull(),

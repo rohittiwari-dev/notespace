@@ -15,8 +15,8 @@ export default function manifest(): MetadataRoute.Manifest {
 		related_applications: [{ platform: 'website', url: getBaseUrl() }],
 		display: 'standalone',
 		orientation: 'portrait',
-		background_color: '#FFFFFF',
-		theme_color: '#FFFFFF',
+		background_color: '#1d1f21',
+		theme_color: '#1d1f21',
 		icons: [
 			{
 				src: '/icon.png',

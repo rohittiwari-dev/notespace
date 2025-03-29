@@ -22,25 +22,33 @@ export const getWorkspaces = async (userId: string) => {
 	} catch (error) {
 		throw ErrorResponse({
 			error: error as DrizzleError,
-			message: 'Spaces not found',
+			message: (error as DrizzleError).message || 'Workspace not found',
 		});
 	}
 };
 
 export const createWorkspace = async (workspace: IWorkSpaceInsert) => {
 	try {
-		const data = await db.insert(WorkspaceTable).values(workspace);
-		if (!data.rows[0]) {
+		const data = await db
+			.insert(WorkspaceTable)
+			.values(workspace)
+			.returning();
+
+		if (!data[0]) {
 			throw new Error('Space not created');
 		}
 		return SuccessResponse<IWorkSpace>({
-			data: data.rows[0],
+			data: data[0],
 			message: 'Space created',
 		});
 	} catch (error) {
 		throw ErrorResponse({
 			error: error as DrizzleError,
-			message: 'Space not created',
+			message: (error as DrizzleError).message?.includes(
+				'duplicate key value violates unique constraint',
+			)
+				? 'Space already exists'
+				: 'Space not created',
 		});
 	}
 };
@@ -61,7 +69,7 @@ export const getWorkspace = async (workspaceId: string) => {
 	} catch (error) {
 		throw ErrorResponse({
 			error: error as DrizzleError,
-			message: 'Workspace not found',
+			message: (error as DrizzleError).message || 'Workspace not found',
 		});
 	}
 };

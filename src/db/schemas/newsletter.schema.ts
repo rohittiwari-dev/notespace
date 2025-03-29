@@ -1,7 +1,10 @@
-import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { createId } from '@paralleldrive/cuid2';
+import { pgTable, timestamp, varchar, text } from 'drizzle-orm/pg-core';
 
 export const NewsLetterSchema = pgTable('newsletter', {
-	id: uuid().defaultRandom().primaryKey(),
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
 	email: varchar({ length: 255 }).notNull().unique(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at').notNull().defaultNow(),

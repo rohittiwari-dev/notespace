@@ -13,6 +13,7 @@ interface AvatarProps {
 	className?: string;
 	imageClassName?: string;
 	fallbackClassName?: string;
+	shape?: 'circle' | 'square' | 'rounded';
 }
 
 const Avatar: React.FC<AvatarProps> = ({
@@ -25,14 +26,18 @@ const Avatar: React.FC<AvatarProps> = ({
 	alt = '@shadcn',
 	imageClassName,
 	fallbackClassName,
+	shape = 'circle',
 }) => {
 	return (
 		<CoreAvatar.Avatar
 			className={cn(
-				size && `size-[${size}]`,
+				`size-[${size}px]`,
 				ring && 'ring-1',
-				ringColor && `ring-accent`,
+				ring && ringColor,
 				'border-accent',
+				shape === 'circle' && 'rounded-full',
+				shape === 'square' && 'rounded-none',
+				shape === 'rounded' && 'rounded-md',
 				className,
 			)}
 		>
@@ -42,7 +47,16 @@ const Avatar: React.FC<AvatarProps> = ({
 				alt={alt}
 			/>
 			<CoreAvatar.AvatarFallback
-				className={cn('w-full h-full', fallbackClassName)}
+				className={cn(
+					'w-full h-full',
+					ring && 'ring-1',
+					ring && ringColor,
+					'border-accent',
+					shape === 'circle' && 'rounded-full',
+					shape === 'square' && 'rounded-none',
+					shape === 'rounded' && 'rounded-md',
+					fallbackClassName,
+				)}
 			>
 				{initial}
 			</CoreAvatar.AvatarFallback>

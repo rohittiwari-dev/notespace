@@ -25,6 +25,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ACCEPTED_IMAGE_TYPES } from '@/lib/constants';
 import { MAX_FILE_SIZE } from '@/lib/constants';
 import Image from 'next/image';
+import { api } from '@/lib/trpc/client';
+import { authClientApi } from '@/lib/auth/client';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from 'sonner';
+import Spinner from '@/components/app-ui/spinner';
+import { fileToBase64 } from '@/utils/fileToBase64';
+import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const WorkspaceSetupSchema = z.object({
 	workspaceName: z.string().min(1, { message: 'Workspace name is required' }),
@@ -32,36 +40,97 @@ const WorkspaceSetupSchema = z.object({
 		.custom<FileList>()
 		.refine(
 			(files) => {
-				return files?.[0]?.size <= MAX_FILE_SIZE;
+				return (files?.[0]?.size || MAX_FILE_SIZE) <= MAX_FILE_SIZE;
 			},
 			{
 				message: `More than ${MAX_FILE_SIZE} are not allowed`,
 			},
 		)
-		.refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), {
-			message: 'Only .jpg, .jpeg, .png and .webp formats are supported.',
-		})
+		.refine(
+			(files) =>
+				ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type || 'image/jpeg'),
+			{
+				message:
+					'Only .jpg, .jpeg, .png and .webp formats are supported.',
+			},
+		)
 		.optional(),
-	workSpaceIcon: z.string().optional(),
+	workspaceDescription: z.string().nonempty(),
+	workSpaceIcon: z.string().default('📦').optional(),
 });
 
-function SetupWorkspace() {
+function SetupWorkspace({
+	cardClassName,
+	redirectOnCreate = true,
+	handleOnSuccess = () => {},
+}: {
+	cardClassName?: string;
+	redirectOnCreate?: boolean;
+	handleOnSuccess?: (workspace: any) => void;
+}) {
+	const router = useRouter();
+	const { data: session } = authClientApi.useSession();
+	const { mutateAsync, isPending } =
+		api.workspace.createWorkspace.useMutation();
+
+	/* Use Form and zod to validate the form */
 	const form = useForm<z.infer<typeof WorkspaceSetupSchema>>({
 		resolver: zodResolver(WorkspaceSetupSchema),
 		defaultValues: {
 			workspaceName: 'Personal',
 			workspaceLogo: undefined,
 			workSpaceIcon: '📦',
+			workspaceDescription: undefined,
 		},
 	});
 	const selectedWorkspaceLogo = form?.watch('workspaceLogo');
 
+	/* Submit the form */
 	const onSubmit = async (data: z.infer<typeof WorkspaceSetupSchema>) => {
-		console.log(data.workspaceLogo);
+		const logo = data.workspaceLogo?.[0];
+		try {
+			let base64Logo = '';
+			if (logo) {
+				base64Logo = await fileToBase64(logo as File);
+			}
+
+			const workspace = await mutateAsync({
+				name: data.workspaceName,
+				icon: data.workSpaceIcon as string,
+				owner: session?.user?.id as string,
+				description: data.workspaceDescription,
+				logo: base64Logo
+					? {
+							fileName: logo?.name as string,
+							fileType: logo?.type as string,
+							fileData: base64Logo as string,
+							fileSize: logo?.size as number,
+						}
+					: undefined,
+			}).catch((error) => {
+				throw error;
+			});
+			if (workspace) {
+				toast.success('Workspace created successfully');
+				if (redirectOnCreate) {
+					router.replace(`/space/${workspace.id}`);
+				}
+				handleOnSuccess(workspace);
+			}
+		} catch (error) {
+			toast.error('Error creating workspace', {
+				description: (error as any)?.message,
+			});
+		}
 	};
 
 	return (
-		<Card className="bg-card/60 backdrop-blur-sm max-w-[min(450px,90%)]">
+		<Card
+			className={cn(
+				'bg-card/60 backdrop-blur-sm max-w-[min(450px,90%)]',
+				cardClassName,
+			)}
+		>
 			<form onSubmit={form?.handleSubmit(onSubmit)}>
 				<CardHeader>
 					<CardTitle>Setup Your Workspace</CardTitle>
@@ -88,6 +157,7 @@ function SetupWorkspace() {
 								/>
 							) : (
 								<EmojiPicker
+									disabled={isPending}
 									getEmoji={(emoji) => {
 										form?.setValue('workSpaceIcon', emoji);
 									}}
@@ -119,6 +189,7 @@ function SetupWorkspace() {
 										size="sm"
 										variant="secondary"
 										type="button"
+										disabled={isPending}
 										className="bg-secondary-800/80 border-secondary-700/60 border cursor-pointer"
 									>
 										<Label
@@ -130,6 +201,7 @@ function SetupWorkspace() {
 												id="workspaceLogo"
 												className="z-10 top-0 left-0"
 												hidden
+												disabled={isPending}
 												accept="image/*"
 												{...form?.register(
 													'workspaceLogo',
@@ -142,6 +214,7 @@ function SetupWorkspace() {
 										size="sm"
 										variant="destructive"
 										type="button"
+										disabled={isPending}
 										onClick={() => {
 											form.setValue(
 												'workspaceLogo',
@@ -182,6 +255,7 @@ function SetupWorkspace() {
 
 						<Input
 							type="text"
+							disabled={isPending}
 							placeholder="Name"
 							{...form?.register('workspaceName')}
 							className="bg-secondary-800/80 !border !border-secondary-700/60"
@@ -196,10 +270,41 @@ function SetupWorkspace() {
 								</p>
 							)}
 					</div>
+					<div className="flex flex-col gap-2">
+						<Label className="text-xs flex-col flex text-accent-foreground font-normal">
+							Workspace Description
+							<p className="text-xs text-muted-foreground font-normal">
+								Workspace Description is small information about
+								your workspace.
+							</p>
+						</Label>
+
+						<Textarea
+							placeholder="Description"
+							disabled={isPending}
+							autoFocus={true}
+							{...form?.register('workspaceDescription')}
+							className="bg-secondary-800/80 !border !border-secondary-700/60"
+						/>
+						{form?.formState.errors.workspaceDescription?.message &&
+							form?.formState.touchedFields
+								.workspaceDescription && (
+								<p className="text-[.7rem] text-red-500">
+									{
+										form?.formState.errors
+											.workspaceDescription.message
+									}
+								</p>
+							)}
+					</div>
 				</CardContent>
 				<CardFooter className="flex w-full  justify-end items-center">
-					<Button type="submit" className="w-full">
-						Create Workspace
+					<Button
+						type="submit"
+						className="w-full"
+						disabled={isPending}
+					>
+						{isPending && <Spinner />} Create Workspace
 					</Button>
 				</CardFooter>
 			</form>

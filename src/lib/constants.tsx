@@ -40,3 +40,4 @@ export const SELECTED_SPACE_COOKIE_NAME = 'selected_workspace';
 
 export const MAX_FILE_SIZE = 1024 * 1024 * 1; // 1MB
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+export const SIDEBAR_COOKIE_NAME = 'sidebar_state';

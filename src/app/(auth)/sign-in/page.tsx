@@ -1,6 +1,6 @@
 'use client';
 
-import React, { use, useMemo, useState } from 'react';
+import React, { use, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -35,29 +35,34 @@ import { Label } from '@/components/ui/label';
 import { authClientApi } from '@/lib/auth/client';
 import { loginFormSchema } from '@/lib/formschemas';
 import { cn } from '@/lib/utils';
+import { redirect } from 'next/navigation';
 
 interface Props {
 	searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 const SigningPage: React.FC<Props> = ({ searchParams }) => {
-	const [submitError, setSubmitError] = useState('');
 	const [rememberMe, setRememberMe] = useState(false);
 	const [isOAuthLogin, setIsOAuthLogin] = useState(false);
 	const shParams = use(searchParams);
 
 	const exchangeError = useMemo(() => {
-		return shParams['error_description'] ?? '';
+		return shParams['error_description'] ?? shParams['error'] ?? '';
 	}, [shParams]);
 
-	const confirmAndErrorStyle = useMemo(() => {
-		return cn('bg-brand-primaryPurple/10 px-2 text-primary', {
-			'bg-red-500/10': exchangeError || submitError,
-			'border-red-500/50': exchangeError || submitError,
-			'text-red-500': exchangeError || submitError,
-		});
-	}, [exchangeError, submitError]);
+	/* Error */
+	useEffect(() => {
+		if (exchangeError) {
+			toast.error(
+				exchangeError === 'signup_disabled'
+					? "You don't have an account, please sign up"
+					: exchangeError,
+			);
+			redirect('/sign-up');
+		}
+	}, [exchangeError]);
 
+	/* Form */
 	const form = useForm<z.infer<typeof loginFormSchema>>({
 		resolver: zodResolver(loginFormSchema),
 		defaultValues: {
@@ -65,13 +70,15 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 			password: '',
 		},
 	});
+
+	/* Sign in with email */
 	async function onSubmit(_values: z.infer<typeof loginFormSchema>) {
 		return await authClientApi.signIn.email(
 			{
 				email: _values.email,
 				password: _values.password,
 				rememberMe: rememberMe,
-				callbackURL: '/dashboard',
+				callbackURL: '/space',
 			},
 			{
 				onSuccess: () => {
@@ -84,11 +91,12 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 		);
 	}
 
+	/* Sign in with Google */
 	async function googleSignIn() {
 		await authClientApi.signIn.social(
 			{
 				provider: 'google',
-				callbackURL: '/dashboard',
+				callbackURL: '/space',
 				errorCallbackURL: '/sign-in',
 			},
 			{
@@ -108,7 +116,11 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 			<ThemeSwitcher className="absolute top-8 right-10" />
 			<Card className="my-auto relative min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
 				<CardHeader className="items-center">
-					<Image src={logo} alt="Logo" className="m-0 -ml-2 p-0" />
+					<Image
+						src={logo}
+						alt="Logo"
+						className="m-0  h-8 w-auto -ml-2 p-0"
+					/>
 					<div className="mt-5 text-center">
 						<h1>
 							<strong>Welcome back!</strong>
@@ -117,12 +129,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<form
-						onChange={() => {
-							if (submitError) setSubmitError('');
-						}}
-						onSubmit={form.handleSubmit(onSubmit)}
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<Form {...form}>
 							<div className="grid gap-4">
 								<FormField
@@ -146,7 +153,6 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												</FormControl>
 												<FormMessage
 													className={cn(
-														confirmAndErrorStyle,
 														'p-0 text-red-500',
 													)}
 												/>
@@ -175,7 +181,6 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 												</FormControl>
 												<FormMessage
 													className={cn(
-														confirmAndErrorStyle,
 														'text-red-500',
 													)}
 												/>
@@ -205,26 +210,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 									forgot password?
 								</Link>
 							</div>
-							{submitError && (
-								<FormMessage
-									className={cn(
-										confirmAndErrorStyle,
-										'my-2 flex !h-fit items-center justify-between rounded-md p-2 px-3',
-									)}
-								>
-									{submitError}
-									<Button
-										type="button"
-										onClick={() => {
-											setSubmitError('');
-										}}
-										className="!h-8 !w-5 !rounded-full text-lg"
-										variant="ghost"
-									>
-										x
-									</Button>
-								</FormMessage>
-							)}
+
 							<div className="mt-3 w-full space-y-3">
 								<Button
 									type="submit"
