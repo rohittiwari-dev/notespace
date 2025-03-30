@@ -12,19 +12,22 @@ const passwordRoutes = ['/reset-password', '/forgot-password'];
 export default async function cm8vuq2l6000008l54ik26amzAuthMiddleware(
 	req: NextRequest,
 ) {
-	const response = NextResponse.next();
+	// Check for public routes
 	const pathName = req.nextUrl.pathname;
-	const isAuthRoute = authRoutes.includes(pathName);
-	const isPasswordRoute = passwordRoutes.includes(pathName);
-
-	if (publicRoutes.includes(req.url)) {
+	const response = NextResponse.next();
+	if (publicRoutes.includes(pathName)) {
 		return response;
 	}
 
+	// Check for auth routes
+	const isAuthRoute = authRoutes.includes(pathName);
+	const isPasswordRoute = passwordRoutes.includes(pathName);
+
+	// Get the session
 	const { data: session } = await betterFetch<Session>(
 		'/api/auth/get-session',
 		{
-			baseURL: req.nextUrl.origin,
+			baseURL: process.env['BETTER_AUTH_URL'],
 			headers: {
 				//get the cookie from the request
 				cookie: req.headers.get('cookie') || '',
@@ -32,6 +35,7 @@ export default async function cm8vuq2l6000008l54ik26amzAuthMiddleware(
 		},
 	);
 
+	// If the user is not authenticated, redirect to the sign-in page
 	if (!session) {
 		if (isAuthRoute || isPasswordRoute) {
 			return response;
@@ -39,11 +43,13 @@ export default async function cm8vuq2l6000008l54ik26amzAuthMiddleware(
 		return NextResponse.redirect(new URL('/sign-in', req.url));
 	}
 
+	// If the user is authenticated, redirect to the space page
 	if (isAuthRoute || isPasswordRoute) {
 		return NextResponse.redirect(new URL('/space', req.url));
 	}
 
 	// Handle workspace switching by updating cookies in middleware
+	// Check if the request is for a workspace page
 	if (req.nextUrl.pathname.startsWith('/space/')) {
 		// Extract workspace ID from URL if it's a workspace page
 		const segments = req.nextUrl.pathname.split('/');
@@ -68,6 +74,6 @@ export const config = {
 		'/space/:path*',
 		'/sign-in',
 		'/sign-up',
-		'/((?!api|_next/static|_next/image|favicon.ico).*)',
+		'/((?!api|_next/static|_next/image|favicon.ico|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
 	],
 };
