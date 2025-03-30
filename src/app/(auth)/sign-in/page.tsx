@@ -242,10 +242,7 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						className="w-full"
 					>
 						{isOAuthLogin ? (
-							<Spinner
-								className="disabled:text-blue-800/40"
-								loadingLabel="Signing in with Google..."
-							/>
+							<Spinner loadingLabel="Signing in with Google..." />
 						) : (
 							<>
 								<GoogleIcon /> <span>Sign in with Google</span>

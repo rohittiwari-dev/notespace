@@ -2,34 +2,36 @@ import {
 	createWorkspace,
 	getWorkspace,
 	getWorkspaces,
-} from '@/db/repositories/space.repo';
+} from '@/server/actions/repositories/space.repo';
 import authProcedure from '../procedures/protectedProcedure';
 import { createRouter } from '../trpc';
-import { validators } from '@/db';
+
 import cloudinary from '@/utils/coudinary';
 import { z } from 'zod';
 
 const workspaceRouter = createRouter({
 	createWorkspace: authProcedure
 		.input(
-			validators.IWorkspaceInsertSchema.extend({
-				logo: z
-					.object({
-						fileName: z.string(),
-						fileType: z.string(),
-						fileData: z.string(),
-						fileSize: z
-							.number()
-							.max(
-								5 * 1024 * 1024,
-								'File size must be under 5MB',
-							), // 5MB limit
-					})
-					.optional(),
-			}),
+			// validators.IWorkspaceInsertSchema.extend({
+			// 	logo: z
+			// 		.object({
+			// 			fileName: z.string(),
+			// 			fileType: z.string(),
+			// 			fileData: z.string(),
+			// 			fileSize: z
+			// 				.number()
+			// 				.max(
+			// 					5 * 1024 * 1024,
+			// 					'File size must be under 5MB',
+			// 				), // 5MB limit
+			// 		})
+			// 		.optional(),
+			// }),
+			z.any(),
 		)
 		.mutation(async ({ input }) => {
 			const { logo } = input;
+			console.log(input);
 			let uploadResult;
 			if (logo)
 				uploadResult = await cloudinary.uploader.upload(

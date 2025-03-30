@@ -83,7 +83,7 @@
 		"@trpc/client": "^11.0.1",
 		"@trpc/react-query": "^11.0.1",
 		"@trpc/server": "^11.0.1",
-		"better-auth": "^1.2.5",
+		"better-auth": "1.2.6-beta.3",
 		"class-variance-authority": "^0.7.1",
 		"cloudinary": "^2.6.0",
 		"clsx": "^2.1.1",

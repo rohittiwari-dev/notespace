@@ -1,4 +1,4 @@
-import { getLoggedInUser } from '@/lib/auth/actions';
+import { getLoggedInUser } from '@/server/actions/auth.actions';
 
 import { redirect } from 'next/navigation';
 import React from 'react';

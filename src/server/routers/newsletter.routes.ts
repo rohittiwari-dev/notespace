@@ -2,7 +2,7 @@ import { createRouter } from '../trpc';
 import publicProcedure from '../procedures/publicProcedure';
 import { z } from 'zod';
 import validateEmail from '@/utils/email-validator';
-import { subscribeNewsletter } from '@/db/repositories/newsletter.repo';
+import { subscribeNewsletter } from '@/server/actions/repositories/newsletter.repo';
 import { SuccessResponse } from '@/db/handlers';
 
 const newsLetterRouter = createRouter({

@@ -43,7 +43,7 @@
 	--accent: var(--color-primary-100);
 	--destructive: var(--color-red-700);
 	--destructive-foreground: var(--color-red-50);
-	--border: var(--color-primary-300);
+	--border: var(--color-primary-100);
 	--input: var(--color-secondary-100);
 	--ring: var(--color-primary-400);
 

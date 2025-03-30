@@ -1,8 +1,8 @@
 'use server';
 import { eq } from 'drizzle-orm';
-import db from '..';
-import { NewsLetterSchema } from '../schemas';
-import { ErrorResponse, SuccessResponse } from '../handlers';
+import db from '@/db';
+import { NewsLetterSchema } from '@/db/schemas';
+import { ErrorResponse, SuccessResponse } from '@/db/handlers';
 
 export const subscribeNewsletter = async (email: string) => {
 	try {

@@ -1,8 +1,12 @@
 'use server';
 import { and, DrizzleError, eq, ne } from 'drizzle-orm';
-import db from '..';
-import { type IWorkSpaceInsert, IWorkSpace, WorkspaceTable } from '../schemas/';
-import { ErrorResponse, SuccessResponse } from '../handlers';
+import db from '@/db';
+import {
+	type IWorkSpaceInsert,
+	IWorkSpace,
+	WorkspaceTable,
+} from '@/db/schemas';
+import { ErrorResponse, SuccessResponse } from '@/db/handlers';
 
 export const getWorkspaces = async (userId: string) => {
 	try {

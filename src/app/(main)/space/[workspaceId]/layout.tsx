@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import { SIDEBAR_COOKIE_NAME } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 import { api } from '@/lib/trpc/server';
-import { getLoggedInUser } from '@/lib/auth/actions';
+import { getLoggedInUser } from '@/server/actions/auth.actions';
 
 const SpaceLayout = async ({
 	children,

@@ -33,6 +33,7 @@ import {
 import { authClientApi } from '@/lib/auth/client';
 import { SignUpFormSchema } from '@/lib/formschemas';
 import { cn } from '@/lib/utils';
+import Spinner from '@/components/app-ui/spinner';
 
 interface Props {
 	searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -334,7 +335,10 @@ const SigningPage: React.FC<Props> = ({ searchParams }) => {
 						className="w-full"
 					>
 						{isOAuthLogin ? (
-							<Loader2 className="size-5 animate-[spin_1.5s_linear_infinite] disabled:text-blue-800/40" />
+							<Spinner
+								className="disabled:text-blue-800/40"
+								loadingLabel="Signing up with Google..."
+							/>
 						) : (
 							<>
 								<GoogleIcon /> <span>Sign up with Google</span>

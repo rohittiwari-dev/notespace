@@ -1,12 +1,10 @@
 import { initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
-import { authServerApi } from '@/lib/auth/server';
+import { getServerSession } from '@/server/actions/auth.actions';
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-	const session = await authServerApi.api.getSession({
-		headers: opts.headers,
-	});
+	const session = await getServerSession(opts.headers);
 	return {
 		user: session?.user,
 		session: session,

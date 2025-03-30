@@ -4,6 +4,7 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import SmallLogo from '@/assets/Logo_Small.png';
+import FullLogo from '@/assets/Logo_Full.png';
 import ThemeSwitcher from '../app-ui/theme-switcher';
 import {
 	NavigationMenu,
@@ -64,12 +65,12 @@ const SiteNavigationHeader = ({
 			<div className="container-main flex items-center justify-between transition-all">
 				<Link href="/" className="flex items-center gap-3">
 					<Image
-						src={SmallLogo}
-						width={35}
-						height={35}
+						src={FullLogo}
+						width={200}
+						height={100}
+						className="w-48 h-auto"
 						alt="Noodle Logo"
 					/>
-					<span>{constants.shortName}</span>
 				</Link>
 				<nav className="">
 					<NavigationMenu className="hidden md:block border border-accent-purple/50 bg-accent-purple/5 rounded-full">
@@ -181,9 +182,15 @@ const SiteNavigationHeader = ({
 							</Button>
 						</>
 					) : (
-						<Button asChild size="sm">
-							<Link href="/sign-in">
-								Space <ChevronRightIcon size={16} />
+						<Button asChild size="sm" className="items-center">
+							<Link href="/sign-in" className="items-center">
+								<Image
+									src={SmallLogo}
+									alt="logo"
+									className="w-6 h-auto"
+								/>
+								<span>Launch App</span>{' '}
+								<ChevronRightIcon size={16} />
 							</Link>
 						</Button>
 					)}

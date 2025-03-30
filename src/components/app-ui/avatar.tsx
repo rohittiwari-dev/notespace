@@ -21,7 +21,7 @@ const Avatar: React.FC<AvatarProps> = ({
 	initial = 'UR',
 	size = 24,
 	ring = true,
-	ringColor = 'text-primary-500',
+	ringColor = 'text-primary-200 dark:text-primary-800',
 	className,
 	alt = '@shadcn',
 	imageClassName,
@@ -31,10 +31,10 @@ const Avatar: React.FC<AvatarProps> = ({
 	return (
 		<CoreAvatar.Avatar
 			className={cn(
-				`size-[${size}px]`,
+				`size-[${size}px] dark:bg-secondary-700/60 bg-secondary-100`,
 				ring && 'ring-1',
 				ring && ringColor,
-				'border-accent',
+				'border-border',
 				shape === 'circle' && 'rounded-full',
 				shape === 'square' && 'rounded-none',
 				shape === 'rounded' && 'rounded-md',
@@ -48,10 +48,11 @@ const Avatar: React.FC<AvatarProps> = ({
 			/>
 			<CoreAvatar.AvatarFallback
 				className={cn(
-					'w-full h-full',
+					`size-[${size}px]  dark:bg-secondary-700/60 bg-secondary-100 `,
+					'w-full h-full ',
 					ring && 'ring-1',
 					ring && ringColor,
-					'border-accent',
+					'border-border',
 					shape === 'circle' && 'rounded-full',
 					shape === 'square' && 'rounded-none',
 					shape === 'rounded' && 'rounded-md',

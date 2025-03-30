@@ -142,7 +142,7 @@ function SpaceSwitcher({
 								className="gap-2 p-2 cursor-pointer hover:bg-accent/50 group"
 								onClick={() => setOpenAddWorkspace(true)}
 							>
-								<div className="bg-background group-hover:bg-secondary-700 border-secondary-500/50 flex size-6 items-center justify-center rounded-md border">
+								<div className="bg-background group-hover:bg-accent/50 dark:group-hover:bg-secondary-700 dark:border-secondary-500/50 flex size-6 items-center justify-center rounded-md border">
 									<Plus className="size-4" />
 								</div>
 								<div className=" group-hover:text-accent-foreground/70 text-muted-foreground font-medium">

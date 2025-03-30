@@ -26,13 +26,14 @@ import { ACCEPTED_IMAGE_TYPES } from '@/lib/constants';
 import { MAX_FILE_SIZE } from '@/lib/constants';
 import Image from 'next/image';
 import { api } from '@/lib/trpc/client';
-import { authClientApi } from '@/lib/auth/client';
+
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import Spinner from '@/components/app-ui/spinner';
 import { fileToBase64 } from '@/utils/fileToBase64';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { authClientApi } from '@/lib/auth/client';
 
 const WorkspaceSetupSchema = z.object({
 	workspaceName: z.string().min(1, { message: 'Workspace name is required' }),
@@ -144,7 +145,7 @@ function SetupWorkspace({
 				</CardHeader>
 				<CardContent className="flex flex-col gap-6 ">
 					<div className="flex gap-6">
-						<div className="text-5xl w-18 h-18 bg-secondary-800/80 border border-secondary-700/60 rounded-xl">
+						<div className="text-5xl w-18 h-18 bg-secondary-100  border-secondary-200/40 dark:bg-secondary-800/80 border dark:border-secondary-700/60 rounded-xl">
 							{selectedWorkspaceLogo?.[0] ? (
 								<Image
 									src={URL.createObjectURL(
@@ -190,7 +191,7 @@ function SetupWorkspace({
 										variant="secondary"
 										type="button"
 										disabled={isPending}
-										className="bg-secondary-800/80 border-secondary-700/60 border cursor-pointer"
+										className="border-secondary-200/30 bg-secondary-100 dark:bg-secondary-800/80  dark:border-secondary-700/60 border cursor-pointer"
 									>
 										<Label
 											htmlFor="workspaceLogo"
@@ -221,7 +222,7 @@ function SetupWorkspace({
 												undefined,
 											);
 										}}
-										className="bg-secondary-800/80 border-secondary-700/60 border"
+										className="bg-secondary-100 dark:hover:bg-red-950 text-foreground hover:text-background dark:hover:text-foreground dark:bg-secondary-800/80 border-secondary-200/30 dark:border-secondary-700/60 border"
 									>
 										<Trash /> Remove
 									</Button>
@@ -258,7 +259,7 @@ function SetupWorkspace({
 							disabled={isPending}
 							placeholder="Name"
 							{...form?.register('workspaceName')}
-							className="bg-secondary-800/80 !border !border-secondary-700/60"
+							className="dark:bg-secondary-800/80 bg-secondary-100 !border dark:!border-secondary-700/60"
 						/>
 						{form?.formState.errors.workspaceName?.message &&
 							form?.formState.touchedFields.workspaceName && (
@@ -284,7 +285,7 @@ function SetupWorkspace({
 							disabled={isPending}
 							autoFocus={true}
 							{...form?.register('workspaceDescription')}
-							className="bg-secondary-800/80 !border !border-secondary-700/60"
+							className="dark:bg-secondary-800/80 bg-secondary-100 !border dark:!border-secondary-700/60"
 						/>
 						{form?.formState.errors.workspaceDescription?.message &&
 							form?.formState.touchedFields
@@ -304,7 +305,8 @@ function SetupWorkspace({
 						className="w-full"
 						disabled={isPending}
 					>
-						{isPending && <Spinner />} Create Workspace
+						{isPending && <Spinner color="secondary" />} Create
+						Workspace
 					</Button>
 				</CardFooter>
 			</form>

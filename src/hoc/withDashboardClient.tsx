@@ -1,8 +1,7 @@
 'use client';
-import React from 'react';
+import React, { use } from 'react';
 import { api } from '@/lib/trpc/client';
 import { authClientApi } from '@/lib/auth/client';
-import { use } from 'react';
 
 function withSpace(Component: React.ComponentType<any>) {
 	const ChildComponent = function ({

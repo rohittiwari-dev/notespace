@@ -1,15 +1,12 @@
 import SiteNavigationHeader from '@/components/site/site-navigation-header';
 import React from 'react';
-import { authServerApi } from '../../lib/auth/server';
-import { headers } from 'next/headers';
 import { Session, User } from 'better-auth';
 import { FlickeringGrid } from '@/components/primitives/flickering-grid';
+import { getServerSession } from '@/server/actions/auth.actions';
 
 // need net background gradient
 const SiteLayout = async ({ children }: { children: React.ReactNode }) => {
-	const session = await authServerApi.api.getSession({
-		headers: await headers(),
-	});
+	const session = await getServerSession();
 	return (
 		<main className="relative h-full w-full z-0">
 			<div className="bg-accent-pink/70 absolute -top-30 right-1 -z-10 h-50 w-96 opacity-45 bg-blend-multiply blur-[100px] dark:opacity-30" />
