@@ -15,14 +15,12 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-	useSidebar,
 } from '@/components/ui/sidebar';
 import { IWorkSpace } from '@/db/schemas';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import WorkspaceSetupModal from '../workspace/workspace/workspace-setup-modal';
 import { useState } from 'react';
 import Avatar from './avatar';
+import Link from 'next/link';
 
 const SwitchItemSkeleton = () => {
 	return (
@@ -41,22 +39,13 @@ const SwitchItemSkeleton = () => {
 function SpaceSwitcher({
 	activeWorkspace,
 	workspaces,
+	dropdownContentAlign = 'bottom',
 }: {
 	workspaces: IWorkSpace[];
 	activeWorkspace?: IWorkSpace;
+	dropdownContentAlign?: 'bottom' | 'right' | 'top' | 'left' | undefined;
 }) {
 	const [openAddWorkspace, setOpenAddWorkspace] = useState(false);
-	const { isMobile } = useSidebar();
-	const router = useRouter();
-	const [isLoading, setIsLoading] = useState(false);
-
-	// Simple workspace switching that prevents re-rendering loops
-	const handleWorkspaceSwitch = (workspaceId: string) => {
-		if (activeWorkspace?.id !== workspaceId) {
-			setIsLoading(true);
-			window.location.pathname = `/space/${workspaceId}`;
-		}
-	};
 
 	return (
 		<>
@@ -106,7 +95,7 @@ function SpaceSwitcher({
 						<DropdownMenuContent
 							className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
 							align="start"
-							side={isMobile ? 'bottom' : 'right'}
+							side={dropdownContentAlign}
 							sideOffset={4}
 						>
 							<DropdownMenuLabel className="text-muted-foreground text-xs">
@@ -115,26 +104,26 @@ function SpaceSwitcher({
 							{workspaces?.map((team, index) => (
 								<DropdownMenuItem
 									key={team.name}
-									onClick={() =>
-										handleWorkspaceSwitch(team.id)
-									}
 									className="gap-2 p-2 cursor-pointer"
-									disabled={isLoading}
+									disabled={activeWorkspace?.id === team.id}
+									asChild
 								>
-									<div className="border-secondary-500/50 flex size-6 items-center justify-center rounded-sm border">
-										<Avatar
-											shape="rounded"
-											href={team.logo ?? ''}
-											alt={team.name}
-											className="size-6"
-											initial={team.icon}
-											fallbackClassName="text-base"
-										/>
-									</div>
-									{team.name}
-									<DropdownMenuShortcut>
-										⌘{index + 1}
-									</DropdownMenuShortcut>
+									<Link href={`/space/${team.id}`}>
+										<div className="border-secondary-500/50 flex size-6 items-center justify-center rounded-sm border">
+											<Avatar
+												shape="rounded"
+												href={team.logo ?? ''}
+												alt={team.name}
+												className="size-6"
+												initial={team.icon}
+												fallbackClassName="text-base"
+											/>
+										</div>
+										{team.name}
+										<DropdownMenuShortcut>
+											⌘{index + 1}
+										</DropdownMenuShortcut>
+									</Link>
 								</DropdownMenuItem>
 							))}
 							<DropdownMenuSeparator />

@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 import { env } from '@/env';
 import { createTRPCContext } from '@/server/trpc';
 import { appRouter } from '@/server';
-import { logger } from '@/utils';
+import { logger } from '@/lib/utils';
 
 // export const runtime = "edge"; // Optional for Edge runtime
 const createContextNext = (req: NextRequest) => {

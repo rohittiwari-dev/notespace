@@ -1,5 +1,5 @@
 import { constants } from '@/lib/constants';
-import { getBaseUrl } from '@/utils/getBaseUrl';
+import { getBaseUrl } from '@/lib/utils/getBaseUrl';
 import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {

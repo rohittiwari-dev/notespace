@@ -45,6 +45,7 @@ export const WorkspaceTable = pgTable(
 			.default(sql`ARRAY[]::varchar[]`),
 		description: text().notNull(),
 		logo: text(),
+		logo_public_id: text(),
 		in_trash: boolean().default(false),
 		updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
 			sql`now()`,

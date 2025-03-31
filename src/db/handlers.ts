@@ -1,4 +1,4 @@
-import { IS_DEV, logger } from '@/utils';
+import { IS_DEV, logger } from '@/lib/utils';
 import { DrizzleError } from 'drizzle-orm';
 
 /**

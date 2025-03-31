@@ -30,7 +30,7 @@ import { api } from '@/lib/trpc/client';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import Spinner from '@/components/app-ui/spinner';
-import { fileToBase64 } from '@/utils/fileToBase64';
+import { fileToBase64 } from '@/lib/utils/fileToBase64';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { authClientApi } from '@/lib/auth/client';
@@ -258,6 +258,7 @@ function SetupWorkspace({
 							type="text"
 							disabled={isPending}
 							placeholder="Name"
+							maxLength={25}
 							{...form?.register('workspaceName')}
 							className="dark:bg-secondary-800/80 bg-secondary-100 !border dark:!border-secondary-700/60"
 						/>
@@ -276,7 +277,7 @@ function SetupWorkspace({
 							Workspace Description
 							<p className="text-xs text-muted-foreground font-normal">
 								Workspace Description is small information about
-								your workspace.
+								your workspace. (Max 80 characters)
 							</p>
 						</Label>
 
@@ -284,8 +285,9 @@ function SetupWorkspace({
 							placeholder="Description"
 							disabled={isPending}
 							autoFocus={true}
+							maxLength={80}
 							{...form?.register('workspaceDescription')}
-							className="dark:bg-secondary-800/80 bg-secondary-100 !border dark:!border-secondary-700/60"
+							className="dark:bg-secondary-800/80 max-h-[100px] bg-secondary-100 !border dark:!border-secondary-700/60"
 						/>
 						{form?.formState.errors.workspaceDescription?.message &&
 							form?.formState.touchedFields
@@ -305,8 +307,10 @@ function SetupWorkspace({
 						className="w-full"
 						disabled={isPending}
 					>
-						{isPending && <Spinner color="secondary" />} Create
-						Workspace
+						{isPending && (
+							<Spinner className="dark:text-foreground text-background" />
+						)}
+						Create Workspace
 					</Button>
 				</CardFooter>
 			</form>

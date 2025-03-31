@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,7 +15,7 @@ const compat = new FlatCompat({
 	allConfig: js.configs.all,
 });
 
-const eslintConfig = [
+const eslintConfig = defineConfig([
 	{
 		ignores: [
 			'node_modules/',
@@ -68,6 +69,6 @@ const eslintConfig = [
 		},
 	}),
 	eslintConfigPrettier,
-];
+]);
 
 export default eslintConfig;

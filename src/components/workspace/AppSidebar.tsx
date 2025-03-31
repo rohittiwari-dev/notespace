@@ -2,12 +2,9 @@
 
 import * as React from 'react';
 import {
-	CameraIcon,
 	ClipboardListIcon,
 	DatabaseIcon,
-	FileCodeIcon,
 	FileIcon,
-	FileTextIcon,
 	HelpCircleIcon,
 	InboxIcon,
 	LayoutDashboardIcon,
@@ -20,8 +17,11 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
+	SidebarMenuItem,
+	SidebarMenu,
+	useSidebar,
 } from '@/components/ui/sidebar';
-import UserView from '../app-ui/user-view';
+import UserButton from '../app-ui/user-button';
 import { NavMain } from './sidebar-component/nav-main';
 
 import { NavSecondary } from './sidebar-component/nav-secondary';
@@ -31,7 +31,17 @@ import { IWorkSpace } from '@/db/schemas';
 import { User } from 'better-auth';
 import { NavModules } from './sidebar-component/nav-modules';
 
-const data = {
+const getSidebarData = ({
+	isMobile,
+	user,
+	workspaces,
+	currentWorkspace,
+}: {
+	isMobile?: boolean;
+	user?: User;
+	workspaces?: IWorkSpace[];
+	currentWorkspace?: IWorkSpace;
+} = {}) => ({
 	navMain: [
 		{
 			title: 'Dashboard',
@@ -54,58 +64,10 @@ const data = {
 			icon: WorkflowIcon,
 		},
 	],
-	navClouds: [
-		{
-			title: 'Capture',
-			icon: CameraIcon,
-			isActive: true,
-			url: '#',
-			items: [
-				{
-					title: 'Active Proposals',
-					url: '#',
-				},
-				{
-					title: 'Archived',
-					url: '#',
-				},
-			],
-		},
-		{
-			title: 'Proposal',
-			icon: FileTextIcon,
-			url: '#',
-			items: [
-				{
-					title: 'Active Proposals',
-					url: '#',
-				},
-				{
-					title: 'Archived',
-					url: '#',
-				},
-			],
-		},
-		{
-			title: 'Prompts',
-			icon: FileCodeIcon,
-			url: '#',
-			items: [
-				{
-					title: 'Active Proposals',
-					url: '#',
-				},
-				{
-					title: 'Archived',
-					url: '#',
-				},
-			],
-		},
-	],
 	navSecondary: [
 		{
 			title: 'Settings',
-			url: '#',
+			url: `/space/${currentWorkspace?.id}/settings`,
 			icon: SettingsIcon,
 		},
 		{
@@ -131,7 +93,7 @@ const data = {
 			icon: FileIcon,
 		},
 	],
-};
+});
 
 function AppSidebar({
 	currentWorkspace,
@@ -143,16 +105,24 @@ function AppSidebar({
 	workspaces: IWorkSpace[];
 	user: User;
 }) {
+	const { isMobile } = useSidebar();
+	const data = getSidebarData({
+		isMobile,
+		user,
+		workspaces,
+		currentWorkspace,
+	});
 	return (
 		<Sidebar
 			collapsible="icon"
 			variant="sidebar"
-			className="border-r-accent/40 select-none"
+			className="border-r-accent/40 shadow select-none"
 			{...props}
 		>
 			<SidebarHeader>
 				<SpaceSwitcher
 					workspaces={workspaces ?? []}
+					dropdownContentAlign={isMobile ? 'bottom' : 'right'}
 					activeWorkspace={currentWorkspace}
 				/>
 			</SidebarHeader>
@@ -162,11 +132,16 @@ function AppSidebar({
 				<NavSecondary items={data.navSecondary} className="mt-auto" />
 			</SidebarContent>
 			<SidebarFooter>
-				<UserView
-					name={user.name ?? ''}
-					email={user.email ?? ''}
-					avatar={user.image ?? ''}
-				/>
+				<SidebarMenu>
+					<SidebarMenuItem>
+						<UserButton
+							dropdownContentAlign={isMobile ? 'bottom' : 'right'}
+							name={user.name ?? ''}
+							email={user.email ?? ''}
+							avatar={user.image ?? ''}
+						/>
+					</SidebarMenuItem>
+				</SidebarMenu>
 			</SidebarFooter>
 		</Sidebar>
 	);

@@ -7,6 +7,8 @@ import { SIDEBAR_COOKIE_NAME } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 import { api } from '@/lib/trpc/server';
 import { getLoggedInUser } from '@/server/actions/auth.actions';
+import PageTitle from '@/components/app-ui/page-title';
+import SpaceFooter from '@/components/workspace/space-footer';
 
 const SpaceLayout = async ({
 	children,
@@ -53,17 +55,20 @@ const SpaceLayout = async ({
 					workspaces={workspaces ?? []}
 				/>
 				<SidebarInset className="!bg-transparent">
-					<SpaceHeader
-						routePatterns={[
+					<SpaceHeader user={user} />
+
+					<main className="flex flex-1 flex-col gap-4 p-4 pt-0">
+						{children}
+					</main>
+					<SpaceFooter
+						breadcrumbEnabled
+						breadcrumbsActivePaths={[
 							'/space/[workspaceId]',
-							'/space/[workspaceId]/test/test',
+							'/space/[workspaceId]/settings',
 							'/space',
 						]}
 						workspace={currentWorkspace}
 					/>
-					<main className="flex flex-1 flex-col gap-4 p-4 pt-0">
-						{children}
-					</main>
 				</SidebarInset>
 			</SidebarProvider>
 		);

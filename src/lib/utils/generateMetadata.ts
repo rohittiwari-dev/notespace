@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { getBaseUrl } from '@/utils/getBaseUrl';
+import { getBaseUrl } from '@/lib/utils/getBaseUrl';
 import { constants } from '@/lib/constants';
 
 /**

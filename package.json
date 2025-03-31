@@ -3,7 +3,15 @@
 	"version": "0.1.0",
 	"private": true,
 	"description": "Second Home for Students for boosting Productivity",
-	"license": "AGPL-3.0-or-later",
+	"homepage": "https://github.com/rohittiwari-dev/notespace#readme",
+	"bugs": {
+		"url": "https://github.com/rohittiwari-dev/notespace/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rohittiwari-dev/notespace.git"
+	},
+	"license": "AGPL-3.0",
 	"author": "Rohit Tiwari",
 	"type": "module",
 	"workspaces": [

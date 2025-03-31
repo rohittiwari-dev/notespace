@@ -3,6 +3,7 @@
 import {
 	FolderIcon,
 	MoreHorizontalIcon,
+	PlusCircleIcon,
 	ShareIcon,
 	type LucideIcon,
 } from 'lucide-react';
@@ -36,7 +37,17 @@ export function NavModules({
 
 	return (
 		<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-			<SidebarGroupLabel>Modules</SidebarGroupLabel>
+			<SidebarGroupLabel className="flex items-center justify-between mr-0 pr-0">
+				<span>Modules</span>
+				<SidebarMenuButton
+					tooltip="Quick Create"
+					size="sm"
+					className="cursor-pointer max-w-min m-0"
+				>
+					<PlusCircleIcon />
+				</SidebarMenuButton>
+			</SidebarGroupLabel>
+
 			<SidebarMenu>
 				{items.map((item) => (
 					<SidebarMenuItem key={item.name}>

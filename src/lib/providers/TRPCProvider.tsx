@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { loggerLink, httpBatchStreamLink } from '@trpc/client';
 import superjson from 'superjson';
-import { getBaseUrl } from '@/utils/getBaseUrl';
+import { getBaseUrl } from '@/lib/utils/getBaseUrl';
 import { api } from '@/lib/trpc/client';
-import { IS_DEV } from '@/utils';
+import { IS_DEV } from '@/lib/utils';
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const createQueryClient = () => clientQueryClientSingleton ?? new QueryClient();

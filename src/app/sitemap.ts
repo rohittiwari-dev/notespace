@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import { getBaseUrl } from '@/utils/getBaseUrl';
+import { getBaseUrl } from '@/lib/utils';
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const docs = [

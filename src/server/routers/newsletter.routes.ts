@@ -1,7 +1,7 @@
 import { createRouter } from '../trpc';
 import publicProcedure from '../procedures/publicProcedure';
 import { z } from 'zod';
-import validateEmail from '@/utils/email-validator';
+import validateEmail from '@/lib/utils/email-validator';
 import { subscribeNewsletter } from '@/server/actions/repositories/newsletter.repo';
 import { SuccessResponse } from '@/db/handlers';
 

@@ -1,6 +1,6 @@
-import { IS_PRODUCTION } from '@/utils/environment';
+import { IS_PRODUCTION } from '@/lib/utils/environment';
 import { DrizzleError, TransactionRollbackError } from 'drizzle-orm';
-import { logger } from '@/utils/logger';
+import { logger } from '@/lib/utils/logger';
 
 function shouldRedact<T extends Error>(error: T) {
 	return (
