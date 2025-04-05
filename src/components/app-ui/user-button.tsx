@@ -83,17 +83,17 @@ function UserButton({
 					className={cn(
 						'data-[state=open]:bg-sidebar-accent px-2 w-full select-none cursor-pointer data-[state=open]:text-sidebar-accent-foreground',
 						variant === 'header' &&
-							'w-fit rounded-full p-0.5 h-fit',
+							'w-fit rounded-full p-0.5 h-fit hover:bg-accent/90',
 					)}
 				>
 					<Avatar
 						className={cn(
-							'h-7 w-7',
-							variant === 'sidebar' && 'rounded-lg w-8 h-8',
+							'w-[2.2rem] h-[2.2rem]',
+							variant === 'sidebar' && 'rounded-lg',
 						)}
 						fallbackClassName={cn(
-							'h-7 w-7',
-							variant === 'sidebar' && 'rounded-lg w-8 h-8',
+							'w-[2.2rem] h-[2.2rem]',
+							variant === 'sidebar' && 'rounded-lg',
 						)}
 						href={avatar}
 						alt={name}

@@ -17,8 +17,8 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
-	SidebarMenuItem,
 	SidebarMenu,
+	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
 import UserButton from '../app-ui/user-button';
@@ -32,9 +32,6 @@ import { User } from 'better-auth';
 import { NavModules } from './sidebar-component/nav-modules';
 
 const getSidebarData = ({
-	isMobile,
-	user,
-	workspaces,
 	currentWorkspace,
 }: {
 	isMobile?: boolean;

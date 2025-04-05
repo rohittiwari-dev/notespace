@@ -20,9 +20,9 @@
 	--radius: 0.4rem;
 
 	/* Colors Declaration */
-	--dark: #1d1f21;
-	--light: #f0f1f7;
-	--accent-purple: #6a53d2;
+	--dark: hsl(240, 13%, 9%);
+	--light: #f3f3f8;
+	--accent-purple: #5b53d2;
 	--accent-orange: #dc6a33;
 	--accent-pink: #d5295b;
 	--accent-yellow: #c6a92a;
@@ -35,14 +35,14 @@
 	--popover: var(--color-gray-100);
 	--primary: var(--color-primary-500);
 	--primary-foreground: var(--color-primary-100);
-	--secondary-foreground: var(--color-secondary-800);
-	--secondary: var(--color-secondary-100);
+	--secondary-foreground: var(--color-dark);
+	--secondary: var(--color-light);
 	--muted-foreground: var(--color-secondary-700);
 	--muted: var(--color-secondary-500);
 	--accent-foreground: var(--color-primary-600);
 	--accent: var(--color-primary-100);
 	--destructive: var(--color-red-700);
-	--destructive-foreground: var(--color-red-50);
+	--destructive-foreground: var(--color-red-100);
 	--border: var(--color-primary-100);
 	--input: var(--color-secondary-100);
 	--ring: var(--color-primary-400);
@@ -71,9 +71,9 @@
 /* Dark Color Replacements */
 .dark {
 	/* Colors Declaration */
-	--dark: #1d1f21;
+	--dark: hsl(240, 13%, 9%);
 	--light: #f0f1f7;
-	--accent-purple: #937aff;
+	--accent-purple: #5b53d2;
 	--accent-orange: #ff915b;
 	--accent-pink: #ff5887;
 	--accent-yellow: #ffdf53;
@@ -86,13 +86,13 @@
 	--popover-foreground: var(--color-gray-100);
 	--primary: var(--color-primary-500);
 	--primary-foreground: var(--color-primary-100);
-	--secondary: var(--color-secondary-800);
-	--secondary-foreground: var(--color-secondary-300);
+	--secondary: var(--color-dark);
+	--secondary-foreground: var(--color-light);
 	--muted: var(--color-secondary-700);
 	--muted-foreground: var(--color-secondary-500);
 	--accent: var(--color-primary-600);
 	--accent-foreground: var(--color-primary-100);
-	--destructive: var(--color-red-900);
+	--destructive: var(--color-red-700);
 	--destructive-foreground: var(--color-red-100);
 	--border: var(--color-primary-800);
 	--input: var(--color-secondary-800);
@@ -106,7 +106,7 @@
 	--chart-5: hsl(340 75% 55%);
 
 	/* Sidebar colors */
-	--sidebar: hsla(240, 14%, 11%, 0.6);
+	--sidebar: var(--color-dark);
 	--sidebar-foreground: var(--card-foreground);
 	--sidebar-primary: var(--primary);
 	--sidebar-primary-foreground: var(--primary-foreground);

@@ -31,7 +31,7 @@ const Avatar: React.FC<AvatarProps> = ({
 	return (
 		<CoreAvatar.Avatar
 			className={cn(
-				`size-[${size}px] dark:bg-secondary-700/60 bg-secondary-100`,
+				`size-[${size}px] dark:bg-secondary-700/60 ring-1 w-full h-full ring-accent/80 bg-secondary-100`,
 				ring && 'ring-1',
 				ring && ringColor,
 				'border-border',
@@ -42,7 +42,7 @@ const Avatar: React.FC<AvatarProps> = ({
 			)}
 		>
 			<CoreAvatar.AvatarImage
-				className={imageClassName}
+				className={cn('w-full h-full', imageClassName)}
 				src={href}
 				alt={alt}
 			/>
@@ -59,7 +59,7 @@ const Avatar: React.FC<AvatarProps> = ({
 					fallbackClassName,
 				)}
 			>
-				{initial}
+				<span className="text-foreground">{initial}</span>
 			</CoreAvatar.AvatarFallback>
 		</CoreAvatar.Avatar>
 	);

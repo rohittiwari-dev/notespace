@@ -10,7 +10,17 @@ import { api } from '@/lib/trpc/client';
 import { IS_DEV } from '@/lib/utils';
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
-const createQueryClient = () => clientQueryClientSingleton ?? new QueryClient();
+const createQueryClient = () =>
+	clientQueryClientSingleton ??
+	new QueryClient({
+		defaultOptions: {
+			queries: {
+				staleTime: 5 * 1000, // 5 seconds
+				retry: 1,
+				refetchOnWindowFocus: process.env.NODE_ENV === 'production',
+			},
+		},
+	});
 
 const getQueryClient = () => {
 	if (!clientQueryClientSingleton || typeof window === 'undefined') {

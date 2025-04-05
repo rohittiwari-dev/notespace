@@ -16,49 +16,22 @@ import {
 	TooltipTrigger,
 	TooltipContent,
 } from '@/components/ui/tooltip';
-import EmojiPicker from '../../app-ui/EmojiPicker';
+import EmojiPicker from '../app-ui/EmojiPicker';
 import { Info, Upload, Trash } from 'lucide-react';
 import React from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ACCEPTED_IMAGE_TYPES } from '@/lib/constants';
-import { MAX_FILE_SIZE } from '@/lib/constants';
 import Image from 'next/image';
 import { api } from '@/lib/trpc/client';
 
-import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import Spinner from '@/components/app-ui/spinner';
 import { fileToBase64 } from '@/lib/utils/fileToBase64';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { authClientApi } from '@/lib/auth/client';
-
-const WorkspaceSetupSchema = z.object({
-	workspaceName: z.string().min(1, { message: 'Workspace name is required' }),
-	workspaceLogo: z
-		.custom<FileList>()
-		.refine(
-			(files) => {
-				return (files?.[0]?.size || MAX_FILE_SIZE) <= MAX_FILE_SIZE;
-			},
-			{
-				message: `More than ${MAX_FILE_SIZE} are not allowed`,
-			},
-		)
-		.refine(
-			(files) =>
-				ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type || 'image/jpeg'),
-			{
-				message:
-					'Only .jpg, .jpeg, .png and .webp formats are supported.',
-			},
-		)
-		.optional(),
-	workspaceDescription: z.string().nonempty(),
-	workSpaceIcon: z.string().default('📦').optional(),
-});
+import { WorkspaceSetupSchema } from '@/lib/formschemas';
+import useAppStore from '@/store';
 
 function SetupWorkspace({
 	cardClassName,
@@ -70,7 +43,7 @@ function SetupWorkspace({
 	handleOnSuccess?: (workspace: any) => void;
 }) {
 	const router = useRouter();
-	const { data: session } = authClientApi.useSession();
+	const { state } = useAppStore();
 	const { mutateAsync, isPending } =
 		api.workspace.createWorkspace.useMutation();
 
@@ -78,10 +51,9 @@ function SetupWorkspace({
 	const form = useForm<z.infer<typeof WorkspaceSetupSchema>>({
 		resolver: zodResolver(WorkspaceSetupSchema),
 		defaultValues: {
-			workspaceName: 'Personal',
+			workspaceName: '',
 			workspaceLogo: undefined,
 			workSpaceIcon: '📦',
-			workspaceDescription: undefined,
 		},
 	});
 	const selectedWorkspaceLogo = form?.watch('workspaceLogo');
@@ -98,8 +70,7 @@ function SetupWorkspace({
 			const workspace = await mutateAsync({
 				name: data.workspaceName,
 				icon: data.workSpaceIcon as string,
-				owner: session?.user?.id as string,
-				description: data.workspaceDescription,
+				owner: state?.user?.id as string,
 				logo: base64Logo
 					? {
 							fileName: logo?.name as string,
@@ -268,34 +239,6 @@ function SetupWorkspace({
 									{
 										form?.formState.errors.workspaceName
 											.message
-									}
-								</p>
-							)}
-					</div>
-					<div className="flex flex-col gap-2">
-						<Label className="text-xs flex-col flex text-accent-foreground font-normal">
-							Workspace Description
-							<p className="text-xs text-muted-foreground font-normal">
-								Workspace Description is small information about
-								your workspace. (Max 80 characters)
-							</p>
-						</Label>
-
-						<Textarea
-							placeholder="Description"
-							disabled={isPending}
-							autoFocus={true}
-							maxLength={80}
-							{...form?.register('workspaceDescription')}
-							className="dark:bg-secondary-800/80 max-h-[100px] bg-secondary-100 !border dark:!border-secondary-700/60"
-						/>
-						{form?.formState.errors.workspaceDescription?.message &&
-							form?.formState.touchedFields
-								.workspaceDescription && (
-								<p className="text-[.7rem] text-red-500">
-									{
-										form?.formState.errors
-											.workspaceDescription.message
 									}
 								</p>
 							)}

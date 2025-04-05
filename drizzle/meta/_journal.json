@@ -15,6 +15,27 @@
       "when": 1743371542281,
       "tag": "0001_curious_alex_power",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1743438104941,
+      "tag": "0002_slippery_the_fallen",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1743438230251,
+      "tag": "0003_shocking_argent",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1743830178661,
+      "tag": "0004_magenta_nightshade",
+      "breakpoints": true
     }
   ]
 }

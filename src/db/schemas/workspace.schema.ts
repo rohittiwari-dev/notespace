@@ -31,9 +31,6 @@ export const WorkspaceTable = pgTable(
 			.$defaultFn(() => createId()),
 		name: varchar({ length: 128 }).notNull(),
 		icon: varchar({ length: 128 }).notNull(),
-		thumb_nail: text(),
-		bio: text(),
-		purpose: text(),
 		owner: text()
 			.notNull()
 			.references(() => UserTable.id, {
@@ -43,7 +40,6 @@ export const WorkspaceTable = pgTable(
 		tags: varchar({ length: 128 })
 			.array()
 			.default(sql`ARRAY[]::varchar[]`),
-		description: text().notNull(),
 		logo: text(),
 		logo_public_id: text(),
 		in_trash: boolean().default(false),
@@ -54,9 +50,13 @@ export const WorkspaceTable = pgTable(
 			sql`now()`,
 		),
 	},
-	(t) => ({
-		unique_name: uniqueIndex('user_unique_workspace').on(t.name, t.owner),
-	}),
+	(t) => [
+		{
+			unique_workspace_name_index: uniqueIndex(
+				'user_unique_workspace',
+			).on(t.name, t.owner),
+		},
+	],
 );
 
 export const ModuleTable = pgTable('modules', {
@@ -74,7 +74,7 @@ export const ModuleTable = pgTable('modules', {
 	description: text().notNull(),
 	logo: text(),
 	in_trash: boolean().default(false),
-	thumb_nail: text(),
+	thumbnail: text(),
 	tags: varchar({ length: 128 })
 		.array()
 		.default(sql`ARRAY[]::varchar[]`),

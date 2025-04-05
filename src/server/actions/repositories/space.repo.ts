@@ -77,3 +77,30 @@ export const getWorkspace = async (workspaceId: string) => {
 		});
 	}
 };
+
+export const updateWorkspace = async (
+	workspaceId: string,
+	workspace: Partial<IWorkSpaceInsert>,
+) => {
+	try {
+		const data = await db
+			.update(WorkspaceTable)
+			.set(workspace)
+			.where(eq(WorkspaceTable.id, workspaceId))
+			.returning();
+
+		if (!data[0]) {
+			throw new Error('Workspace not found');
+		}
+
+		return SuccessResponse<IWorkSpace>({
+			data: data[0],
+			message: 'Workspace updated',
+		});
+	} catch (error) {
+		throw ErrorResponse({
+			error: error as DrizzleError,
+			message: (error as DrizzleError).message || 'Workspace not found',
+		});
+	}
+};

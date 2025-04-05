@@ -1,7 +1,7 @@
 'use client';
-import React, { use } from 'react';
-import { api } from '@/lib/trpc/client';
-import { authClientApi } from '@/lib/auth/client';
+import React, { use, useEffect } from 'react';
+
+import useAppStore from '@/store';
 
 function withSpace(Component: React.ComponentType<any>) {
 	const ChildComponent = function ({
@@ -12,16 +12,25 @@ function withSpace(Component: React.ComponentType<any>) {
 		[key: string]: any;
 	}) {
 		const { workspaceId } = use(params);
-		const { data: session } = authClientApi.useSession();
-		const { data: workspace, isFetching } =
-			api.workspace.getWorkspace.useQuery({
-				workspaceId,
-			});
+		const {
+			setSelectedWorkspace,
+			state: {
+				session,
+				user,
+				workspace: { selectedWorkspace: workspace },
+			},
+		} = useAppStore();
 
-		return isFetching ? (
-			<div>Loading...</div>
-		) : (
-			<Component {...props} workspace={workspace} session={session} />
+		useEffect(() => {
+			setSelectedWorkspace(workspaceId);
+		}, [setSelectedWorkspace, workspaceId]);
+
+		return (
+			<Component
+				{...props}
+				workspace={workspace}
+				session={{ session, user }}
+			/>
 		);
 	};
 

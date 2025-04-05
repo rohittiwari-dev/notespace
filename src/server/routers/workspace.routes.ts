@@ -2,6 +2,7 @@ import {
 	createWorkspace,
 	getWorkspace,
 	getWorkspaces,
+	updateWorkspace,
 } from '@/server/actions/repositories/space.repo';
 import authProcedure from '../procedures/protectedProcedure';
 import { createRouter } from '../trpc';
@@ -61,6 +62,62 @@ const workspaceRouter = createRouter({
 		.query(async ({ input }) => {
 			const workspace = await getWorkspace(input.workspaceId);
 			return workspace.data;
+		}),
+
+	updateWorkspace: authProcedure
+		.input(
+			z.object({
+				workspaceId: z.string(),
+				workspace: validators.IWorkspaceUpdateSchema.extend({
+					logo: z
+						.object({
+							fileName: z.string(),
+							fileType: z.string(),
+							fileData: z.string(),
+							fileSize: z
+								.number()
+								.max(
+									5 * 1024 * 1024,
+									'File size must be under 5MB',
+								), // 5MB limit
+						})
+						.optional(),
+				}),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			const { workspaceId, workspace } = input;
+
+			const workspaceData = await getWorkspace(workspaceId);
+			if (!workspaceData) {
+				throw new Error('Workspace not found');
+			}
+			const { logo_public_id } = workspaceData.data;
+			if (logo_public_id) {
+				await cloudinary.uploader.destroy(logo_public_id);
+			}
+			const { logo } = workspace;
+			let uploadResult;
+			if (logo)
+				uploadResult = await cloudinary.uploader.upload(
+					`data:image/png;base64,${logo?.fileData}`,
+					{
+						folder: 'workspace_logos',
+						public_id: `${logo?.fileName.split('.')[0]}-${createId()}`,
+						overwrite: true,
+					},
+				);
+			const updateWorkspaceObject = {
+				...workspace,
+				logo: uploadResult ? uploadResult.secure_url : undefined,
+				logo_public_id: uploadResult?.public_id,
+				id: undefined,
+			};
+			const updatedWorkspace = await updateWorkspace(
+				workspaceId,
+				updateWorkspaceObject,
+			);
+			return updatedWorkspace.data;
 		}),
 });
 

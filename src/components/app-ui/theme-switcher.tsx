@@ -30,7 +30,7 @@ export default function ThemeSwitcher({ className }: { className?: string }) {
 				size="icon"
 				onClick={toggleTheme}
 				className={cn(
-					'dark:bg-secondary-900/70 rounded-full p-4 transition-colors duration-200 hover:dark:bg-indigo-950/70',
+					'dark:bg-secondary-700/60 bg-secondary-100 ring-1 !ring-accent/80 rounded-full p-4 transition-colors duration-200 hover:dark:bg-primary/40',
 					className,
 				)}
 			>

@@ -17,7 +17,7 @@ import {
 	SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { IWorkSpace } from '@/db/schemas';
-import WorkspaceSetupModal from '../workspace/workspace/workspace-setup-modal';
+import WorkspaceSetupModal from '../workspace/workspace-setup-modal';
 import { useState } from 'react';
 import Avatar from './avatar';
 import Link from 'next/link';
@@ -56,7 +56,7 @@ function SpaceSwitcher({
 							<SidebarMenuButton
 								disabled={!activeWorkspace}
 								size="lg"
-								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+								className="data-[state=open]:bg-sidebar-accent cursor-pointer data-[state=open]:text-sidebar-accent-foreground"
 							>
 								{!activeWorkspace ? (
 									<SwitchItemSkeleton />
@@ -83,8 +83,7 @@ function SpaceSwitcher({
 												{activeWorkspace?.name ?? ''}
 											</span>
 											<span className="truncate text-xs">
-												{activeWorkspace?.description ??
-													''}
+												✨Free
 											</span>
 										</div>
 										<ChevronsUpDown className="ml-auto" />
@@ -104,7 +103,7 @@ function SpaceSwitcher({
 							{workspaces?.map((team, index) => (
 								<DropdownMenuItem
 									key={team.name}
-									className="gap-2 p-2 cursor-pointer"
+									className="gap-2 p-2 hover:bg-accent/70 cursor-pointer"
 									disabled={activeWorkspace?.id === team.id}
 									asChild
 								>

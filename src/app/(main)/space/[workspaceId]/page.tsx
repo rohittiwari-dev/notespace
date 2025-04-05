@@ -1,22 +1,17 @@
-import { api } from '@/lib/trpc/server';
-import { redirect } from 'next/navigation';
+'use client';
+
+import useAppStore from '@/store';
+
 import React from 'react';
 
-async function SpaceWorkspacePage({
-	params,
-}: {
-	params: Promise<{ workspaceId: string }>;
-}) {
-	const { workspaceId } = await params;
-	const workspace = await api.workspace
-		.getWorkspace({
-			workspaceId,
-		})
-		.catch(() => {
-			redirect('/space');
-		});
+function SpaceWorkspacePage() {
+	const { state } = useAppStore();
 
-	return <div>SpaceWorkspacePage : {workspace?.name}</div>;
+	return (
+		<div>
+			SpaceWorkspacePage : {state?.workspace?.selectedWorkspace?.name}
+		</div>
+	);
 }
 
 export default SpaceWorkspacePage;

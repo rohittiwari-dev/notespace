@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 import { api } from '@/lib/trpc/server';
-import SetupWorkspace from '@/components/workspace/workspace/setup-workspace';
+import SetupWorkspace from '@/components/workspace/setup-workspace';
 
 const SpacePage = async () => {
 	const user = await getLoggedInUser();

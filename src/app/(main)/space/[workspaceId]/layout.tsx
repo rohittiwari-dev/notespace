@@ -7,8 +7,9 @@ import { SIDEBAR_COOKIE_NAME } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 import { api } from '@/lib/trpc/server';
 import { getLoggedInUser } from '@/server/actions/auth.actions';
-import PageTitle from '@/components/app-ui/page-title';
 import SpaceFooter from '@/components/workspace/space-footer';
+
+export const dynamic = 'force-dynamic';
 
 const SpaceLayout = async ({
 	children,
