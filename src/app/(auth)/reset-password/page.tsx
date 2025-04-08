@@ -20,8 +20,9 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { authClientApi } from '@/lib/auth/client';
-import { ShineBorder } from '@/components/primitives/shine-border';
+
 import { useTheme } from 'next-themes';
+import { MagicCard } from '@/components/primitives/magic-card';
 
 export default function ResetPassword() {
 	const { theme } = useTheme();
@@ -58,73 +59,72 @@ export default function ResetPassword() {
 		<div className="relative z-0 container flex h-full w-full flex-col items-center">
 			<ThemeSwitcher className="absolute top-8 right-10" />
 			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
-				<ShineBorder
-					shineColor={
-						theme == 'dark'
-							? [
-									'var(--color-primary-800)',
-									'var(--color-primary-900)',
-									'var(--color-primary-700)',
-								]
-							: [
-									'var(--color-primary-100)',
-									'var(--color-primary-200)',
-									'var(--color-primary-100)',
-								]
+				<MagicCard
+					gradientColor={
+						theme === 'dark'
+							? 'var(--color-secondary-800)'
+							: 'var(--color-primary-100)'
 					}
-				/>
-				<CardHeader>
-					<CardTitle>Reset password</CardTitle>
-					<CardDescription>
-						Enter new password and confirm it to reset your password
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<form onSubmit={handleSubmit}>
-						<div className="grid w-full items-center gap-4">
-							<div className="flex flex-col gap-4">
-								<Label htmlFor="email">New password</Label>
-								<InputField
-									type="password"
-									id="password"
-									value={password}
-									onChange={(e) => {
-										setPassword(e.target.value);
-									}}
-									autoComplete="password"
-									placeholder="Password"
-								/>
+					className="p-0"
+				>
+					<CardHeader>
+						<CardTitle>Reset password</CardTitle>
+						<CardDescription>
+							Enter new password and confirm it to reset your
+							password
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<form onSubmit={handleSubmit}>
+							<div className="grid w-full items-center gap-4">
+								<div className="flex flex-col gap-4">
+									<Label htmlFor="email">New password</Label>
+									<InputField
+										type="password"
+										id="password"
+										value={password}
+										onChange={(e) => {
+											setPassword(e.target.value);
+										}}
+										autoComplete="password"
+										placeholder="Password"
+									/>
+								</div>
+								<div className="flex flex-col gap-4">
+									<Label htmlFor="email">
+										Confirm password
+									</Label>
+									<InputField
+										type="password"
+										id="password"
+										value={confirmPassword}
+										onChange={(e) => {
+											setConfirmPassword(e.target.value);
+										}}
+										autoComplete="password"
+										placeholder="Password"
+									/>
+								</div>
 							</div>
-							<div className="flex flex-col gap-4">
-								<Label htmlFor="email">Confirm password</Label>
-								<InputField
-									type="password"
-									id="password"
-									value={confirmPassword}
-									onChange={(e) => {
-										setConfirmPassword(e.target.value);
-									}}
-									autoComplete="password"
-									placeholder="Password"
-								/>
-							</div>
-						</div>
-						{error && (
-							<Alert variant="destructive" className="mt-6">
-								<AlertCircle className="h-4 w-4" />
-								<AlertDescription>{error}</AlertDescription>
-							</Alert>
-						)}
-						<Button
-							className="mt-6 w-full"
-							type="submit"
-							disabled={isSubmitting}
-						>
-							{isSubmitting && <Spinner />}
-							{isSubmitting ? 'Resetting...' : 'Reset password'}
-						</Button>
-					</form>
-				</CardContent>
+							{error && (
+								<Alert variant="destructive" className="mt-6">
+									<AlertCircle className="h-4 w-4" />
+									<AlertDescription>{error}</AlertDescription>
+								</Alert>
+							)}
+							<Button
+								className="mt-6 w-full"
+								type="submit"
+								disabled={isSubmitting}
+							>
+								{isSubmitting && <Spinner />}
+								{isSubmitting
+									? 'Resetting...'
+									: 'Reset password'}
+							</Button>
+						</form>
+					</CardContent>
+				</MagicCard>
 			</Card>
 		</div>
 	);

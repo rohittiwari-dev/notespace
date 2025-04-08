@@ -18,8 +18,9 @@ import React, { useState } from 'react';
 import ThemeSwitcher from '@/components/app-ui/theme-switcher';
 import type { BetterAuthError } from 'better-auth';
 import { authClientApi } from '@/lib/auth/client';
-import { ShineBorder } from '@/components/primitives/shine-border';
+
 import { useTheme } from 'next-themes';
+import { MagicCard } from '@/components/primitives/magic-card';
 
 export default function Component() {
 	const { theme } = useTheme();
@@ -53,48 +54,41 @@ export default function Component() {
 			<main className="relative z-0 container flex h-full w-full flex-col items-center">
 				<ThemeSwitcher className="absolute top-8 right-10" />
 				<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
-					<ShineBorder
-						shineColor={
-							theme == 'dark'
-								? [
-										'var(--color-primary-800)',
-										'var(--color-primary-900)',
-										'var(--color-primary-700)',
-									]
-								: [
-										'var(--color-primary-100)',
-										'var(--color-primary-200)',
-										'var(--color-primary-100)',
-									]
+					<MagicCard
+						gradientColor={
+							theme === 'dark' ? '#262626' : '#D9D9D955'
 						}
-					/>
-					<CardHeader>
-						<CardTitle>Check your email</CardTitle>
-						<CardDescription>
-							We&apos;ve sent a password reset link to your email.
-						</CardDescription>
-					</CardHeader>
-					<CardContent>
-						<Alert variant="info">
-							<CheckCircle2 className="h-4 w-4" />
-							<AlertDescription>
-								If you don&apos;t see the email, check your spam
-								folder.
-							</AlertDescription>
-						</Alert>
-					</CardContent>
-					<CardFooter>
-						<Button
-							variant="outline"
-							className="w-full"
-							onClick={() => {
-								setIsSubmitted(false);
-							}}
-						>
-							<ArrowLeft className="mr-2 h-4 w-4" /> Back to reset
-							password
-						</Button>
-					</CardFooter>
+						className="p-0"
+					>
+						<CardHeader>
+							<CardTitle>Check your email</CardTitle>
+							<CardDescription>
+								We&apos;ve sent a password reset link to your
+								email.
+							</CardDescription>
+						</CardHeader>
+						<CardContent>
+							<Alert variant="info">
+								<CheckCircle2 className="h-4 w-4" />
+								<AlertDescription>
+									If you don&apos;t see the email, check your
+									spam folder.
+								</AlertDescription>
+							</Alert>
+						</CardContent>
+						<CardFooter>
+							<Button
+								variant="outline"
+								className="w-full"
+								onClick={() => {
+									setIsSubmitted(false);
+								}}
+							>
+								<ArrowLeft className="mr-2 h-4 w-4" /> Back to
+								reset password
+							</Button>
+						</CardFooter>
+					</MagicCard>
 				</Card>
 			</main>
 		);
@@ -104,66 +98,62 @@ export default function Component() {
 		<main className="relative z-0 container flex h-full w-full flex-col items-center">
 			<ThemeSwitcher className="absolute top-8 right-10" />
 			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
-				<ShineBorder
-					shineColor={
-						theme == 'dark'
-							? [
-									'var(--color-primary-800)',
-									'var(--color-primary-900)',
-									'var(--color-primary-700)',
-								]
-							: [
-									'var(--color-primary-100)',
-									'var(--color-primary-200)',
-									'var(--color-primary-100)',
-								]
+				<MagicCard
+					gradientColor={
+						theme === 'dark'
+							? 'var(--color-secondary-800)'
+							: 'var(--color-primary-100)'
 					}
-				/>
-				<CardHeader className="gap-4">
-					<CardTitle>Forgot password</CardTitle>
-					<CardDescription>
-						Enter your email to reset your password
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<form onSubmit={handleSubmit}>
-						<div className="grid w-full items-center gap-4">
-							<div className="flex flex-col gap-4">
-								<Label htmlFor="email">Email</Label>
-								<Input
-									id="email"
-									type="email"
-									placeholder="Enter your email"
-									value={email}
-									onChange={(e) => {
-										setEmail(e.target.value);
-									}}
-									required
-								/>
+					className="p-0"
+				>
+					<CardHeader className="gap-4">
+						<CardTitle>Forgot password</CardTitle>
+						<CardDescription>
+							Enter your email to reset your password
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<form onSubmit={handleSubmit}>
+							<div className="grid w-full items-center gap-4">
+								<div className="flex flex-col gap-4">
+									<Label htmlFor="email">Email</Label>
+									<Input
+										id="email"
+										type="email"
+										placeholder="Enter your email"
+										value={email}
+										onChange={(e) => {
+											setEmail(e.target.value);
+										}}
+										required
+									/>
+								</div>
 							</div>
-						</div>
-						{error && (
-							<Alert variant="destructive" className="mt-4">
-								<AlertCircle className="h-4 w-4" />
-								<AlertDescription>{error}</AlertDescription>
-							</Alert>
-						)}
-						<Button
-							className="mt-4 w-full"
-							type="submit"
-							disabled={isSubmitting}
-						>
-							{isSubmitting ? 'Sending...' : 'Send reset link'}
-						</Button>
-					</form>
-				</CardContent>
-				<CardFooter className="flex justify-center">
-					<Link href="/sign-in">
-						<Button variant="link" className="px-0">
-							Back to sign in
-						</Button>
-					</Link>
-				</CardFooter>
+							{error && (
+								<Alert variant="destructive" className="mt-4">
+									<AlertCircle className="h-4 w-4" />
+									<AlertDescription>{error}</AlertDescription>
+								</Alert>
+							)}
+							<Button
+								className="mt-4 w-full"
+								type="submit"
+								disabled={isSubmitting}
+							>
+								{isSubmitting
+									? 'Sending...'
+									: 'Send reset link'}
+							</Button>
+						</form>
+					</CardContent>
+					<CardFooter className="flex justify-center">
+						<Link href="/sign-in">
+							<Button variant="link" className="px-0">
+								Back to sign in
+							</Button>
+						</Link>
+					</CardFooter>
+				</MagicCard>
 			</Card>
 		</main>
 	);
