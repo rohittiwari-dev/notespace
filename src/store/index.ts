@@ -3,11 +3,8 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import WorkspaceSlice, { WorkspaceStateSlice } from './slices/workspace.slice';
 import userSlice, { UserStateSlice } from './slices/user.slice';
-import Provider from './Provider';
 
 type StoreState = WorkspaceStateSlice & UserStateSlice;
-
-export const StoreProvider = Provider;
 
 export const usePersistedAppStore = create<StoreState>()(
 	devtools(

@@ -7,7 +7,7 @@ import trpc from '@/lib/trpc/client';
 import { getUrlIds } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 
-function Provider({
+const StoreProvider = ({
 	InitialWorkspaces,
 	session,
 	user,
@@ -17,7 +17,7 @@ function Provider({
 	session: null | Session;
 	user: null | User;
 	InitialWorkspaces: IWorkSpace[];
-}) {
+}) => {
 	const pathname = usePathname();
 	const { fileId, moduleId, workspaceId } = getUrlIds(pathname);
 	const { setWorkspaces, setUserAndSession, setWorkspace } = useAppStore();
@@ -67,6 +67,6 @@ function Provider({
 	]);
 
 	return children;
-}
+};
 
-export default Provider;
+export default StoreProvider;

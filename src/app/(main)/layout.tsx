@@ -1,6 +1,6 @@
 import trpc, { HydrateClient } from '@/lib/trpc/server';
 import { getServerSession } from '@/server/actions/auth.actions';
-import { StoreProvider } from '@/store';
+import StoreProvider from '@/store/StoreProvider';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
