@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
 	Breadcrumb,
 	BreadcrumbEllipsis,
@@ -12,12 +12,12 @@ import {
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { IWorkSpace } from '@/db/schemas/schema.types';
+import { cn, matchesRoutePattern } from '@/lib/utils';
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
-import { cn, matchesRoutePattern } from '@/lib/utils';
 
 type BreadcrumbItem = {
 	label: string;
@@ -28,34 +28,38 @@ type BreadcrumbItem = {
 
 type AutoBreadcrumbsProps = {
 	workspace?: IWorkSpace;
-	// Use Next.js style route patterns
 	routePatterns?: string[];
-	// Number of crumbs to show at the beginning
 	startCrumbs?: number;
-	// Number of crumbs to show at the end
 	endCrumbs?: number;
-	// Whether to use the ellipsis feature
 	useEllipsis?: boolean;
-	// Custom color
 	color?: string;
-	// Custom active page color
 	activePageColor?: string;
 };
 
-/**
- * Renders a breadcrumb item based on its properties
- */
-export const renderBreadcrumbItem = (
+export const RenderBreadcrumbItem = (
 	item: BreadcrumbItem,
-	handleLinkClick: (
-		e: React.MouseEvent,
-		href: string,
-		valid: boolean,
-	) => void,
 	inDropdown = false,
 	activePageColor?: string,
 ) => {
 	const dropdownClass = inDropdown ? 'px-1.5 py-1 !text-xs ' : '';
+
+	// Even stricter check for invalid URLs
+	if (
+		!item.isValidRoute ||
+		!item.href ||
+		item.href.includes('undefined') ||
+		item.href.includes('/null/') ||
+		item.href.endsWith('/null')
+	) {
+		return (
+			<BreadcrumbPage
+				className={`text-muted-foreground ${dropdownClass}`}
+				title="This page doesn't exist"
+			>
+				{item.label}
+			</BreadcrumbPage>
+		);
+	}
 
 	if (item.isCurrent) {
 		return (
@@ -65,35 +69,20 @@ export const renderBreadcrumbItem = (
 				{item.label}
 			</BreadcrumbPage>
 		);
-	} else if (!item.isValidRoute) {
-		return (
-			<BreadcrumbPage
-				className={`text-muted-foreground ${dropdownClass}`}
-				title="This page doesn't exist"
+	}
+
+	return (
+		<BreadcrumbLink asChild>
+			<Link
+				href={item.href}
+				className={`hover:opacity-80 transition-opacity ${
+					inDropdown ? `${dropdownClass} block w-full text-left` : ''
+				}`}
 			>
 				{item.label}
-			</BreadcrumbPage>
-		);
-	} else {
-		return (
-			<BreadcrumbLink asChild>
-				<Link
-					href={item.href}
-					prefetch={true}
-					onClick={(e) =>
-						handleLinkClick(e, item.href, item.isValidRoute)
-					}
-					className={`hover:opacity-80 transition-opacity ${
-						inDropdown
-							? `${dropdownClass} block w-full text-left`
-							: ''
-					}`}
-				>
-					{item.label}
-				</Link>
-			</BreadcrumbLink>
-		);
-	}
+			</Link>
+		</BreadcrumbLink>
+	);
 };
 
 function AutoBreadcrumbs({
@@ -105,23 +94,26 @@ function AutoBreadcrumbs({
 	color = 'text-secondary-400/90',
 	activePageColor = 'text-secondary-foreground',
 }: AutoBreadcrumbsProps) {
+	const [mounted, setMounted] = useState(false);
 	const pathname = usePathname();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 
-	// Prevent navigation to invalid routes
-	const handleLinkClick = useCallback(
-		(e: React.MouseEvent, href: string, valid: boolean) => {
-			if (!valid) {
-				e.preventDefault();
-				e.stopPropagation();
-				console.warn(`Navigation prevented to invalid path: ${href}`);
-			}
-		},
-		[],
-	);
+	// Only run client-side to avoid hydration mismatch
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	// Create and process breadcrumbs
 	const { visibleCrumbs, hiddenCrumbs, needsCollapsing } = useMemo(() => {
+		// Important: Return empty state for SSR to avoid hydration mismatch
+		if (!mounted) {
+			return {
+				visibleCrumbs: [],
+				hiddenCrumbs: [],
+				needsCollapsing: false,
+			};
+		}
+
 		// Get path segments
 		const segments = pathname.replace(/\/$/, '').split('/').filter(Boolean);
 
@@ -147,41 +139,75 @@ function AutoBreadcrumbs({
 
 		// Build all breadcrumbs
 		const crumbs = segments.reduce((acc, segment, i, arr) => {
+			// Skip segments that are invalid
+			if (segment === 'undefined' || segment === 'null' || !segment) {
+				return acc;
+			}
+
 			const href = `/${arr.slice(0, i + 1).join('/')}`;
 			let label = segment;
+			let isValidRoute = true;
 
-			if (i === 0 && segment === 'space') label = 'Space';
-			else if (i === 1 && workspace?.id === segment)
-				label = workspace.name;
-			else
+			if (i === 0 && segment === 'space') {
+				label = 'Space';
+			} else if (
+				workspace &&
+				workspace.id &&
+				i === 1 &&
+				segment === workspace.id
+			) {
+				// Only use workspace name if we have a valid workspace ID and it matches the path
+				label = workspace.name || 'Workspace';
+			} else if (
+				i === 1 &&
+				segments[0] === 'space' &&
+				(!workspace || !workspace.id || segment !== workspace.id)
+			) {
+				// Handle workspace path segments when workspace is undefined or ID doesn't match
+				label = 'Workspace';
+				isValidRoute = false; // Mark as invalid route to prevent linking
+
+				acc.push({
+					label,
+					href,
+					isCurrent: href === pathname || `${href}/` === pathname,
+					isValidRoute,
+				});
+				return acc;
+			} else {
 				label = segment
 					.replace(/-/g, ' ')
 					.replace(/\b\w/g, (c) => c.toUpperCase());
+			}
+
+			// Additional safety check for the href
+			isValidRoute =
+				isValidRoute &&
+				!href.includes('undefined') &&
+				!href.includes('/null/') &&
+				!href.endsWith('/null') &&
+				matchesRoutePattern(href, pathname, routePatterns);
 
 			acc.push({
 				label,
 				href,
 				isCurrent: href === pathname || `${href}/` === pathname,
-				isValidRoute: matchesRoutePattern(
-					href,
-					pathname,
-					routePatterns,
-				),
+				isValidRoute,
 			});
 			return acc;
 		}, [] as BreadcrumbItem[]);
 
 		// Calculate visible segments
 		const totalVisible = startCrumbs + endCrumbs;
-
-		// No need to collapse
 		const shouldCollapse = useEllipsis && crumbs.length > totalVisible;
-		if (!shouldCollapse)
+
+		if (!shouldCollapse) {
 			return {
 				visibleCrumbs: crumbs,
 				hiddenCrumbs: [],
 				needsCollapsing: false,
 			};
+		}
 
 		const visStart = Math.min(startCrumbs, totalVisible - 1);
 		const visEnd = Math.min(endCrumbs, totalVisible - visStart);
@@ -198,14 +224,20 @@ function AutoBreadcrumbs({
 		};
 	}, [
 		pathname,
-		useEllipsis,
 		startCrumbs,
 		endCrumbs,
-		workspace?.id,
-		workspace?.name,
+		useEllipsis,
+		workspace,
 		routePatterns,
+		mounted,
 	]);
 
+	// Don't render anything during SSR
+	if (!mounted) {
+		return null;
+	}
+
+	// Only render on client-side
 	return (
 		<Breadcrumb>
 			<BreadcrumbList className="sm:gap-0 select-none">
@@ -217,7 +249,9 @@ function AutoBreadcrumbs({
 						hiddenCrumbs.length
 					) {
 						return (
-							<React.Fragment key={`${item.href}-ellipsis`}>
+							<React.Fragment
+								key={`${item.href || index}-ellipsis`}
+							>
 								<BreadcrumbSeparator className="flex items-center mt-0.5 ml-1 justify-center h-full" />
 								<BreadcrumbItem className="flex !items-center !h-full">
 									<Popover
@@ -240,14 +274,13 @@ function AutoBreadcrumbs({
 														(item) =>
 															item.isValidRoute,
 													)
-													.map((item) => (
+													.map((item, i) => (
 														<div
-															key={item.href}
+															key={`${item.href || i}-hidden`}
 															className="hover:bg-muted !text-[0.5rem] rounded"
 														>
-															{renderBreadcrumbItem(
+															{RenderBreadcrumbItem(
 																item,
-																handleLinkClick,
 																true,
 																activePageColor,
 															)}
@@ -259,9 +292,10 @@ function AutoBreadcrumbs({
 								</BreadcrumbItem>
 								<BreadcrumbSeparator className="flex mr-1 mt-0.5 items-center justify-center h-full" />
 								<BreadcrumbItem className="flex !items-center !h-full">
-									{renderBreadcrumbItem(
+									{RenderBreadcrumbItem(
 										item,
-										handleLinkClick,
+										false,
+										activePageColor,
 									)}
 								</BreadcrumbItem>
 							</React.Fragment>
@@ -270,7 +304,7 @@ function AutoBreadcrumbs({
 
 					// Regular breadcrumb
 					return (
-						<React.Fragment key={item.href}>
+						<React.Fragment key={`${item.href || index}-regular`}>
 							{index > 0 && (
 								<BreadcrumbSeparator
 									className={cn(
@@ -285,9 +319,8 @@ function AutoBreadcrumbs({
 									color,
 								)}
 							>
-								{renderBreadcrumbItem(
+								{RenderBreadcrumbItem(
 									item,
-									handleLinkClick,
 									false,
 									activePageColor,
 								)}

@@ -1,8 +1,10 @@
 import {
 	createWorkspace,
+	hardDeleteWorkspace,
 	getWorkspace,
 	getWorkspaces,
 	updateWorkspace,
+	softDeleteWorkspace,
 } from '@/server/actions/repositories/space.repo';
 import authProcedure from '../procedures/protectedProcedure';
 import { createRouter } from '../trpc';
@@ -10,7 +12,7 @@ import { createRouter } from '../trpc';
 import cloudinary from '@/lib/utils/coudinary';
 import { z } from 'zod';
 import { validators } from '@/db';
-import { createId } from '@paralleldrive/cuid2';
+import { createId, isCuid } from '@paralleldrive/cuid2';
 
 const workspaceRouter = createRouter({
 	createWorkspace: authProcedure
@@ -81,13 +83,14 @@ const workspaceRouter = createRouter({
 									'File size must be under 5MB',
 								), // 5MB limit
 						})
+						.nullable()
 						.optional(),
 				}),
 			}),
 		)
 		.mutation(async ({ input }) => {
 			const { workspaceId, workspace } = input;
-
+			console.log('input', input);
 			const workspaceData = await getWorkspace(workspaceId);
 			if (!workspaceData) {
 				throw new Error('Workspace not found');
@@ -118,6 +121,43 @@ const workspaceRouter = createRouter({
 				updateWorkspaceObject,
 			);
 			return updatedWorkspace.data;
+		}),
+	removeLogo: authProcedure
+		.input(z.object({ workspaceId: z.string() }))
+		.mutation(async ({ input }) => {
+			const { workspaceId } = input;
+			const workspaceData = await getWorkspace(workspaceId);
+			if (!workspaceData) {
+				throw new Error('Workspace not found');
+			}
+			const { logo_public_id } = workspaceData.data;
+			if (logo_public_id) {
+				await cloudinary.uploader.destroy(logo_public_id);
+			}
+			const updatedWorkspace = await updateWorkspace(workspaceId, {
+				logo: null,
+				logo_public_id: null,
+			});
+			return updatedWorkspace.data;
+		}),
+	softDeleteWorkspace: authProcedure
+		.input(z.string().refine((val) => isCuid(val)))
+		.mutation(async ({ input }) => {
+			const { data: workspace } = await getWorkspace(input);
+			if (!workspace) throw new Error('Workspace not found');
+			const { data } = await softDeleteWorkspace(workspace.id);
+			return data;
+		}),
+	hardDeleteWorkspace: authProcedure
+		.input(z.string().refine((val) => isCuid(val)))
+		.mutation(async ({ input }) => {
+			const { data: workspace } = await getWorkspace(input);
+			if (!workspace) throw new Error('Workspace not found');
+			const { data } = await hardDeleteWorkspace(workspace.id);
+			if (data?.logo_public_id) {
+				await cloudinary.uploader.destroy(data.logo_public_id);
+			}
+			return data;
 		}),
 });
 

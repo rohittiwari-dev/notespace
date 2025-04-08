@@ -11,20 +11,19 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
-	TooltipProvider,
 	Tooltip,
-	TooltipTrigger,
 	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
 } from '@/components/ui/tooltip';
 import EmojiPicker from '../app-ui/EmojiPicker';
-import { Info, Upload, Trash } from 'lucide-react';
+import { Info, Trash, Upload } from 'lucide-react';
 import React from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { api } from '@/lib/trpc/client';
-
+import trpc from '@/lib/trpc/client';
 import { toast } from 'sonner';
 import Spinner from '@/components/app-ui/spinner';
 import { fileToBase64 } from '@/lib/utils/fileToBase64';
@@ -43,9 +42,9 @@ function SetupWorkspace({
 	handleOnSuccess?: (workspace: any) => void;
 }) {
 	const router = useRouter();
-	const { state } = useAppStore();
+	const { user } = useAppStore();
 	const { mutateAsync, isPending } =
-		api.workspace.createWorkspace.useMutation();
+		trpc.workspace.createWorkspace.useMutation();
 
 	/* Use Form and zod to validate the form */
 	const form = useForm<z.infer<typeof WorkspaceSetupSchema>>({
@@ -70,15 +69,16 @@ function SetupWorkspace({
 			const workspace = await mutateAsync({
 				name: data.workspaceName,
 				icon: data.workSpaceIcon as string,
-				owner: state?.user?.id as string,
-				logo: base64Logo
-					? {
-							fileName: logo?.name as string,
-							fileType: logo?.type as string,
-							fileData: base64Logo as string,
-							fileSize: logo?.size as number,
-						}
-					: undefined,
+				owner: user?.id as string,
+				logo:
+					base64Logo && logo
+						? {
+								fileName: logo.name,
+								fileType: logo.type,
+								fileData: base64Logo,
+								fileSize: logo.size,
+							}
+						: undefined,
 			}).catch((error) => {
 				throw error;
 			});

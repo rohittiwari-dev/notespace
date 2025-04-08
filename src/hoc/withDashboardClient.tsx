@@ -12,18 +12,11 @@ function withSpace(Component: React.ComponentType<any>) {
 		[key: string]: any;
 	}) {
 		const { workspaceId } = use(params);
-		const {
-			setSelectedWorkspace,
-			state: {
-				session,
-				user,
-				workspace: { selectedWorkspace: workspace },
-			},
-		} = useAppStore();
+		const { user, session, workspace, setWorkspace } = useAppStore();
 
 		useEffect(() => {
-			setSelectedWorkspace(workspaceId);
-		}, [setSelectedWorkspace, workspaceId]);
+			setWorkspace(workspaceId);
+		}, [setWorkspace, workspaceId]);
 
 		return (
 			<Component

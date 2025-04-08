@@ -1,8 +1,9 @@
 import { betterFetch } from '@better-fetch/fetch';
 import { NextResponse, type NextRequest } from 'next/server';
-import { SELECTED_SPACE_COOKIE_NAME } from './lib/constants';
+
 import { Session } from 'better-auth';
 import cuid2 from '@paralleldrive/cuid2';
+import { SELECTED_SPACE_COOKIE_NAME } from './lib/constants';
 
 const publicRoutes = ['/'];
 const authRoutes = ['/sign-in', '/sign-up'];
@@ -15,6 +16,24 @@ export default async function cm8vuq2l6000008l54ik26amzAuthMiddleware(
 	// Check for public routes
 	const pathName = req.nextUrl.pathname;
 	const response = NextResponse.next();
+
+	// Check workspace cookie
+	if (req.nextUrl.pathname.startsWith('/space/')) {
+		// Extract workspace ID from URL if it's a workspace page
+		const segments = req.nextUrl.pathname.split('/');
+		if (segments.length >= 3 && segments[1] === 'space' && segments[2]) {
+			const workspaceId = segments[2];
+			// Set the workspace cookie
+			if (cuid2.isCuid(workspaceId))
+				response.cookies.set({
+					name: SELECTED_SPACE_COOKIE_NAME,
+					value: workspaceId,
+					path: '/',
+					maxAge: 31536000,
+				});
+		}
+	}
+
 	if (publicRoutes.includes(pathName)) {
 		return response;
 	}
@@ -48,23 +67,6 @@ export default async function cm8vuq2l6000008l54ik26amzAuthMiddleware(
 		return NextResponse.redirect(new URL('/space', req.url));
 	}
 
-	// Handle workspace switching by updating cookies in middleware
-	// Check if the request is for a workspace page
-	if (req.nextUrl.pathname.startsWith('/space/')) {
-		// Extract workspace ID from URL if it's a workspace page
-		const segments = req.nextUrl.pathname.split('/');
-		if (segments.length >= 3 && segments[1] === 'space' && segments[2]) {
-			const workspaceId = segments[2];
-			// Set the workspace cookie
-			if (cuid2.isCuid(workspaceId))
-				response.cookies.set({
-					name: SELECTED_SPACE_COOKIE_NAME,
-					value: workspaceId,
-					path: '/',
-					maxAge: 31536000,
-				});
-		}
-	}
 	return response;
 }
 

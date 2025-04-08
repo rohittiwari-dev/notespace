@@ -1,107 +1,72 @@
 'use client';
-import { useClientCookies } from '@/hooks/useClientCookies';
-import { authClientApi } from '@/lib/auth/client';
-import { SELECTED_SPACE_COOKIE_NAME } from '@/lib/constants';
-import { api } from '@/lib/trpc/client';
-import {
-	TWorkspaceReducerAction,
-	workspaceReducer,
-	workspaceReducerInitialState,
-} from '@/store/reducers/workspace.reducer';
+import { IWorkSpace } from '@/db/schemas';
 import { Session, User } from 'better-auth';
+import React from 'react';
+import useAppStore from '.';
+import trpc from '@/lib/trpc/client';
+import { getUrlIds } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
-import {
-	createContext,
-	Dispatch,
-	ReactNode,
-	useContext,
-	useEffect,
-	useReducer,
-} from 'react';
-
-// RootState
-export type RootState = {
-	session: Session | null;
-	user: User | null;
-	workspace: typeof workspaceReducerInitialState;
-};
-
-// Root Actions
-export type RootAction = TWorkspaceReducerAction;
-
-// Store initial State
-const initialState: RootState = {
-	workspace: workspaceReducerInitialState,
-	session: null,
-	user: null,
-};
-
-// StoreContext
-export type TStoreContext = {
-	state: RootState;
-	dispatch: Dispatch<RootAction>;
-};
-
-const StoreContext = createContext<TStoreContext>({
-	state: initialState,
-	dispatch: () => null,
-});
-
-StoreContext.displayName = 'NotespaceStoreContext';
-
-const rootReducer = (state: RootState, action: RootAction): RootState => ({
-	...state,
-	workspace: workspaceReducer(
-		state.workspace,
-		action as TWorkspaceReducerAction,
-	),
-});
-
-export const StoreProvider = ({ children }: { children: ReactNode }) => {
-	const cookieStore = useClientCookies();
-	const [state, dispatch] = useReducer(rootReducer, initialState);
-	const { data: session } = authClientApi.useSession();
-	const { data: workspaces } = api.workspace.getWorkspaces.useQuery(
+function Provider({
+	InitialWorkspaces,
+	session,
+	user,
+	children,
+}: {
+	children: React.ReactNode;
+	session: null | Session;
+	user: null | User;
+	InitialWorkspaces: IWorkSpace[];
+}) {
+	const pathname = usePathname();
+	const { fileId, moduleId, workspaceId } = getUrlIds(pathname);
+	const { setWorkspaces, setUserAndSession, setWorkspace } = useAppStore();
+	const { data: workspaces } = trpc.workspace.getWorkspaces.useQuery(
 		{
-			userId: session?.user?.id || '',
+			userId: user?.id || '',
 		},
-		{ enabled: !!session?.user?.id },
+		{
+			enabled: !!user?.id,
+			initialData: InitialWorkspaces,
+			refetchOnWindowFocus: true,
+			refetchOnReconnect: true,
+			refetchOnMount: true,
+		},
 	);
-	const currentWorkspaceId =
-		cookieStore.getCookie(SELECTED_SPACE_COOKIE_NAME) ||
-		workspaces?.[0]?.id ||
-		'';
+	const { data: workspace } = trpc.workspace.getWorkspace.useQuery(
+		{
+			workspaceId: workspaceId || '',
+		},
+		{
+			enabled: !!workspaceId,
+			initialData: workspaces?.find((ws) => ws.id === workspaceId),
+			refetchOnWindowFocus: true,
+			refetchOnReconnect: true,
+			refetchOnMount: true,
+		},
+	);
 
-	useEffect(() => {
-		if (session?.user && workspaces) {
-			dispatch({
-				type: 'SET_WORKSPACES',
-				payload: {
-					workspaces: workspaces || [],
-					selectedWorkspaceId: currentWorkspaceId?.toString() || '',
-				},
-			});
+	React.useEffect(() => {
+		if (workspaces) setWorkspaces(workspaces, workspaceId || workspaces[0]);
+		if (workspace) {
+			setWorkspace(workspace);
 		}
-	}, [currentWorkspaceId, session?.user, workspaces]);
+		if (user && session) {
+			setUserAndSession({ user, session });
+		}
+	}, [
+		InitialWorkspaces,
+		session,
+		user,
+		setWorkspaces,
+		setUserAndSession,
+		workspaces,
+		workspaceId,
+		workspace,
+		setWorkspace,
+	]);
 
-	return (
-		<StoreContext.Provider
-			value={{
-				state: {
-					...state,
-					session: session?.session || null,
-					user: session?.user || null,
-				},
-				dispatch,
-			}}
-		>
-			{children}
-		</StoreContext.Provider>
-	);
-};
+	return children;
+}
 
-const useStore = (): TStoreContext => {
-	return useContext(StoreContext);
-};
-
-export default useStore;
+export default Provider;

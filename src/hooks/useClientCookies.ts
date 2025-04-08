@@ -1,6 +1,5 @@
 'use client';
 
-import { SELECTED_SPACE_COOKIE_NAME } from '@/lib/constants';
 import { useCallback } from 'react';
 
 export const useClientCookies = () => {
@@ -40,25 +39,9 @@ export const useClientCookies = () => {
 		document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path}`;
 	}, []);
 
-	const getSelectedWorkspaceId = useCallback(
-		(defaultId: string = '') => {
-			return getCookie(SELECTED_SPACE_COOKIE_NAME) || defaultId;
-		},
-		[getCookie],
-	);
-
-	const setSelectedWorkspaceId = useCallback(
-		(workspaceId: string) => {
-			setCookie(SELECTED_SPACE_COOKIE_NAME, workspaceId);
-		},
-		[setCookie],
-	);
-
 	return {
 		getCookie,
 		setCookie,
 		removeCookie,
-		getSelectedWorkspaceId,
-		setSelectedWorkspaceId,
 	};
 };

@@ -1,20 +1,26 @@
+'use client';
 import { constants } from '@/lib/constants';
 import React from 'react';
-import AutoBreadcrumbs from '../app-ui/auto-breadcrumbs';
-import { IWorkSpace } from '@/db/schemas/schema.types';
+
 import { cn } from '@/lib/utils';
+import useAppStore from '@/store';
+import dynamic from 'next/dynamic';
+
+// Import AutoBreadcrumbs with ssr: false to only render on client
+const AutoBreadcrumbs = dynamic(() => import('../app-ui/auto-breadcrumbs'), {
+	ssr: false,
+});
 
 function SpaceFooter({
 	breadcrumbsLocation = 'inline-right',
 	breadcrumbEnabled = true,
 	breadcrumbsActivePaths,
-	workspace,
 }: {
 	breadcrumbsLocation?: 'inline-right' | 'inline-left';
 	breadcrumbEnabled?: boolean;
 	breadcrumbsActivePaths?: string[];
-	workspace?: IWorkSpace;
 }) {
+	const { workspace } = useAppStore();
 	return (
 		<footer
 			className={cn(
@@ -45,7 +51,7 @@ function SpaceFooter({
 					color="text-secondary-400/90"
 					activePageColor="text-muted-foreground"
 					routePatterns={breadcrumbsActivePaths}
-					workspace={workspace}
+					workspace={workspace ?? undefined}
 				/>
 			)}
 		</footer>

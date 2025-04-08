@@ -21,3 +21,32 @@ export const matchesRoutePattern = (
 	path === currentPath ||
 	!patterns?.length ||
 	patterns.some((p) => patternToRegex(p).test(path));
+
+export const getUrlIds = (
+	pathname: string,
+): {
+	workspaceId: undefined | string;
+	moduleId: undefined | string;
+	fileId: undefined | string;
+} => {
+	const result: {
+		workspaceId: undefined | string;
+		moduleId: undefined | string;
+		fileId: undefined | string;
+	} = {
+		workspaceId: undefined,
+		moduleId: undefined,
+		fileId: undefined,
+	};
+	const urlSegments = pathname.split('/').filter(Boolean);
+	if (urlSegments?.length > 1) {
+		result.workspaceId = urlSegments[1];
+	}
+	if (urlSegments?.length > 2) {
+		result.moduleId = urlSegments[2];
+	}
+	if (urlSegments?.length > 3) {
+		result.fileId = urlSegments[3];
+	}
+	return result;
+};

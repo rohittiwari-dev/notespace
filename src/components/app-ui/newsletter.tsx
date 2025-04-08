@@ -5,7 +5,7 @@ import { Label } from '../ui/label';
 import { MailIcon } from '../icons';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { api } from '@/lib/trpc/client';
+import trpc from '@/lib/trpc/client';
 import Spinner from './spinner';
 import { Check } from 'lucide-react';
 import { z } from 'zod';
@@ -20,7 +20,7 @@ function NewsLetter() {
 	const [success, setSuccess] = useState(false);
 
 	const { mutate, error, isPending, isSuccess } =
-		api.newsletter.subscribeNewsLetter.useMutation();
+		trpc.newsletter.subscribeNewsLetter.useMutation();
 
 	const {
 		handleSubmit,

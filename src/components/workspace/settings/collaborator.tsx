@@ -7,7 +7,6 @@ import {
 	FormControl,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 
 import { WorkspaceGeneralSettingsSchema } from '@/lib/formschemas';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -54,18 +53,7 @@ function CollaboratorsSettings() {
 								</FormItem>
 							)}
 						/>
-						<FormField
-							control={form.control}
-							name="description"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Workspace Description</FormLabel>
-									<FormControl>
-										<Textarea {...field} />
-									</FormControl>
-								</FormItem>
-							)}
-						/>
+
 						<Button type="submit">Save</Button>
 					</form>
 				</Form>

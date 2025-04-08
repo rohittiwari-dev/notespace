@@ -2,15 +2,18 @@ import { initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { getServerSession } from '@/server/actions/auth.actions';
+import { cache } from 'react';
+import db from '@/db';
 
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = cache(async (opts: { headers: Headers }) => {
 	const session = await getServerSession(opts.headers);
 	return {
 		user: session?.user,
 		session: session,
+		db,
 		...opts,
 	};
-};
+});
 
 interface CommonError {
 	code: string;

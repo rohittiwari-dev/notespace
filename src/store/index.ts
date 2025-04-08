@@ -1,26 +1,40 @@
-import useStore, { StoreProvider } from './provider';
-import useWorkspaceActions from '@/store/actions/workspace.actions';
+'use client';
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+import WorkspaceSlice, { WorkspaceStateSlice } from './slices/workspace.slice';
+import userSlice, { UserStateSlice } from './slices/user.slice';
+import Provider from './Provider';
 
-export { StoreProvider };
+type StoreState = WorkspaceStateSlice & UserStateSlice;
 
-const useAppStore = () => {
-	const { state, dispatch } = useStore();
-	const {
-		setWorkspaces,
-		setSelectedWorkspace,
-		updateWorkspace,
-		deleteWorkspace,
-	} = useWorkspaceActions();
+export const StoreProvider = Provider;
 
-	// All State Setting Function Return
-	return {
-		state,
-		dispatch,
-		setWorkspaces,
-		setSelectedWorkspace,
-		updateWorkspace,
-		deleteWorkspace,
-	};
+export const usePersistedAppStore = create<StoreState>()(
+	devtools(
+		persist(
+			(...a) => ({
+				...WorkspaceSlice(...a),
+				...userSlice(...a),
+			}),
+			{
+				name: 'persisted-notespace-app-storage',
+			},
+		),
+	),
+);
+
+const useAppStore = create<StoreState>()(
+	devtools((...args) => ({
+		...WorkspaceSlice(...args),
+		...userSlice(...args),
+	})),
+);
+
+export const resetStore = () => {
+	useAppStore.getState().resetUser();
+	usePersistedAppStore.getState().resetUser();
+	useAppStore.getState().resetWorkspace();
+	usePersistedAppStore.getState().resetWorkspace();
 };
 
 export default useAppStore;

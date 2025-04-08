@@ -5,13 +5,9 @@ import useAppStore from '@/store';
 import React from 'react';
 
 function SpaceWorkspacePage() {
-	const { state } = useAppStore();
+	const { workspace } = useAppStore();
 
-	return (
-		<div>
-			SpaceWorkspacePage : {state?.workspace?.selectedWorkspace?.name}
-		</div>
-	);
+	return <div>SpaceWorkspacePage : {workspace?.name}</div>;
 }
 
 export default SpaceWorkspacePage;

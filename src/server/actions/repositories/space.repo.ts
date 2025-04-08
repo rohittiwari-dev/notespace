@@ -2,8 +2,8 @@
 import { and, DrizzleError, eq, ne } from 'drizzle-orm';
 import db from '@/db';
 import {
-	type IWorkSpaceInsert,
 	IWorkSpace,
+	type IWorkSpaceInsert,
 	WorkspaceTable,
 } from '@/db/schemas';
 import { ErrorResponse, SuccessResponse } from '@/db/handlers';
@@ -62,7 +62,12 @@ export const getWorkspace = async (workspaceId: string) => {
 		const data = await db
 			.select()
 			.from(WorkspaceTable)
-			.where(eq(WorkspaceTable.id, workspaceId));
+			.where(
+				and(
+					eq(WorkspaceTable.id, workspaceId),
+					ne(WorkspaceTable.in_trash, true),
+				),
+			);
 		if (!data[0]) {
 			throw new Error('Workspace not found');
 		}
@@ -86,7 +91,12 @@ export const updateWorkspace = async (
 		const data = await db
 			.update(WorkspaceTable)
 			.set(workspace)
-			.where(eq(WorkspaceTable.id, workspaceId))
+			.where(
+				and(
+					eq(WorkspaceTable.id, workspaceId),
+					ne(WorkspaceTable.in_trash, true),
+				),
+			)
 			.returning();
 
 		if (!data[0]) {
@@ -96,6 +106,58 @@ export const updateWorkspace = async (
 		return SuccessResponse<IWorkSpace>({
 			data: data[0],
 			message: 'Workspace updated',
+		});
+	} catch (error) {
+		throw ErrorResponse({
+			error: error as DrizzleError,
+			message: (error as DrizzleError).message || 'Workspace not found',
+		});
+	}
+};
+
+export const hardDeleteWorkspace = async (workspaceId: string) => {
+	try {
+		const data = await db
+			.delete(WorkspaceTable)
+			.where(eq(WorkspaceTable.id, workspaceId))
+			.returning();
+
+		if (!data[0]) {
+			throw new Error('Workspace not found');
+		}
+
+		return SuccessResponse<IWorkSpace>({
+			data: data[0],
+			message: 'Workspace Deleted By Id',
+		});
+	} catch (error) {
+		throw ErrorResponse({
+			error: error as DrizzleError,
+			message: (error as DrizzleError).message || 'Workspace not found',
+		});
+	}
+};
+
+export const softDeleteWorkspace = async (workspaceId: string) => {
+	try {
+		const data = await db
+			.update(WorkspaceTable)
+			.set({ in_trash: true })
+			.where(
+				and(
+					eq(WorkspaceTable.id, workspaceId),
+					ne(WorkspaceTable.in_trash, true),
+				),
+			)
+			.returning();
+
+		if (!data[0]) {
+			throw new Error('Workspace not found');
+		}
+
+		return SuccessResponse<IWorkSpace>({
+			data: data[0],
+			message: 'Workspace Deleted By Id',
 		});
 	} catch (error) {
 		throw ErrorResponse({

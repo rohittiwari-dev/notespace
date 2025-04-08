@@ -10,7 +10,7 @@ function AnimatedTabContent({
 }) {
 	return (
 		<motion.div
-			className="w-full bg-secondary shadow p-4 rounded-xl flex flex-col gap-4"
+			className="w-full bg-secondary/80 shadow p-4 rounded-xl flex flex-col gap-4"
 			{...{
 				fade: {
 					initial: { opacity: 0, x: -20, scale: 0.95 },

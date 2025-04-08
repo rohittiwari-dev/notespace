@@ -1,12 +1,5 @@
 'use client';
-import {
-	BadgeCheck,
-	Bell,
-	CreditCard,
-	LogOut,
-	Sparkles,
-	Users2,
-} from 'lucide-react';
+import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from 'lucide-react';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -16,17 +9,15 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
 import React, { useState } from 'react';
 import Avatar from '@/components/app-ui/avatar';
-import { getInitialsFromName } from '@/lib/utils';
+import { cn, getInitialsFromName } from '@/lib/utils';
 import { authClientApi } from '@/lib/auth/client';
 import { redirect } from 'next/navigation';
 import Spinner from '@/components/app-ui/spinner';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
-
 import { SidebarMenuButton } from '../ui/sidebar';
+import { resetStore } from '@/store';
 
 const LogoutMenuItem = () => {
 	const [loading, setLoading] = useState(false);
@@ -41,6 +32,7 @@ const LogoutMenuItem = () => {
 						},
 						onSuccess: () => {
 							setLoading(false);
+							resetStore();
 							redirect('/sign-in');
 						},
 						onError: () => {
@@ -153,10 +145,6 @@ function UserButton({
 							<BadgeCheck />
 							Account
 						</Link>
-					</DropdownMenuItem>
-					<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
-						<Users2 />
-						Collaborators
 					</DropdownMenuItem>
 					<DropdownMenuItem className="hover:!bg-accent/30 cursor-pointer">
 						<CreditCard />

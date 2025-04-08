@@ -5,7 +5,6 @@ import {
 	ClipboardListIcon,
 	DatabaseIcon,
 	FileIcon,
-	HelpCircleIcon,
 	InboxIcon,
 	LayoutDashboardIcon,
 	SettingsIcon,
@@ -30,6 +29,8 @@ import SpaceSwitcher from '../app-ui/space-switcher';
 import { IWorkSpace } from '@/db/schemas';
 import { User } from 'better-auth';
 import { NavModules } from './sidebar-component/nav-modules';
+import useAppStore from '@/store';
+import { Trash } from 'lucide-react';
 
 const getSidebarData = ({
 	currentWorkspace,
@@ -68,9 +69,9 @@ const getSidebarData = ({
 			icon: SettingsIcon,
 		},
 		{
-			title: 'Get Help',
+			title: 'Trash',
 			url: '#',
-			icon: HelpCircleIcon,
+			icon: Trash,
 		},
 	],
 	documents: [
@@ -92,23 +93,16 @@ const getSidebarData = ({
 	],
 });
 
-function AppSidebar({
-	currentWorkspace,
-	workspaces,
-	user,
-	...props
-}: React.ComponentProps<typeof Sidebar> & {
-	currentWorkspace: IWorkSpace;
-	workspaces: IWorkSpace[];
-	user: User;
-}) {
+function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const { user, workspaces, workspace } = useAppStore();
 	const { isMobile } = useSidebar();
 	const data = getSidebarData({
 		isMobile,
-		user,
+		user: user ?? undefined,
 		workspaces,
-		currentWorkspace,
+		currentWorkspace: workspace ?? undefined,
 	});
+
 	return (
 		<Sidebar
 			collapsible="icon"
@@ -120,7 +114,7 @@ function AppSidebar({
 				<SpaceSwitcher
 					workspaces={workspaces ?? []}
 					dropdownContentAlign={isMobile ? 'bottom' : 'right'}
-					activeWorkspace={currentWorkspace}
+					activeWorkspace={workspace}
 				/>
 			</SidebarHeader>
 			<SidebarContent>
@@ -130,14 +124,18 @@ function AppSidebar({
 			</SidebarContent>
 			<SidebarFooter>
 				<SidebarMenu>
-					<SidebarMenuItem>
-						<UserButton
-							dropdownContentAlign={isMobile ? 'bottom' : 'right'}
-							name={user.name ?? ''}
-							email={user.email ?? ''}
-							avatar={user.image ?? ''}
-						/>
-					</SidebarMenuItem>
+					{user && (
+						<SidebarMenuItem>
+							<UserButton
+								dropdownContentAlign={
+									isMobile ? 'bottom' : 'right'
+								}
+								name={user.name ?? ''}
+								email={user.email ?? ''}
+								avatar={user.image ?? ''}
+							/>
+						</SidebarMenuItem>
+					)}
 				</SidebarMenu>
 			</SidebarFooter>
 		</Sidebar>
