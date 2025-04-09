@@ -7,7 +7,7 @@ export type TInitialUserState = {
 	session: Session | null;
 };
 
-export interface UserStateSlice extends TInitialUserState {
+export interface IUserStateSlice extends TInitialUserState {
 	setUserAndSession: ({
 		user,
 		session,
@@ -23,7 +23,7 @@ const initialUserState: TInitialUserState = {
 	session: null,
 };
 
-const userSlice: StateCreator<UserStateSlice> = (set) => ({
+const userSlice: StateCreator<IUserStateSlice> = (set) => ({
 	...initialUserState,
 	setUserAndSession: _.debounce(
 		({ user, session }) => set({ user, session }),

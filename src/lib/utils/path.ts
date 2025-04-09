@@ -1,3 +1,5 @@
+import cuid2 from '@paralleldrive/cuid2';
+
 /**
  * Converts Next.js path pattern to regex for matching
  */
@@ -40,13 +42,19 @@ export const getUrlIds = (
 	};
 	const urlSegments = pathname.split('/').filter(Boolean);
 	if (urlSegments?.length > 1) {
-		result.workspaceId = urlSegments[1];
+		result.workspaceId = cuid2.isCuid(urlSegments[1])
+			? urlSegments[1]
+			: undefined;
 	}
 	if (urlSegments?.length > 2) {
-		result.moduleId = urlSegments[2];
+		result.moduleId = cuid2.isCuid(urlSegments[2])
+			? urlSegments[2]
+			: undefined;
 	}
 	if (urlSegments?.length > 3) {
-		result.fileId = urlSegments[3];
+		result.fileId = cuid2.isCuid(urlSegments[3])
+			? urlSegments[3]
+			: undefined;
 	}
 	return result;
 };

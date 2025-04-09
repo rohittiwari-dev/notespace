@@ -15,7 +15,21 @@ export default async function cm8vuq2l6000008l54ik26amzAuthMiddleware(
 ) {
 	// Check for public routes
 	const pathName = req.nextUrl.pathname;
-	const response = NextResponse.next();
+	const ip =
+		req.headers.get('x-real-ip') ||
+		req.headers.get('x-forwarded-for') ||
+		req.headers.get('cf-ip') ||
+		req.headers.get('cf-country') ||
+		(req as any).ip ||
+		'';
+
+	const headers = new Headers(req.headers);
+	headers.set('x-ip', ip || 'unknown');
+	headers.set('x-pathname', pathName || 'unknown');
+
+	const response = NextResponse.next({
+		headers: headers,
+	});
 
 	// Check workspace cookie
 	if (req.nextUrl.pathname.startsWith('/space/')) {

@@ -1,7 +1,7 @@
 'use client';
 import { IWorkSpace } from '@/db/schemas';
 import { Session, User } from 'better-auth';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useAppStore from '.';
 import trpc from '@/lib/trpc/client';
 import { getUrlIds } from '@/lib/utils';
@@ -20,7 +20,14 @@ const StoreProvider = ({
 }) => {
 	const pathname = usePathname();
 	const { fileId, moduleId, workspaceId } = getUrlIds(pathname);
-	const { setWorkspaces, setUserAndSession, setWorkspace } = useAppStore();
+	const {
+		setWorkspaces,
+		setUserAndSession,
+		setModulesState,
+		setWorkspace,
+		setModules,
+	} = useAppStore();
+
 	const { data: workspaces } = trpc.workspace.getWorkspaces.useQuery(
 		{
 			userId: user?.id || '',
@@ -45,25 +52,69 @@ const StoreProvider = ({
 			refetchOnMount: true,
 		},
 	);
+	const { data: modules } = trpc.modules.getModules.useQuery(
+		{
+			workspaceId: workspaceId || '',
+		},
+		{
+			enabled: !!workspaceId,
+			refetchOnWindowFocus: true,
+			refetchOnReconnect: true,
+			refetchOnMount: true,
+		},
+	);
+	const { data: module, isFetching: isModuleFetching } =
+		trpc.modules.getModule.useQuery(
+			{
+				moduleId: moduleId || '',
+			},
+			{
+				enabled: !!moduleId,
+				refetchOnWindowFocus: true,
+				refetchOnReconnect: true,
+				refetchOnMount: true,
+			},
+		);
 
-	React.useEffect(() => {
-		if (workspaces) setWorkspaces(workspaces, workspaceId || workspaces[0]);
-		if (workspace) {
+	useEffect(() => {
+		if (workspaces?.length)
+			setWorkspaces(workspaces, workspaceId || workspaces[0]);
+		if (workspace && workspaceId) {
 			setWorkspace(workspace);
-		}
-		if (user && session) {
-			setUserAndSession({ user, session });
 		}
 	}, [
 		InitialWorkspaces,
-		session,
-		user,
 		setWorkspaces,
-		setUserAndSession,
 		workspaces,
 		workspaceId,
 		workspace,
 		setWorkspace,
+	]);
+
+	useEffect(() => {
+		if (user && session) {
+			setUserAndSession({ user, session });
+		}
+	}, [session, user, setUserAndSession]);
+
+	useEffect(() => {
+		if (modules?.length) {
+			setModules(modules);
+		}
+		if (module && moduleId) {
+			setModulesState({
+				module: module,
+				moduleLoading: isModuleFetching,
+			});
+		}
+	}, [
+		modules,
+		setModules,
+		module,
+		moduleId,
+		setModulesState,
+		isModuleFetching,
+		workspaceId,
 	]);
 
 	return children;

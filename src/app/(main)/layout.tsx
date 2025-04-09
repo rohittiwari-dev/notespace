@@ -1,16 +1,18 @@
 import trpc, { HydrateClient } from '@/lib/trpc/server';
 import { getServerSession } from '@/server/actions/auth.actions';
 import StoreProvider from '@/store/StoreProvider';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
 const SpaceLayout = async ({ children }: { children: React.ReactNode }) => {
+	const pathname = (await headers()).get('x-pathname');
 	const session = await getServerSession();
 	const workspaces = await trpc.workspace.getWorkspaces({
 		userId: session?.user?.id ?? '',
 	});
 
-	if (!workspaces?.length) {
+	if (!workspaces?.length && pathname !== '/space') {
 		redirect('/space');
 	}
 

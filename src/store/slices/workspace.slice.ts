@@ -7,7 +7,7 @@ export type TInitialWorkspaceState = {
 	workspace: IWorkSpace | null;
 };
 
-export interface WorkspaceStateSlice extends TInitialWorkspaceState {
+export interface IWorkspaceStateSlice extends TInitialWorkspaceState {
 	setWorkspace: (workspace: string | IWorkSpace) => void;
 	updateWorkspace: (id: string, workspace: Partial<IWorkSpace>) => void;
 	deleteWorkspace: (id: string, type?: 'soft' | 'hard') => void;
@@ -23,7 +23,7 @@ export const initialWorkspaceState: TInitialWorkspaceState = {
 	workspace: null,
 };
 
-const WorkspaceSlice: StateCreator<WorkspaceStateSlice> = (set) => ({
+const WorkspaceSlice: StateCreator<IWorkspaceStateSlice> = (set) => ({
 	...initialWorkspaceState,
 	setWorkspace: _.debounce(
 		(workspace) =>
