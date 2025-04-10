@@ -73,8 +73,8 @@ export const ModuleTable = pgTable('modules', {
 		}),
 	description: text().notNull(),
 	logo: text(),
+	logo_public_id: text(),
 	in_trash: boolean().default(false),
-	thumbnail: text(),
 	tags: varchar({ length: 128 })
 		.array()
 		.default(sql`ARRAY[]::varchar[]`),

@@ -2,7 +2,7 @@
 
 import db from '@/db';
 import { ErrorResponse, SuccessResponse } from '@/db/handlers';
-import { IModule, ModuleTable } from '@/db/schemas';
+import { IModuleInsert, ModuleTable } from '@/db/schemas';
 import { DrizzleError, eq } from 'drizzle-orm';
 
 export const getModule = async (moduleId: string) => {
@@ -43,17 +43,25 @@ export const getModules = async (workspaceId: string) => {
 		});
 	}
 };
-export const createModule = async (module: IModule) => {
+export const createModule = async (module: IModuleInsert) => {
 	try {
 		const data = await db.insert(ModuleTable).values(module).returning();
-		return SuccessResponse({
+
+		if (!data[0]) {
+			throw new Error('Module not created');
+		}
+		return SuccessResponse<IModuleInsert>({
 			data: data[0],
 			message: 'Module created',
 		});
 	} catch (error) {
 		throw ErrorResponse({
 			error: error as DrizzleError,
-			message: (error as DrizzleError).message || 'Module not created',
+			message: (error as DrizzleError).message?.includes(
+				'duplicate key value violates unique constraint',
+			)
+				? 'Module already exists'
+				: 'Module not created',
 		});
 	}
 };

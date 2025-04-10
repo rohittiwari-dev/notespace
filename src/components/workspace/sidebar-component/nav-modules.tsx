@@ -5,7 +5,6 @@ import {
 	MoreHorizontalIcon,
 	PlusCircleIcon,
 	ShareIcon,
-	type LucideIcon,
 } from 'lucide-react';
 
 import {
@@ -23,6 +22,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
+import CreateModuleModal from '../create-module-modal';
 
 export function NavModules({
 	items,
@@ -30,61 +30,68 @@ export function NavModules({
 	items: {
 		name: string;
 		url: string;
-		icon: LucideIcon;
+		icon: React.JSX.Element | string;
 	}[];
 }) {
 	const { isMobile } = useSidebar();
 
 	return (
-		<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-			<SidebarGroupLabel className="flex items-center justify-between mr-0 pr-0">
-				<span>Modules</span>
-				<SidebarMenuButton
-					tooltip="Quick Create"
-					size="sm"
-					className="cursor-pointer max-w-min m-0"
-				>
-					<PlusCircleIcon />
-				</SidebarMenuButton>
-			</SidebarGroupLabel>
-
-			<SidebarMenu>
-				{items.map((item) => (
-					<SidebarMenuItem key={item.name}>
-						<SidebarMenuButton asChild>
-							<a href={item.url}>
-								<item.icon />
-								<span>{item.name}</span>
-							</a>
+		<>
+			<SidebarGroup className="group-data-[collapsible=icon]:hidden">
+				<SidebarGroupLabel className="flex items-center justify-between mr-0 pr-0">
+					<span>Modules</span>
+					<CreateModuleModal>
+						<SidebarMenuButton
+							tooltip="Quick Create"
+							size="sm"
+							className="cursor-pointer max-w-min m-0"
+						>
+							<PlusCircleIcon />
 						</SidebarMenuButton>
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<SidebarMenuAction
-									showOnHover
-									className="rounded-sm data-[state=open]:bg-accent"
+					</CreateModuleModal>
+				</SidebarGroupLabel>
+
+				<SidebarMenu>
+					{items.map((item) => (
+						<SidebarMenuItem key={item.name}>
+							<SidebarMenuButton asChild>
+								<a
+									href={item.url}
+									className="flex items-center dark:text-slate-200 !gap-2"
 								>
-									<MoreHorizontalIcon />
-									<span className="sr-only">More</span>
-								</SidebarMenuAction>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent
-								className="w-24 rounded-lg"
-								side={isMobile ? 'bottom' : 'right'}
-								align={isMobile ? 'end' : 'start'}
-							>
-								<DropdownMenuItem>
-									<FolderIcon />
-									<span>Open</span>
-								</DropdownMenuItem>
-								<DropdownMenuItem>
-									<ShareIcon />
-									<span>Share</span>
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
-					</SidebarMenuItem>
-				))}
-			</SidebarMenu>
-		</SidebarGroup>
+									<span>{item.icon}</span>
+									<span>{item.name}</span>
+								</a>
+							</SidebarMenuButton>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<SidebarMenuAction
+										showOnHover
+										className="rounded-sm cursor-pointer focus-visible:!ring-transparent rotate-90 data-[state=open]:bg-accent"
+									>
+										<MoreHorizontalIcon />
+										<span className="sr-only">More</span>
+									</SidebarMenuAction>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent
+									className=" rounded-lg"
+									side={isMobile ? 'bottom' : 'right'}
+									align={isMobile ? 'end' : 'start'}
+								>
+									<DropdownMenuItem className="cursor-pointer ">
+										<FolderIcon className="size-3" />
+										<span className="text-xs">Open</span>
+									</DropdownMenuItem>
+									<DropdownMenuItem className="cursor-pointer ">
+										<ShareIcon className="size-3" />
+										<span className="text-xs">Share</span>
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						</SidebarMenuItem>
+					))}
+				</SidebarMenu>
+			</SidebarGroup>
+		</>
 	);
 }

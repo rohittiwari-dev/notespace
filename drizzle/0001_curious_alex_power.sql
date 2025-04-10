@@ -1,1 +1,0 @@
-ALTER TABLE "workspaces" ADD COLUMN "logo_public_id" text;

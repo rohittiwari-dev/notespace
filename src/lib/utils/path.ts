@@ -1,4 +1,4 @@
-import cuid2 from '@paralleldrive/cuid2';
+import { z } from 'zod';
 
 /**
  * Converts Next.js path pattern to regex for matching
@@ -42,17 +42,18 @@ export const getUrlIds = (
 	};
 	const urlSegments = pathname.split('/').filter(Boolean);
 	if (urlSegments?.length > 1) {
-		result.workspaceId = cuid2.isCuid(urlSegments[1])
+		result.workspaceId = z.string().cuid2().safeParse(urlSegments[1])
+			.success
 			? urlSegments[1]
 			: undefined;
 	}
 	if (urlSegments?.length > 2) {
-		result.moduleId = cuid2.isCuid(urlSegments[2])
+		result.moduleId = z.string().cuid2().safeParse(urlSegments[2]).success
 			? urlSegments[2]
 			: undefined;
 	}
 	if (urlSegments?.length > 3) {
-		result.fileId = cuid2.isCuid(urlSegments[3])
+		result.fileId = z.string().cuid2().safeParse(urlSegments[3]).success
 			? urlSegments[3]
 			: undefined;
 	}

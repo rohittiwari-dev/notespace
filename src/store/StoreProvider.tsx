@@ -28,6 +28,8 @@ const StoreProvider = ({
 		setModules,
 	} = useAppStore();
 
+	console.log(workspaceId);
+
 	const { data: workspaces } = trpc.workspace.getWorkspaces.useQuery(
 		{
 			userId: user?.id || '',

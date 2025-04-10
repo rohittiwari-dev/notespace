@@ -1,8 +1,7 @@
 import { betterFetch } from '@better-fetch/fetch';
 import { NextResponse, type NextRequest } from 'next/server';
-
 import { Session } from 'better-auth';
-import cuid2 from '@paralleldrive/cuid2';
+import { z } from 'zod';
 import { SELECTED_SPACE_COOKIE_NAME } from './lib/constants';
 
 const publicRoutes = ['/'];
@@ -38,7 +37,7 @@ export default async function cm8vuq2l6000008l54ik26amzAuthMiddleware(
 		if (segments.length >= 3 && segments[1] === 'space' && segments[2]) {
 			const workspaceId = segments[2];
 			// Set the workspace cookie
-			if (cuid2.isCuid(workspaceId))
+			if (z.string().cuid2().safeParse(workspaceId).success)
 				response.cookies.set({
 					name: SELECTED_SPACE_COOKIE_NAME,
 					value: workspaceId,

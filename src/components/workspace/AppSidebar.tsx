@@ -2,9 +2,7 @@
 
 import * as React from 'react';
 import {
-	ClipboardListIcon,
-	DatabaseIcon,
-	FileIcon,
+	Dot,
 	InboxIcon,
 	LayoutDashboardIcon,
 	SettingsIcon,
@@ -26,19 +24,24 @@ import { NavMain } from './sidebar-component/nav-main';
 import { NavSecondary } from './sidebar-component/nav-secondary';
 import SpaceSwitcher from '../app-ui/space-switcher';
 
-import { IWorkSpace } from '@/db/schemas';
+import { IModule, IWorkSpace } from '@/db/schemas';
 import { User } from 'better-auth';
 import { NavModules } from './sidebar-component/nav-modules';
 import useAppStore from '@/store';
 import { Trash } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { getRandomTailwindText400ShadeColor } from '@/lib/utils/generateColors';
 
 const getSidebarData = ({
 	currentWorkspace,
+	modules = [],
 }: {
 	isMobile?: boolean;
 	user?: User;
 	workspaces?: IWorkSpace[];
 	currentWorkspace?: IWorkSpace;
+	modules?: IModule[];
+	theme?: string;
 } = {}) => ({
 	navMain: [
 		{
@@ -74,33 +77,28 @@ const getSidebarData = ({
 			icon: Trash,
 		},
 	],
-	documents: [
-		{
-			name: 'Data Library',
-			url: '#',
-			icon: DatabaseIcon,
-		},
-		{
-			name: 'Reports',
-			url: '#',
-			icon: ClipboardListIcon,
-		},
-		{
-			name: 'Word Assistant',
-			url: '#',
-			icon: FileIcon,
-		},
-	],
+	modules: modules.map((val) => ({
+		name: val.name,
+		url: `/space/${currentWorkspace?.id}/modules/${val.id}`,
+		icon: val.icon || (
+			<Dot
+				className={cn(
+					`size-10 -mx-3 ${getRandomTailwindText400ShadeColor()}`,
+				)}
+			/>
+		),
+	})),
 });
 
 function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-	const { user, workspaces, workspace } = useAppStore();
+	const { user, workspaces, workspace, modules } = useAppStore();
 	const { isMobile } = useSidebar();
 	const data = getSidebarData({
 		isMobile,
 		user: user ?? undefined,
 		workspaces,
 		currentWorkspace: workspace ?? undefined,
+		modules: modules ?? [],
 	});
 
 	return (
@@ -119,7 +117,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.navMain} />
-				<NavModules items={data.documents} />
+				<NavModules items={data.modules} />
 				<NavSecondary items={data.navSecondary} className="mt-auto" />
 			</SidebarContent>
 			<SidebarFooter>

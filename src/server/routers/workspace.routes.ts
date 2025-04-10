@@ -12,7 +12,7 @@ import { createRouter } from '../trpc';
 import cloudinary from '@/lib/utils/coudinary';
 import { z } from 'zod';
 import { validators } from '@/db';
-import { createId, isCuid } from '@paralleldrive/cuid2';
+import { createId } from '@paralleldrive/cuid2';
 
 const workspaceRouter = createRouter({
 	createWorkspace: authProcedure
@@ -141,7 +141,7 @@ const workspaceRouter = createRouter({
 			return updatedWorkspace.data;
 		}),
 	softDeleteWorkspace: authProcedure
-		.input(z.string().refine((val) => isCuid(val)))
+		.input(z.string().cuid2())
 		.mutation(async ({ input }) => {
 			const { data: workspace } = await getWorkspace(input);
 			if (!workspace) throw new Error('Workspace not found');
@@ -149,7 +149,7 @@ const workspaceRouter = createRouter({
 			return data;
 		}),
 	hardDeleteWorkspace: authProcedure
-		.input(z.string().refine((val) => isCuid(val)))
+		.input(z.string().cuid2())
 		.mutation(async ({ input }) => {
 			const { data: workspace } = await getWorkspace(input);
 			if (!workspace) throw new Error('Workspace not found');

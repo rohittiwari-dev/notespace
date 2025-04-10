@@ -1,1 +1,0 @@
-ALTER TABLE "modules" RENAME COLUMN "thumb_nail" TO "thumbnail";
