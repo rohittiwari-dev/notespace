@@ -1,7 +1,7 @@
 import { SettingSectionItem } from '@/components/app-ui/setting-section';
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Trash } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import useAppStore from '@/store';
 import trpc from '@/lib/trpc/client';
 
@@ -83,8 +83,8 @@ function WorkspaceDeleteSetting({ workspaceId }: { workspaceId?: string }) {
 				settingContainerClassName="text-foreground dark:text-foreground/80 p-0"
 				body={
 					<Dialog>
-						<DialogTrigger asChild>
-							<div className="w-[65%] border-l flex items-center gap-2 pl-8 ">
+						<div className="w-[65%] border-l flex items-center gap-2 pl-8 ">
+							<DialogTrigger asChild>
 								<Button
 									disabled={
 										isSoftDeletePending ||
@@ -95,12 +95,12 @@ function WorkspaceDeleteSetting({ workspaceId }: { workspaceId?: string }) {
 									{isSoftDeletePending ? (
 										<Spinner className="text-light" />
 									) : (
-										<Trash />
+										<Trash2 />
 									)}
 									Delete
 								</Button>
-							</div>
-						</DialogTrigger>
+							</DialogTrigger>
+						</div>
 						<DialogContent>
 							<form onSubmit={onsubmitSoft} className="space-y-4">
 								<DialogHeader>
@@ -162,7 +162,7 @@ function WorkspaceDeleteSetting({ workspaceId }: { workspaceId?: string }) {
 										{isSoftDeletePending ? (
 											<Spinner className="text-light" />
 										) : (
-											<Trash />
+											<Trash2 />
 										)}
 										Move to trash
 									</Button>
@@ -178,8 +178,8 @@ function WorkspaceDeleteSetting({ workspaceId }: { workspaceId?: string }) {
 				settingContainerClassName="text-foreground dark:text-foreground/80 p-0"
 				body={
 					<Dialog>
-						<DialogTrigger asChild>
-							<div className="w-[65%] border-l flex items-center gap-2 pl-8 ">
+						<div className="w-[65%] border-l flex items-center gap-2 pl-8 ">
+							<DialogTrigger asChild>
 								<Button
 									disabled={
 										isSoftDeletePending ||
@@ -190,12 +190,12 @@ function WorkspaceDeleteSetting({ workspaceId }: { workspaceId?: string }) {
 									{isHardDeletePending ? (
 										<Spinner className="text-light" />
 									) : (
-										<Trash />
+										<Trash2 />
 									)}
 									Permanently Delete
 								</Button>
-							</div>
-						</DialogTrigger>
+							</DialogTrigger>
+						</div>
 						<DialogContent>
 							<form onSubmit={onsubmit} className="space-y-4">
 								<DialogHeader>
@@ -257,7 +257,7 @@ function WorkspaceDeleteSetting({ workspaceId }: { workspaceId?: string }) {
 										{isHardDeletePending ? (
 											<Spinner className="text-light" />
 										) : (
-											<Trash />
+											<Trash2 />
 										)}
 										Permanently Delete
 									</Button>

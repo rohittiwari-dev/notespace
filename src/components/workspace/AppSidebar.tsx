@@ -1,12 +1,12 @@
 'use client';
-
 import * as React from 'react';
 import {
 	Dot,
+	Home,
 	InboxIcon,
-	LayoutDashboardIcon,
 	SettingsIcon,
 	SquareStack,
+	Trash2,
 	WorkflowIcon,
 } from 'lucide-react';
 import {
@@ -20,17 +20,14 @@ import {
 } from '@/components/ui/sidebar';
 import UserButton from '../app-ui/user-button';
 import { NavMain } from './sidebar-component/nav-main';
-
 import { NavSecondary } from './sidebar-component/nav-secondary';
 import SpaceSwitcher from '../app-ui/space-switcher';
-
 import { IModule, IWorkSpace } from '@/db/schemas';
 import { User } from 'better-auth';
 import { NavModules } from './sidebar-component/nav-modules';
 import useAppStore from '@/store';
-import { Trash } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { getRandomTailwindText400ShadeColor } from '@/lib/utils/generateColors';
+import { getRandomTailwindText400ShadeColor } from '@/lib/utils/colors';
 
 const getSidebarData = ({
 	currentWorkspace,
@@ -45,9 +42,9 @@ const getSidebarData = ({
 } = {}) => ({
 	navMain: [
 		{
-			title: 'Dashboard',
-			url: '/space',
-			icon: LayoutDashboardIcon,
+			title: 'Home',
+			url: `/space/${currentWorkspace?.id}`,
+			icon: Home,
 		},
 		{
 			title: 'Inbox',
@@ -74,12 +71,13 @@ const getSidebarData = ({
 		{
 			title: 'Trash',
 			url: '#',
-			icon: Trash,
+			icon: Trash2,
 		},
 	],
 	modules: modules.map((val) => ({
 		name: val.name,
 		url: `/space/${currentWorkspace?.id}/modules/${val.id}`,
+		id: val.id,
 		icon: val.icon || (
 			<Dot
 				className={cn(

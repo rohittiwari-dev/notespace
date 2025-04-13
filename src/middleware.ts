@@ -9,9 +9,7 @@ const authRoutes = ['/sign-in', '/sign-up'];
 const passwordRoutes = ['/reset-password', '/forgot-password'];
 
 // This function can be marked `async` if using `await` inside
-export default async function cm8vuq2l6000008l54ik26amzAuthMiddleware(
-	req: NextRequest,
-) {
+export async function middleware(req: NextRequest) {
 	// Check for public routes
 	const pathName = req.nextUrl.pathname;
 	const ip =

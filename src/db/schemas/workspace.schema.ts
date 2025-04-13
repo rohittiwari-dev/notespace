@@ -10,7 +10,7 @@ import {
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { UserTable } from '@/db/schemas/user.schema';
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from '@orama/cuid2';
 
 // Enum Declaration
 
@@ -71,7 +71,7 @@ export const ModuleTable = pgTable('modules', {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-	description: text().notNull(),
+	color: text(),
 	logo: text(),
 	logo_public_id: text(),
 	in_trash: boolean().default(false),

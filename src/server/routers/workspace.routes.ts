@@ -12,7 +12,7 @@ import { createRouter } from '../trpc';
 import cloudinary from '@/lib/utils/coudinary';
 import { z } from 'zod';
 import { validators } from '@/db';
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from '@orama/cuid2';
 
 const workspaceRouter = createRouter({
 	createWorkspace: authProcedure

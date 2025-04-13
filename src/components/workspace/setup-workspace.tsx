@@ -36,10 +36,14 @@ function SetupWorkspace({
 	cardClassName,
 	redirectOnCreate = true,
 	handleOnSuccess = () => {},
+	isModal = false,
+	open = false,
 }: {
 	cardClassName?: string;
 	redirectOnCreate?: boolean;
 	handleOnSuccess?: (workspace: any) => void;
+	isModal: boolean;
+	open: boolean;
 }) {
 	const router = useRouter();
 	const { user } = useAppStore();
@@ -56,6 +60,13 @@ function SetupWorkspace({
 		},
 	});
 	const selectedWorkspaceLogo = form?.watch('workspaceLogo');
+
+	// Use Effects
+	React.useEffect(() => {
+		if (!open && isModal) {
+			form.reset();
+		}
+	}, [open, form, isModal]);
 
 	/* Submit the form */
 	const onSubmit = async (data: z.infer<typeof WorkspaceSetupSchema>) => {
@@ -129,7 +140,11 @@ function SetupWorkspace({
 								/>
 							) : (
 								<EmojiPicker
-									disabled={isPending}
+									disabled={
+										form?.formState?.isSubmitting ||
+										form?.formState?.isLoading ||
+										isPending
+									}
 									getEmoji={(emoji) => {
 										form?.setValue('workSpaceIcon', emoji);
 									}}
@@ -161,7 +176,11 @@ function SetupWorkspace({
 										size="sm"
 										variant="secondary"
 										type="button"
-										disabled={isPending}
+										disabled={
+											form?.formState?.isSubmitting ||
+											form?.formState?.isLoading ||
+											isPending
+										}
 										className="border-secondary-200/30 bg-secondary-100 dark:bg-secondary-800/80  dark:border-secondary-700/60 border cursor-pointer"
 									>
 										<Label
@@ -173,7 +192,13 @@ function SetupWorkspace({
 												id="workspaceLogo"
 												className="z-10 top-0 left-0"
 												hidden
-												disabled={isPending}
+												disabled={
+													form?.formState
+														?.isSubmitting ||
+													form?.formState
+														?.isLoading ||
+													isPending
+												}
 												accept="image/*"
 												{...form?.register(
 													'workspaceLogo',
@@ -186,7 +211,11 @@ function SetupWorkspace({
 										size="sm"
 										variant="destructive"
 										type="button"
-										disabled={isPending}
+										disabled={
+											form?.formState?.isSubmitting ||
+											form?.formState?.isLoading ||
+											isPending
+										}
 										onClick={() => {
 											form.setValue(
 												'workspaceLogo',
@@ -227,7 +256,11 @@ function SetupWorkspace({
 
 						<Input
 							type="text"
-							disabled={isPending}
+							disabled={
+								form?.formState?.isSubmitting ||
+								form?.formState?.isLoading ||
+								isPending
+							}
 							placeholder="Name"
 							maxLength={25}
 							{...form?.register('workspaceName')}
@@ -248,9 +281,15 @@ function SetupWorkspace({
 					<Button
 						type="submit"
 						className="w-full"
-						disabled={isPending}
+						disabled={
+							form?.formState?.isSubmitting ||
+							form?.formState?.isLoading ||
+							isPending
+						}
 					>
-						{isPending && (
+						{(form?.formState?.isSubmitting ||
+							form?.formState?.isLoading ||
+							isPending) && (
 							<Spinner className="dark:text-foreground text-background" />
 						)}
 						Create Workspace

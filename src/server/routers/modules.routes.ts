@@ -6,9 +6,11 @@ import {
 	createModule,
 	getModule,
 	getModules,
+	hardDeleteModule,
+	softDeleteModule,
 } from '../actions/repositories/module.repo';
 import { validators } from '@/db';
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from '@orama/cuid2';
 import cloudinary from '@/lib/utils/coudinary';
 
 const moduleRouter = createRouter({
@@ -63,6 +65,25 @@ const moduleRouter = createRouter({
 			};
 			const workspace = await createModule(newWorkspace);
 			return workspace.data;
+		}),
+	softDeleteWorkspace: authProcedure
+		.input(z.string().cuid2())
+		.mutation(async ({ input }) => {
+			const { data: module } = await getModule(input);
+			if (!module) throw new Error('Workspace not found');
+			const { data } = await softDeleteModule(module.id);
+			return data;
+		}),
+	hardDeleteWorkspace: authProcedure
+		.input(z.string().cuid2())
+		.mutation(async ({ input }) => {
+			const { data: module } = await getModule(input);
+			if (!module) throw new Error('Module not found');
+			const { data } = await hardDeleteModule(module.id);
+			if (data?.logo_public_id) {
+				await cloudinary.uploader.destroy(data.logo_public_id);
+			}
+			return data;
 		}),
 });
 

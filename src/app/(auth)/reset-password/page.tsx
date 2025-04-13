@@ -25,7 +25,7 @@ import { useTheme } from 'next-themes';
 import { MagicCard } from '@/components/primitives/magic-card';
 
 export default function ResetPassword() {
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,7 +61,7 @@ export default function ResetPassword() {
 			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
 				<MagicCard
 					gradientColor={
-						theme === 'dark'
+						resolvedTheme === 'dark'
 							? 'var(--color-secondary-800)'
 							: 'var(--color-primary-100)'
 					}

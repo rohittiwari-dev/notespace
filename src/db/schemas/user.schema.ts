@@ -12,7 +12,7 @@ import {
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { WorkspaceTable } from '@/db/schemas/workspace.schema';
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from '@orama/cuid2';
 
 export const GenderEnum = pgEnum('gender_enum', [
 	'Male',

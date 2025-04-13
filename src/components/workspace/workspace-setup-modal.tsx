@@ -15,6 +15,8 @@ function WorkspaceSetupModal({ open, onClose }: WorkspaceSetupModalProps) {
 				<DialogTitle className="sr-only">Setup Workspace</DialogTitle>
 				<SetupWorkspace
 					cardClassName="max-w-full"
+					open={open}
+					isModal={open}
 					handleOnSuccess={() => {
 						onClose();
 					}}

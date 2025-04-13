@@ -1,6 +1,6 @@
 'use client';
 import React, { forwardRef, useState } from 'react';
-import { Button } from '../ui/button';
+import { buttonVariants } from '../ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import SmallLogo from '@/assets/Logo_Small.png';
@@ -21,13 +21,13 @@ import { ChevronRightIcon, MenuIcon } from 'lucide-react';
 import { Session, User } from 'better-auth';
 
 const ListItem = forwardRef<
-	React.ComponentRef<'div'>,
-	React.ComponentPropsWithoutRef<'div'> & { icon: React.ReactNode }
+	React.ElementRef<'a'>,
+	React.ComponentPropsWithoutRef<'a'> & { icon: React.ReactNode }
 >(({ className, title, children, icon, ...props }, ref) => {
 	return (
 		<li>
 			<NavigationMenuLink asChild>
-				<div
+				<a
 					ref={ref}
 					className={cn(
 						'dark:hover:border-border hover:bg-primary-200/20 hover:border-primary-900/20 dark:hover:bg-secondary-700/60 dark:hover:text-foreground dark:focus:border-primary-900 dark:focus:bg-secondary-700/40 dark:focus:text-primary-700 z-50 flex cursor-pointer items-start gap-3 rounded-md border border-transparent px-4 py-3 leading-none no-underline transition-colors outline-none select-none',
@@ -44,7 +44,7 @@ const ListItem = forwardRef<
 							{children}
 						</p>
 					</div>
-				</div>
+				</a>
 			</NavigationMenuLink>
 		</li>
 	);
@@ -94,7 +94,7 @@ const SiteNavigationHeader = ({
 											))}
 										</div>
 										<li>
-											<NavigationMenuLink asChild>
+											<NavigationMenuItem>
 												<div className="bg-transparent hover:bg-primary-200/40 dark:hover:bg-secondary-800/75 dark:border-primary-700 dark:bg-primary-800/50 flex size-full cursor-pointer flex-col justify-end rounded-md border px-6 py-3 pt-6 no-underline backdrop-blur-lg transition-colors outline-none select-none focus:shadow-md">
 													<Image
 														src={SmallLogo}
@@ -111,7 +111,7 @@ const SiteNavigationHeader = ({
 														their work.
 													</p>
 
-													<a
+													<NavigationMenuLink
 														href={
 															constants.github_repo
 														}
@@ -123,24 +123,23 @@ const SiteNavigationHeader = ({
 														<ChevronRightIcon
 															size={13}
 														/>
-													</a>
+													</NavigationMenuLink>
 												</div>
-											</NavigationMenuLink>
+											</NavigationMenuItem>
 										</li>
 									</ul>
 								</NavigationMenuContent>
 							</NavigationMenuItem>
 							<NavigationMenuItem>
-								<Link href="/blog" legacyBehavior passHref>
-									<NavigationMenuLink
-										className={navigationMenuTriggerStyle({
-											className:
-												'bg-transparent hover:bg-transparent hover:text-accent-purple',
-										})}
-									>
-										Blog
-									</NavigationMenuLink>
-								</Link>
+								<NavigationMenuLink
+									href="/blog"
+									className={navigationMenuTriggerStyle({
+										className:
+											'bg-transparent hover:bg-transparent hover:text-accent-purple',
+									})}
+								>
+									Blog
+								</NavigationMenuLink>
 							</NavigationMenuItem>
 							<NavigationMenuItem>
 								<NavigationMenuLink
@@ -174,25 +173,41 @@ const SiteNavigationHeader = ({
 				<div className="hidden items-center gap-4 md:flex">
 					{!session && !user ? (
 						<>
-							<Button asChild size="sm" variant="ghost">
-								<Link href="/sign-in">Signin</Link>
-							</Button>
-							<Button asChild size="sm">
-								<Link href="/sign-up">Signup</Link>
-							</Button>
+							<Link
+								href="/sign-in"
+								className={buttonVariants({
+									variant: 'ghost',
+									size: 'sm',
+								})}
+							>
+								Signin
+							</Link>
+							<Link
+								href="/sign-up"
+								className={buttonVariants({
+									variant: 'ghost',
+									size: 'sm',
+								})}
+							>
+								Signup
+							</Link>
 						</>
 					) : (
-						<Button asChild size="sm" className="items-center">
-							<Link href="/sign-in" className="items-center">
-								<Image
-									src={SmallLogo}
-									alt="logo"
-									className="w-6 h-auto"
-								/>
-								<span>Launch App</span>{' '}
-								<ChevronRightIcon size={16} />
-							</Link>
-						</Button>
+						<Link
+							href="/sign-in"
+							className={buttonVariants({
+								className: 'items-center',
+								size: 'sm',
+							})}
+						>
+							<Image
+								src={SmallLogo}
+								alt="logo"
+								className="w-6 h-auto"
+							/>
+							<span>Launch App</span>{' '}
+							<ChevronRightIcon size={16} />
+						</Link>
 					)}
 
 					<ThemeSwitcher />
@@ -214,33 +229,26 @@ const SiteNavigationHeader = ({
 					menuOpen && 'h-full pt-6',
 				)}
 			>
-				<div className="container-main">
-					<ul className="flex flex-col gap-3">
-						<li>
-							<Link href="/early-access">Early access</Link>
-						</li>
-						<li>
-							<Link href="/blog">Blog</Link>
-						</li>
-						<li>
-							<a
-								href={constants.github_repo}
-								target="_blank"
-								rel="noreferrer noopener"
-							>
-								Contribute
-							</a>
-						</li>
-						<li>
-							<a
-								href={constants.discord}
-								target="_blank"
-								rel="noreferrer noopener"
-							>
-								Discord
-							</a>
-						</li>
-					</ul>
+				<div className="container-main flex flex-col gap-4 w-full">
+					<Link href="/early-access">Early access</Link>
+
+					<Link href="/blog">Blog</Link>
+
+					<Link
+						href={constants.github_repo}
+						target="_blank"
+						rel="noreferrer noopener"
+					>
+						Contribute
+					</Link>
+
+					<Link
+						href={constants.discord}
+						target="_blank"
+						rel="noreferrer noopener"
+					>
+						Discord
+					</Link>
 				</div>
 			</div>
 		</header>

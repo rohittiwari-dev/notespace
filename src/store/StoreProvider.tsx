@@ -7,6 +7,8 @@ import trpc from '@/lib/trpc/client';
 import { getUrlIds } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 
+import z from 'zod';
+
 const StoreProvider = ({
 	InitialWorkspaces,
 	session,
@@ -27,8 +29,6 @@ const StoreProvider = ({
 		setWorkspace,
 		setModules,
 	} = useAppStore();
-
-	console.log(workspaceId);
 
 	const { data: workspaces } = trpc.workspace.getWorkspaces.useQuery(
 		{
@@ -118,7 +118,6 @@ const StoreProvider = ({
 		isModuleFetching,
 		workspaceId,
 	]);
-
 	return children;
 };
 

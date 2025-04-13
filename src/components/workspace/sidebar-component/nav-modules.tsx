@@ -4,7 +4,8 @@ import {
 	FolderIcon,
 	MoreHorizontalIcon,
 	PlusCircleIcon,
-	ShareIcon,
+	Share2,
+	Trash,
 } from 'lucide-react';
 
 import {
@@ -23,6 +24,10 @@ import {
 	useSidebar,
 } from '@/components/ui/sidebar';
 import CreateModuleModal from '../create-module-modal';
+import Link from 'next/link';
+import trpc from '@/lib/trpc/client';
+import useAppStore from '@/store';
+import Spinner from '@/components/app-ui/spinner';
 
 export function NavModules({
 	items,
@@ -31,9 +36,26 @@ export function NavModules({
 		name: string;
 		url: string;
 		icon: React.JSX.Element | string;
+		id: string;
 	}[];
 }) {
+	const trpcUtils = trpc.useUtils();
+	const { deleteModule } = useAppStore();
 	const { isMobile } = useSidebar();
+	const { mutate: softDeleteMutate, isPending: softIsPending } =
+		trpc.modules.softDeleteWorkspace.useMutation({
+			onSuccess: (input) => {
+				deleteModule(input.id);
+				trpcUtils.modules.getModules.invalidate();
+			},
+		});
+	const { mutate: hardDeleteMutate, isPending: hardIsPending } =
+		trpc.modules.hardDeleteWorkspace.useMutation({
+			onSuccess: (input) => {
+				deleteModule(input.id, 'hard');
+				trpcUtils.modules.getModules.invalidate();
+			},
+		});
 
 	return (
 		<>
@@ -55,13 +77,13 @@ export function NavModules({
 					{items.map((item) => (
 						<SidebarMenuItem key={item.name}>
 							<SidebarMenuButton asChild>
-								<a
+								<Link
 									href={item.url}
 									className="flex items-center dark:text-slate-200 !gap-2"
 								>
 									<span>{item.icon}</span>
 									<span>{item.name}</span>
-								</a>
+								</Link>
 							</SidebarMenuButton>
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
@@ -78,13 +100,45 @@ export function NavModules({
 									side={isMobile ? 'bottom' : 'right'}
 									align={isMobile ? 'end' : 'start'}
 								>
-									<DropdownMenuItem className="cursor-pointer ">
-										<FolderIcon className="size-3" />
+									<DropdownMenuItem className="cursor-pointer text-foreground/80 group hover:!text-foreground/80">
+										<FolderIcon className="size-3 !text-inherit group-hover:text-foreground/80" />
 										<span className="text-xs">Open</span>
 									</DropdownMenuItem>
-									<DropdownMenuItem className="cursor-pointer ">
-										<ShareIcon className="size-3" />
+									<DropdownMenuItem className="cursor-pointer text-foreground/80 group hover:!text-foreground/80">
+										<Share2 className="size-3 !text-inherit group-hover:text-foreground/80" />
 										<span className="text-xs">Share</span>
+									</DropdownMenuItem>
+									<DropdownMenuItem
+										onClick={() =>
+											hardDeleteMutate(item.id)
+										}
+										disabled={hardIsPending}
+										className="cursor-pointer text-foreground/80 group hover:!text-red-400"
+									>
+										{hardIsPending ? (
+											<Spinner className="size-3 !text-inherit group-hover:text-red-400" />
+										) : (
+											<Trash className="size-3 !text-inherit group-hover:text-red-400" />
+										)}
+										<span className="text-xs mt-0.5">
+											Delete
+										</span>
+									</DropdownMenuItem>
+									<DropdownMenuItem
+										onClick={() =>
+											softDeleteMutate(item.id)
+										}
+										disabled={softIsPending}
+										className="cursor-pointer text-foreground/80 group hover:!text-red-400"
+									>
+										{softIsPending ? (
+											<Spinner className="size-3 !text-inherit group-hover:text-red-400" />
+										) : (
+											<Trash className="size-3 !text-inherit group-hover:text-red-400" />
+										)}
+										<span className="text-xs mt-0.5">
+											Move To Trash
+										</span>
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>

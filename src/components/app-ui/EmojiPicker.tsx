@@ -24,7 +24,7 @@ const EmojiPicker: React.FC<TEmojiPicker> = ({
 	getEmoji,
 	disabled,
 }) => {
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 	const [open, setOpen] = useState(false);
 
 	// Memoize the onClick handler to prevent unnecessary rerenders
@@ -49,7 +49,11 @@ const EmojiPicker: React.FC<TEmojiPicker> = ({
 					>
 						<Picker
 							onEmojiClick={!disabled ? onClick : () => {}}
-							theme={theme === 'dark' ? Theme.DARK : Theme.LIGHT}
+							theme={
+								resolvedTheme === 'dark'
+									? Theme.DARK
+									: Theme.LIGHT
+							}
 							lazyLoadEmojis={false} // Changed to false for faster display
 							searchDisabled={true} // Disable search to reduce initial load time
 							skinTonesDisabled={true} // Disable skin tones to reduce complexity

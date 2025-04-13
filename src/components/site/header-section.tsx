@@ -9,7 +9,7 @@ import HeaderImageLight from '@/assets/headerImage-light.png';
 import { useTheme } from 'next-themes';
 
 function HeaderSection() {
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 
 	return (
 		<div className="w-full space-y-8 md:space-y-16 mt-10">
@@ -43,8 +43,12 @@ function HeaderSection() {
 			</div>
 
 			<ImageDisplay
-				animationKey={`header-image-${theme}`}
-				src={theme === 'light' ? HeaderImageLight : HeaderImageDark}
+				animationKey={`header-image-${resolvedTheme}`}
+				src={
+					resolvedTheme === 'light'
+						? HeaderImageLight
+						: HeaderImageDark
+				}
 				alt="Header Image"
 				containerClass="rounded-2xl overflow-hidden"
 				className="w-full h-full rounded-2xl"

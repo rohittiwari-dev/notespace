@@ -8,12 +8,12 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function ThemeSwitcher({ className }: { className?: string }) {
-	const { theme, setTheme } = useTheme();
+	const { resolvedTheme, setTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
 
 	// Toggle theme function
 	const toggleTheme = () => {
-		const newTheme = theme === 'light' ? 'dark' : 'light';
+		const newTheme = resolvedTheme === 'light' ? 'dark' : 'light';
 		setTheme(newTheme);
 		document.documentElement.setAttribute('data-theme', newTheme);
 		localStorage.setItem('theme', newTheme);
@@ -35,7 +35,7 @@ export default function ThemeSwitcher({ className }: { className?: string }) {
 				)}
 			>
 				<AnimatePresence mode="wait" initial={false}>
-					{theme === 'light' ? (
+					{resolvedTheme === 'light' ? (
 						<motion.div
 							key="moon"
 							initial={{ scale: 0.8, opacity: 0.5 }}

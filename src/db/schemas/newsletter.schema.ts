@@ -1,4 +1,4 @@
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from '@orama/cuid2';
 import { pgTable, timestamp, varchar, text } from 'drizzle-orm/pg-core';
 
 export const NewsLetterSchema = pgTable('newsletter', {

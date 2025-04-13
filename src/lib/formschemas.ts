@@ -77,3 +77,28 @@ export const WorkspaceGeneralSettingsSchema = z.object({
 export const DeleteWorkspaceZodFormSchema = z.object({
 	workspaceName: z.string().min(1, { message: 'Workspace name is required' }),
 });
+
+export const ModuleCreateFormSchema = z.object({
+	moduleLogo: z
+		.custom<FileList>()
+		.refine(
+			(files) => {
+				return (files?.[0]?.size || MAX_FILE_SIZE) <= MAX_FILE_SIZE;
+			},
+			{
+				message: `More than ${MAX_FILE_SIZE} are not allowed`,
+			},
+		)
+		.refine(
+			(files) =>
+				ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type || 'image/jpeg'),
+			{
+				message:
+					'Only .jpg, .jpeg, .png and .webp formats are supported.',
+			},
+		)
+		.optional(),
+	moduleName: z.string().min(1, { message: 'Module name is required' }),
+	moduleColor: z.string().optional(),
+	moduleIcon: z.string().default('📂').optional(),
+});

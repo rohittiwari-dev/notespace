@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { UserTable } from '@/db/schemas/user.schema';
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from '@orama/cuid2';
 
 export const ConnectedAuthProvidersTable = pgTable('connected_auth_providers', {
 	id: text()

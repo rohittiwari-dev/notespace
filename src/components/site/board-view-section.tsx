@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { Button, buttonVariants } from '../ui/button';
 
 function BoardViewSection() {
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 
 	return (
 		<div className="flex flex-col mt-30 items-center justify-center ">
@@ -21,12 +21,14 @@ function BoardViewSection() {
 				<div className="w-full h-full">
 					<ImageDisplay
 						src={
-							theme === 'light' ? BoardImageLight : BoardImageDark
+							resolvedTheme === 'light'
+								? BoardImageLight
+								: BoardImageDark
 						}
 						alt="Header Image"
 						containerClass="rounded-2xl overflow-hidden"
 						className="w-full h-full rounded-2xl"
-						animationKey={`board-${theme}`}
+						animationKey={`board-${resolvedTheme}`}
 					/>
 				</div>
 				<div className="w-full h-full space-y-8">

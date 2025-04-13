@@ -2,8 +2,8 @@
 
 import db from '@/db';
 import { ErrorResponse, SuccessResponse } from '@/db/handlers';
-import { IModuleInsert, ModuleTable } from '@/db/schemas';
-import { DrizzleError, eq } from 'drizzle-orm';
+import { IModule, IModuleInsert, ModuleTable } from '@/db/schemas';
+import { and, DrizzleError, eq, ne } from 'drizzle-orm';
 
 export const getModule = async (moduleId: string) => {
 	try {
@@ -62,6 +62,90 @@ export const createModule = async (module: IModuleInsert) => {
 			)
 				? 'Module already exists'
 				: 'Module not created',
+		});
+	}
+};
+
+export const updateModule = async (
+	moduleId: string,
+	module: Partial<IModuleInsert>,
+) => {
+	try {
+		const data = await db
+			.update(ModuleTable)
+			.set(module)
+			.where(
+				and(
+					eq(ModuleTable.id, moduleId),
+					ne(ModuleTable.in_trash, true),
+				),
+			)
+			.returning();
+
+		if (!data[0]) {
+			throw new Error('Module not found');
+		}
+
+		return SuccessResponse<IModule>({
+			data: data[0],
+			message: 'Module updated',
+		});
+	} catch (error) {
+		throw ErrorResponse({
+			error: error as DrizzleError,
+			message: (error as DrizzleError).message || 'Module not found',
+		});
+	}
+};
+
+export const hardDeleteModule = async (moduleId: string) => {
+	try {
+		const data = await db
+			.delete(ModuleTable)
+			.where(eq(ModuleTable.id, moduleId))
+			.returning();
+
+		if (!data[0]) {
+			throw new Error('Module not found');
+		}
+
+		return SuccessResponse<IModule>({
+			data: data[0],
+			message: 'Module Deleted By Id',
+		});
+	} catch (error) {
+		throw ErrorResponse({
+			error: error as DrizzleError,
+			message: (error as DrizzleError).message || 'Module not found',
+		});
+	}
+};
+
+export const softDeleteModule = async (moduleId: string) => {
+	try {
+		const data = await db
+			.update(ModuleTable)
+			.set({ in_trash: true })
+			.where(
+				and(
+					eq(ModuleTable.id, moduleId),
+					ne(ModuleTable.in_trash, true),
+				),
+			)
+			.returning();
+
+		if (!data[0]) {
+			throw new Error('Module not found');
+		}
+
+		return SuccessResponse<IModule>({
+			data: data[0],
+			message: 'Module Deleted By Id',
+		});
+	} catch (error) {
+		throw ErrorResponse({
+			error: error as DrizzleError,
+			message: (error as DrizzleError).message || 'Module not found',
 		});
 	}
 };

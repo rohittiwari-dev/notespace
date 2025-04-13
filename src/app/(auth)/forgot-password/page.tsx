@@ -23,7 +23,7 @@ import { useTheme } from 'next-themes';
 import { MagicCard } from '@/components/primitives/magic-card';
 
 export default function Component() {
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 	const [email, setEmail] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
@@ -56,7 +56,7 @@ export default function Component() {
 				<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
 					<MagicCard
 						gradientColor={
-							theme === 'dark' ? '#262626' : '#D9D9D955'
+							resolvedTheme === 'dark' ? '#262626' : '#D9D9D955'
 						}
 						className="p-0"
 					>
@@ -100,7 +100,7 @@ export default function Component() {
 			<Card className="my-auto min-w-[min(400px,90%)] scale-90 rounded-xl border-none !bg-transparent shadow-none">
 				<MagicCard
 					gradientColor={
-						theme === 'dark'
+						resolvedTheme === 'dark'
 							? 'var(--color-secondary-800)'
 							: 'var(--color-primary-100)'
 					}
@@ -147,7 +147,7 @@ export default function Component() {
 						</form>
 					</CardContent>
 					<CardFooter className="flex justify-center">
-						<Link href="/sign-in">
+						<Link href="/sign-in" legacyBehavior>
 							<Button variant="link" className="px-0">
 								Back to sign in
 							</Button>
