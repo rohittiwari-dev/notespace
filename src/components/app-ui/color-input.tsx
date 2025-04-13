@@ -15,8 +15,11 @@ const ColorInput = ({
 	const [selectedColor, setSelectedColor] = useState(color || '#FFFFFF');
 
 	useEffect(() => {
-		if (color) setSelectedColor(color);
-	}, [color]);
+		if (color) {
+			setSelectedColor(color);
+			onChange?.(color);
+		}
+	}, [color, onChange]);
 
 	return (
 		<label

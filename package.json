@@ -96,6 +96,7 @@
 		"class-variance-authority": "^0.7.1",
 		"cloudinary": "^2.6.0",
 		"clsx": "^2.1.1",
+		"color": "^5.0.0",
 		"drizzle-orm": "^0.41.0",
 		"drizzle-zod": "^0.7.1",
 		"emoji-picker-react": "^4.12.2",

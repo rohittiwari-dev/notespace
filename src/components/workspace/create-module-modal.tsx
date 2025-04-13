@@ -96,6 +96,7 @@ function CreateModuleModal({
 				icon: data.moduleIcon as string,
 				owner: user?.id as string,
 				workspace: workspace?.id as string,
+				color: data.moduleColor,
 				logo:
 					base64Logo && logo
 						? {
@@ -275,6 +276,7 @@ function CreateModuleModal({
 										isPending
 									}
 									onChange={(val) => {
+										console.log(val);
 										setValue('moduleColor', val);
 									}}
 								/>

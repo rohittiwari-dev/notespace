@@ -27,7 +27,11 @@ import { User } from 'better-auth';
 import { NavModules } from './sidebar-component/nav-modules';
 import useAppStore from '@/store';
 import { cn } from '@/lib/utils';
-import { getRandomTailwindText400ShadeColor } from '@/lib/utils/colors';
+import {
+	getColorFromClass,
+	getRandomTailwindText400ShadeColor,
+	oklchToHex,
+} from '@/lib/utils/colors';
 
 const getSidebarData = ({
 	currentWorkspace,
@@ -78,11 +82,17 @@ const getSidebarData = ({
 		name: val.name,
 		url: `/space/${currentWorkspace?.id}/modules/${val.id}`,
 		id: val.id,
+		color: val.color,
+		logo: val.logo,
 		icon: val.icon || (
 			<Dot
-				className={cn(
-					`size-10 -mx-3 ${getRandomTailwindText400ShadeColor()}`,
-				)}
+				className={cn(`size-10 -mx-3 `)}
+				color={
+					val?.color ||
+					oklchToHex(
+						getColorFromClass(getRandomTailwindText400ShadeColor()),
+					)
+				}
 			/>
 		),
 	})),

@@ -10,7 +10,12 @@ export const getModule = async (moduleId: string) => {
 		const data = await db
 			.select()
 			.from(ModuleTable)
-			.where(eq(ModuleTable.id, moduleId));
+			.where(
+				and(
+					eq(ModuleTable.id, moduleId),
+					ne(ModuleTable.in_trash, true),
+				),
+			);
 		if (!data[0]) {
 			throw new Error('Workspace not found');
 		}
@@ -31,7 +36,12 @@ export const getModules = async (workspaceId: string) => {
 		const data = await db
 			.select()
 			.from(ModuleTable)
-			.where(eq(ModuleTable.workspace, workspaceId));
+			.where(
+				and(
+					eq(ModuleTable.workspace, workspaceId),
+					ne(ModuleTable.in_trash, true),
+				),
+			);
 		return SuccessResponse({
 			data,
 			message: 'Modules fetched',

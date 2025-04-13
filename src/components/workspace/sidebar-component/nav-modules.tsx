@@ -28,6 +28,7 @@ import Link from 'next/link';
 import trpc from '@/lib/trpc/client';
 import useAppStore from '@/store';
 import Spinner from '@/components/app-ui/spinner';
+import Color from 'color';
 
 export function NavModules({
 	items,
@@ -37,6 +38,8 @@ export function NavModules({
 		url: string;
 		icon: React.JSX.Element | string;
 		id: string;
+		color: string | null;
+		logo?: string | null;
 	}[];
 }) {
 	const trpcUtils = trpc.useUtils();
@@ -76,7 +79,25 @@ export function NavModules({
 				<SidebarMenu>
 					{items.map((item) => (
 						<SidebarMenuItem key={item.name}>
-							<SidebarMenuButton asChild>
+							<SidebarMenuButton
+								asChild
+								style={
+									item?.color
+										? ({
+												['--hover-bg-color']: Color(
+													item.color,
+												)
+													.alpha(0.3)
+													.string(),
+											} as React.CSSProperties)
+										: undefined
+								}
+								className={
+									item?.color
+										? 'hover:bg-[var(--hover-bg-color)]'
+										: ''
+								}
+							>
 								<Link
 									href={item.url}
 									className="flex items-center dark:text-slate-200 !gap-2"
