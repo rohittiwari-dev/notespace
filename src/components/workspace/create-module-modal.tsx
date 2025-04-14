@@ -27,9 +27,9 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import ColorInput from '../app-ui/color-input';
 import {
-	oklchToHex,
 	getColorFromClass,
 	getRandomTailwindText400ShadeColor,
+	oklchToHex,
 } from '@/lib/utils/colors';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -40,6 +40,7 @@ import { toast } from 'sonner';
 import useAppStore from '@/store';
 import Image from 'next/image';
 import Spinner from '../app-ui/spinner';
+import { Switch } from '@/components/ui/switch';
 
 function CreateModuleModal({
 	children,
@@ -49,13 +50,17 @@ function CreateModuleModal({
 	modalOnClose?: () => void;
 }) {
 	const trpcUtils = trpc.useUtils();
+	const [showIconImageChooser, setShowIconImageChooser] =
+		React.useState(false);
 	const [open, setOpen] = React.useState(false);
 	const { user, workspace, setModule } = useAppStore();
 	const { mutateAsync, isPending } = trpc.modules.createModule.useMutation({
-		onSuccess: (input) => {
+		onSuccess: async (input) => {
 			if (input?.id) setModule(input.id);
-			trpcUtils.modules.getModules.invalidate();
-			trpcUtils.modules.getModule.invalidate();
+			await Promise.all([
+				trpcUtils.modules.getModules.invalidate(),
+				trpcUtils.modules.getModule.invalidate(),
+			]);
 		},
 	});
 
@@ -73,8 +78,8 @@ function CreateModuleModal({
 			defaultValues: {
 				moduleColor: randomColor(),
 				moduleLogo: undefined,
-				moduleName: '',
-				moduleIcon: '📂',
+				moduleName: undefined,
+				moduleIcon: undefined,
 			},
 			resolver: zodResolver(ModuleCreateFormSchema),
 		});
@@ -111,6 +116,8 @@ function CreateModuleModal({
 			});
 			if (newModule) {
 				toast.success('Module created successfully');
+				reset();
+				setShowIconImageChooser(false);
 				setOpen(false);
 			}
 		} catch (error) {
@@ -125,6 +132,7 @@ function CreateModuleModal({
 		setOpen(state);
 		if (!state) {
 			modalOnClose();
+			setShowIconImageChooser(false);
 			reset();
 		}
 	};
@@ -150,117 +158,155 @@ function CreateModuleModal({
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="flex flex-col gap-6 ">
-							<div className="flex gap-6">
-								<div className="text-5xl w-18 h-18 bg-secondary-100  border-secondary-200/40 dark:bg-secondary-800/80 border dark:border-secondary-700/60 rounded-xl">
-									{selectedModuleLogo?.[0] ? (
-										<Image
-											src={URL.createObjectURL(
-												selectedModuleLogo[0],
-											)}
-											alt="workspace logo"
-											width={100}
-											height={100}
-											className="rounded-xl"
-										/>
-									) : (
-										<EmojiPicker
-											disabled={
-												formState.isSubmitting ||
-												formState.isLoading ||
-												isPending
+							<div className="w-full flex-col gap-3 flex">
+								<Label
+									htmlFor="Switch-them-icon-and-image"
+									className="w-full flex justify-between items-center"
+								>
+									<span className="text-secondary-500">
+										Enable Icon/Image Option
+									</span>
+									<Switch
+										id="Switch-them-icon-and-image"
+										checked={showIconImageChooser}
+										className="bg-secondary-700/90"
+										onCheckedChange={(checked) => {
+											setShowIconImageChooser(checked);
+											if (!checked) {
+												setValue(
+													'moduleLogo',
+													undefined,
+												);
+												setValue(
+													'moduleIcon',
+													undefined,
+												);
+											} else {
+												setValue('moduleIcon', '📁');
 											}
-											getEmoji={(emoji) => {
-												setValue('moduleIcon', emoji);
-											}}
-										>
-											{watch('moduleIcon') ||
-												formState.defaultValues
-													?.moduleIcon}
-										</EmojiPicker>
-									)}
-								</div>
-								<div className="space-y-2">
-									<Label className="text-xs flex items-center gap-1 text-accent-foreground font-normal">
-										Workspace logo{' '}
-										<TooltipProvider>
-											<Tooltip>
-												<TooltipTrigger>
-													<Info className="w-3.5 h-3.5" />
-												</TooltipTrigger>
-												<TooltipContent>
-													Workspace logo is paid
-													feature
-												</TooltipContent>
-											</Tooltip>
-										</TooltipProvider>
-									</Label>
-
-									<div className="space-y-1">
-										<div className="flex flex-col sm:flex-row gap-3">
-											<Button
-												size="sm"
-												variant="secondary"
-												type="button"
-												className="border-secondary-200/30 bg-secondary-100 dark:bg-secondary-800/80  dark:border-secondary-700/60 border cursor-pointer"
-											>
-												<Label
-													htmlFor="moduleLogo"
-													className="flex items-center  cursor-pointer gap-2"
+										}}
+									/>
+								</Label>
+								{showIconImageChooser && (
+									<div className="flex w-full gap-6">
+										<div className="text-5xl w-18 h-18 bg-secondary-100  border-secondary-200/40 dark:bg-secondary-800/80 border dark:border-secondary-700/60 rounded-xl">
+											{selectedModuleLogo?.[0] ? (
+												<Image
+													src={URL.createObjectURL(
+														selectedModuleLogo[0],
+													)}
+													alt="workspace logo"
+													width={100}
+													height={100}
+													className="rounded-xl"
+												/>
+											) : (
+												<EmojiPicker
+													disabled={
+														formState.isSubmitting ||
+														formState.isLoading ||
+														isPending
+													}
+													getEmoji={(emoji) => {
+														setValue(
+															'moduleIcon',
+															emoji,
+														);
+													}}
 												>
-													<Input
-														type="file"
-														id="moduleLogo"
-														className="z-10 top-0 left-0"
-														hidden
-														{...register(
-															'moduleLogo',
-														)}
+													{watch('moduleIcon') ||
+														formState.defaultValues
+															?.moduleIcon}
+												</EmojiPicker>
+											)}
+										</div>
+
+										<div className="space-y-2">
+											<Label className="text-xs flex items-center gap-1 text-accent-foreground font-normal">
+												Workspace logo{' '}
+												<TooltipProvider>
+													<Tooltip>
+														<TooltipTrigger>
+															<Info className="w-3.5 h-3.5" />
+														</TooltipTrigger>
+														<TooltipContent>
+															Workspace logo is
+															paid feature
+														</TooltipContent>
+													</Tooltip>
+												</TooltipProvider>
+											</Label>
+
+											<div className="space-y-1">
+												<div className="flex flex-col sm:flex-row gap-3">
+													<Button
+														size="sm"
+														variant="secondary"
+														type="button"
+														className="border-secondary-200/30 bg-secondary-100 dark:bg-secondary-800/80  dark:border-secondary-700/60 border cursor-pointer"
+													>
+														<Label
+															htmlFor="moduleLogo"
+															className="flex items-center  cursor-pointer gap-2"
+														>
+															<Input
+																type="file"
+																id="moduleLogo"
+																className="z-10 top-0 left-0"
+																hidden
+																{...register(
+																	'moduleLogo',
+																)}
+																disabled={
+																	formState.isSubmitting ||
+																	formState.isLoading ||
+																	isPending
+																}
+																accept="image/*"
+															/>
+															<Upload /> Upload
+														</Label>
+													</Button>
+													<Button
+														size="sm"
+														variant="destructive"
+														type="button"
+														className="bg-secondary-100 dark:hover:bg-red-950 text-foreground hover:text-background dark:hover:text-foreground dark:bg-secondary-800/80 border-secondary-200/30 dark:border-secondary-700/60 border"
 														disabled={
 															formState.isSubmitting ||
 															formState.isLoading ||
 															isPending
 														}
-														accept="image/*"
-													/>
-													<Upload /> Upload
-												</Label>
-											</Button>
-											<Button
-												size="sm"
-												variant="destructive"
-												type="button"
-												className="bg-secondary-100 dark:hover:bg-red-950 text-foreground hover:text-background dark:hover:text-foreground dark:bg-secondary-800/80 border-secondary-200/30 dark:border-secondary-700/60 border"
-												disabled={
-													formState.isSubmitting ||
-													formState.isLoading ||
-													isPending
-												}
-												onClick={() => {
-													setValue(
-														'moduleLogo',
-														undefined,
-													);
-												}}
-											>
-												<Trash /> Remove
-											</Button>
-										</div>
-										{formState.errors.moduleLogo?.message &&
-											formState.touchedFields
-												.moduleLogo && (
-												<p className="text-[.7rem] text-red-500">
-													{
-														formState.errors
-															.moduleLogo.message
-													}
+														onClick={() => {
+															setValue(
+																'moduleLogo',
+																undefined,
+															);
+														}}
+													>
+														<Trash /> Remove
+													</Button>
+												</div>
+												{formState.errors.moduleLogo
+													?.message &&
+													formState.touchedFields
+														.moduleLogo && (
+														<p className="text-[.7rem] text-red-500">
+															{
+																formState.errors
+																	.moduleLogo
+																	.message
+															}
+														</p>
+													)}
+												<p className="text-[.7rem] text-muted-foreground font-normal">
+													*.png, *.jpg, *.jpeg files
+													up to 1MB in 1:1 ratio
 												</p>
-											)}
-										<p className="text-[.7rem] text-muted-foreground font-normal">
-											*.png, *.jpg, *.jpeg files up to 1MB
-											in 1:1 ratio
-										</p>
+											</div>
+										</div>
 									</div>
-								</div>
+								)}
 							</div>
 							<div className="flex flex-col gap-2">
 								<Label className="text-xs flex-col flex text-accent-foreground font-normal">

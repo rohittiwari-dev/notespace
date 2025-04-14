@@ -32,16 +32,20 @@ function GeneralSettings({}: {}) {
 	const trpcUtils = trpc.useUtils();
 	const { workspace, updateWorkspace } = useAppStore();
 	const { mutate, isPending } = trpc.workspace.updateWorkspace.useMutation({
-		onSuccess: () => {
-			trpcUtils.workspace.getWorkspaces.invalidate();
-			trpcUtils.workspace.getWorkspace.invalidate();
+		onSuccess: async () => {
+			await Promise.all([
+				trpcUtils.workspace.getWorkspaces.invalidate(),
+				trpcUtils.workspace.getWorkspace.invalidate(),
+			]);
 		},
 	});
 	const { mutate: RemoveLogoMutate, isPending: RemoveLogoIsPending } =
 		trpc.workspace.removeLogo.useMutation({
-			onSuccess: () => {
-				trpcUtils.workspace.getWorkspaces.invalidate();
-				trpcUtils.workspace.getWorkspace.invalidate();
+			onSuccess: async () => {
+				await Promise.all([
+					trpcUtils.workspace.getWorkspaces.invalidate(),
+					trpcUtils.workspace.getWorkspace.invalidate(),
+				]);
 			},
 		});
 

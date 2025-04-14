@@ -29,6 +29,8 @@ import trpc from '@/lib/trpc/client';
 import useAppStore from '@/store';
 import Spinner from '@/components/app-ui/spinner';
 import Color from 'color';
+import Image from 'next/image';
+import CustomSuspense from '@/components/app-ui/CustomSuspense';
 
 export function NavModules({
 	items,
@@ -47,16 +49,16 @@ export function NavModules({
 	const { isMobile } = useSidebar();
 	const { mutate: softDeleteMutate, isPending: softIsPending } =
 		trpc.modules.softDeleteWorkspace.useMutation({
-			onSuccess: (input) => {
+			onSuccess: async (input) => {
 				deleteModule(input.id);
-				trpcUtils.modules.getModules.invalidate();
+				await trpcUtils.modules.getModules.invalidate();
 			},
 		});
 	const { mutate: hardDeleteMutate, isPending: hardIsPending } =
 		trpc.modules.hardDeleteWorkspace.useMutation({
-			onSuccess: (input) => {
+			onSuccess: async (input) => {
 				deleteModule(input.id, 'hard');
-				trpcUtils.modules.getModules.invalidate();
+				await trpcUtils.modules.getModules.invalidate();
 			},
 		});
 
@@ -77,8 +79,8 @@ export function NavModules({
 				</SidebarGroupLabel>
 
 				<SidebarMenu>
-					{items.map((item) => (
-						<SidebarMenuItem key={item.name}>
+					{items.map((item, idx) => (
+						<SidebarMenuItem key={item.name + item.id + idx}>
 							<SidebarMenuButton
 								asChild
 								style={
@@ -102,7 +104,17 @@ export function NavModules({
 									href={item.url}
 									className="flex items-center dark:text-slate-200 !gap-2"
 								>
-									<span>{item.icon}</span>
+									{item.logo ? (
+										<Image
+											src={item.logo}
+											alt={`module${item.name}${item.id}`}
+											width={100}
+											height={100}
+											className="size-4 object-cover object-center"
+										/>
+									) : (
+										<span>{item.icon}</span>
+									)}
 									<span>{item.name}</span>
 								</Link>
 							</SidebarMenuButton>

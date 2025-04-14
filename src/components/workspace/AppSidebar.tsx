@@ -32,6 +32,7 @@ import {
 	getRandomTailwindText400ShadeColor,
 	oklchToHex,
 } from '@/lib/utils/colors';
+import CustomSuspense from '../app-ui/CustomSuspense';
 
 const getSidebarData = ({
 	currentWorkspace,

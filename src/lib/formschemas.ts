@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { MAX_FILE_SIZE, ACCEPTED_IMAGE_TYPES } from './constants';
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from './constants';
 
 export const loginFormSchema = z.object({
 	email: z.string().describe('Email').email(),
@@ -100,5 +100,5 @@ export const ModuleCreateFormSchema = z.object({
 		.optional(),
 	moduleName: z.string().min(1, { message: 'Module name is required' }),
 	moduleColor: z.string().optional(),
-	moduleIcon: z.string().default('📂').optional(),
+	moduleIcon: z.string().optional(),
 });

@@ -32,18 +32,18 @@ function WorkspaceDeleteSetting({ workspaceId }: { workspaceId?: string }) {
 	const { deleteWorkspace, workspace } = useAppStore();
 	const { mutateAsync: softDelete, isPending: isSoftDeletePending } =
 		trpc.workspace.softDeleteWorkspace.useMutation({
-			onSuccess: (Input) => {
+			onSuccess: async (Input) => {
 				removeCookie(SELECTED_SPACE_COOKIE_NAME);
 				deleteWorkspace(Input.id);
-				trpcUtils.workspace.getWorkspaces.invalidate();
+				await trpcUtils.workspace.getWorkspaces.invalidate();
 			},
 		});
 	const { mutateAsync: hardDelete, isPending: isHardDeletePending } =
 		trpc.workspace.hardDeleteWorkspace.useMutation({
-			onSuccess: (Input) => {
+			onSuccess: async (Input) => {
 				removeCookie(SELECTED_SPACE_COOKIE_NAME);
 				deleteWorkspace(Input.id, 'hard');
-				trpcUtils.workspace.getWorkspaces.invalidate();
+				await trpcUtils.workspace.getWorkspaces.invalidate();
 			},
 		});
 

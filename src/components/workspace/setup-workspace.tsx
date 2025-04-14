@@ -95,6 +95,7 @@ function SetupWorkspace({
 			});
 			if (workspace) {
 				toast.success('Workspace created successfully');
+				form.reset();
 				if (redirectOnCreate) {
 					router.replace(`/space/${workspace.id}`);
 				}

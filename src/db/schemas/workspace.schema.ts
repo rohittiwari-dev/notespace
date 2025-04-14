@@ -59,38 +59,48 @@ export const WorkspaceTable = pgTable(
 	],
 );
 
-export const ModuleTable = pgTable('modules', {
-	id: text()
-		.primaryKey()
-		.$defaultFn(() => createId()),
-	name: varchar({ length: 128 }).notNull(),
-	icon: varchar({ length: 128 }),
-	owner: text()
-		.notNull()
-		.references(() => UserTable.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-	color: text(),
-	logo: text(),
-	logo_public_id: text(),
-	in_trash: boolean().default(false),
-	tags: varchar({ length: 128 })
-		.array()
-		.default(sql`ARRAY[]::varchar[]`),
-	workspace: text()
-		.notNull()
-		.references(() => WorkspaceTable.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-	updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-		sql`now()`,
-	),
-	created_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-		sql`now()`,
-	),
-});
+export const ModuleTable = pgTable(
+	'modules',
+	{
+		id: text()
+			.primaryKey()
+			.$defaultFn(() => createId()),
+		name: varchar({ length: 128 }).notNull(),
+		icon: varchar({ length: 128 }),
+		owner: text()
+			.notNull()
+			.references(() => UserTable.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		color: text(),
+		logo: text(),
+		logo_public_id: text(),
+		in_trash: boolean().default(false),
+		tags: varchar({ length: 128 })
+			.array()
+			.default(sql`ARRAY[]::varchar[]`),
+		workspace: text()
+			.notNull()
+			.references(() => WorkspaceTable.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
+			sql`now()`,
+		),
+		created_at: timestamp({ withTimezone: true, mode: 'string' }).default(
+			sql`now()`,
+		),
+	},
+	// (t) => [
+	// 	{
+	// 		unique_module_name_index: uniqueIndex(
+	// 			'user_unique_workspace_based_module',
+	// 		).on(t.name, t.workspace, t.owner),
+	// 	},
+	// ],
+);
 
 export const FileTable = pgTable('files', {
 	id: text()

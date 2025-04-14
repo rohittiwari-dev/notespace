@@ -1,7 +1,6 @@
 'use client';
 
 import { ChevronsUpDown, Plus } from 'lucide-react';
-
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -21,20 +20,7 @@ import WorkspaceSetupModal from '../workspace/workspace-setup-modal';
 import { useEffect, useState } from 'react';
 import Avatar from './avatar';
 import Link from 'next/link';
-
-const SwitchItemSkeleton = () => {
-	return (
-		<>
-			<div className="bg-sidebar-primary animate-pulse text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-				<div className="size-8" />
-			</div>
-			<div className="grid flex-1 text-left gap-1 animate-pulse w-full text-sm leading-tight">
-				<span className="truncate font-semibold w-32 h-3 bg-sidebar-accent" />
-				<span className="truncate text-xs w-28 h-2.5 bg-sidebar-accent" />
-			</div>
-		</>
-	);
-};
+import { SwitchItemSkeleton } from '@/components/skeletons/workspace/sidebar';
 
 function SpaceSwitcher({
 	activeWorkspace,
