@@ -50,13 +50,16 @@ function CustomSuspense({
 	}, [timeout]);
 
 	React.useEffect(() => {
-		const localTimeout = setTimeout(() => {
-			if (!isValidData) {
-				setTimer((prev) => prev + 200);
-			} else {
-				setIsLoadingState(false);
-			}
-		}, timer || 0);
+		const localTimeout = setTimeout(
+			() => {
+				if (!isValidData) {
+					setTimer((prev) => prev + 200);
+				} else {
+					setIsLoadingState(false);
+				}
+			},
+			!isValidData ? 0 : timer || 0,
+		);
 
 		return () => clearTimeout(localTimeout);
 	}, [isValidData, timer]);

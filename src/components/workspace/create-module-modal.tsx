@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import {
 	Dialog,
 	DialogContent,
@@ -64,7 +64,7 @@ function CreateModuleModal({
 		},
 	});
 
-	const randomColor = useCallback(() => {
+	const randomColor = useMemo(() => {
 		if (open) {
 			return oklchToHex(
 				getColorFromClass(getRandomTailwindText400ShadeColor()),
@@ -76,7 +76,7 @@ function CreateModuleModal({
 	const { watch, handleSubmit, formState, reset, setValue, register } =
 		useForm<z.infer<typeof ModuleCreateFormSchema>>({
 			defaultValues: {
-				moduleColor: randomColor(),
+				moduleColor: randomColor,
 				moduleLogo: undefined,
 				moduleName: undefined,
 				moduleIcon: undefined,
@@ -116,9 +116,7 @@ function CreateModuleModal({
 			});
 			if (newModule) {
 				toast.success('Module created successfully');
-				reset();
-				setShowIconImageChooser(false);
-				setOpen(false);
+				handleClose(false);
 			}
 		} catch (error) {
 			toast.error('Error creating workspace', {
@@ -314,7 +312,7 @@ function CreateModuleModal({
 								</Label>
 
 								<ColorInput
-									color={randomColor()}
+									color={randomColor}
 									inputEditable={false}
 									disabled={
 										formState.isSubmitting ||

@@ -33,6 +33,8 @@ import {
 	oklchToHex,
 } from '@/lib/utils/colors';
 import CustomSuspense from '../app-ui/CustomSuspense';
+import Spinner from '../app-ui/spinner';
+import { UserButtonSidebarSkeleton } from '../skeletons/workspace/sidebar';
 
 const getSidebarData = ({
 	currentWorkspace,
@@ -131,18 +133,23 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			</SidebarContent>
 			<SidebarFooter>
 				<SidebarMenu>
-					{user && (
-						<SidebarMenuItem>
+					<SidebarMenuItem>
+						<CustomSuspense
+							data={user ?? undefined}
+							checkValidForData={true}
+							fallback={<UserButtonSidebarSkeleton />}
+							timeout={200}
+						>
 							<UserButton
 								dropdownContentAlign={
 									isMobile ? 'bottom' : 'right'
 								}
-								name={user.name ?? ''}
-								email={user.email ?? ''}
-								avatar={user.image ?? ''}
+								name={user?.name ?? ''}
+								email={user?.email ?? ''}
+								avatar={user?.image ?? ''}
 							/>
-						</SidebarMenuItem>
-					)}
+						</CustomSuspense>
+					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarFooter>
 		</Sidebar>

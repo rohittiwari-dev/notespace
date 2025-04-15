@@ -72,13 +72,13 @@
 .dark {
 	/* Colors Declaration */
 	--dark: hsl(240, 13%, 9%);
-	--light: #f0f1f7;
+	--light: #dde0f1;
 	--accent-purple: #5b53d2;
 	--accent-orange: #ff915b;
 	--accent-pink: #ff5887;
 	--accent-yellow: #ffdf53;
 
-	--foreground: #f6f8fc;
+	--foreground: #ecedff;
 	--background: #0e0f11;
 	--card: var(--dark);
 	--card-foreground: var(--light);

@@ -3,6 +3,8 @@ import React from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import UserButton from '../app-ui/user-button';
 import useAppStore from '@/store';
+import CustomSuspense from '../app-ui/CustomSuspense';
+import { UserRoundedButtonSkeleton } from '../skeletons/workspace/sidebar';
 
 /**
  * Breadcrumb header component for workspace navigation
@@ -18,14 +20,20 @@ const SpaceHeader = () => {
 			<div className="flex py-2 items-center w-full gap-2">
 				<SidebarTrigger />
 				<div className="flex-1" />
-				{user && (
+				<CustomSuspense
+					fallback={<UserRoundedButtonSkeleton />}
+					timeout={200}
+					checkValidForData
+					data={user ?? undefined}
+				>
+					{/* <UserButtonSidebarSkeleton /> */}
 					<UserButton
-						name={user.name ?? ''}
-						email={user.email ?? ''}
-						avatar={user.image ?? ''}
+						name={user?.name ?? ''}
+						email={user?.email ?? ''}
+						avatar={user?.image ?? ''}
 						variant="header"
 					/>
-				)}
+				</CustomSuspense>
 			</div>
 		</header>
 	);
