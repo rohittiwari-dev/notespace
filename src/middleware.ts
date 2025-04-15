@@ -49,7 +49,7 @@ export async function middleware(req: NextRequest) {
 		return response;
 	}
 
-	// Check for auth routes
+	// Check for auth routes core
 	const isAuthRoute = authRoutes.includes(pathName);
 	const isPasswordRoute = passwordRoutes.includes(pathName);
 
