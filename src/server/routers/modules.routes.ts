@@ -7,6 +7,7 @@ import {
 	getModule,
 	getModules,
 	hardDeleteModule,
+	restoreModule,
 	softDeleteModule,
 } from '../actions/repositories/module.repo';
 import { validators } from '@/db';
@@ -84,6 +85,31 @@ const moduleRouter = createRouter({
 				await cloudinary.uploader.destroy(data.logo_public_id);
 			}
 			return data;
+		}),
+	restoreModule: authProcedure
+		.input(
+			z.object({
+				moduleId: z.string().cuid2(),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			const { moduleId } = input;
+			const moduleData = await getModule(moduleId, true);
+			if (!moduleData) {
+				throw new Error('Module not found');
+			}
+			const { data } = await restoreModule(moduleId);
+			if (data?.logo_public_id) {
+				await cloudinary.uploader.destroy(data.logo_public_id);
+			}
+			return data;
+		}),
+	getTrashItems: authProcedure
+		.input(z.object({ workspaceId: z.string().cuid2() }))
+		.query(async ({ input }) => {
+			const { workspaceId } = input;
+			const modules = await getModules(workspaceId, true);
+			return modules.data;
 		}),
 });
 

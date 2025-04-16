@@ -1,6 +1,5 @@
 'use client';
-import React, { useCallback } from 'react';
-import logo from '@/assets/Logo_Small.png';
+import React, { useMemo } from 'react';
 import AnimatedTabContent from '@/components/app-ui/animated-tab-content';
 import SettingSection, {
 	SettingSectionItem,
@@ -29,57 +28,66 @@ import WorkspaceDeleteSetting from './workspace-delete-setting';
 
 // create form action state with zod schema WorkspaceGeneralSettingsSchema
 function GeneralSettings({}: {}) {
-	const trpcUtils = trpc.useUtils();
 	const { workspace, updateWorkspace } = useAppStore();
-	const { mutate, isPending } = trpc.workspace.updateWorkspace.useMutation({
-		onSuccess: async () => {
-			await Promise.all([
-				trpcUtils.workspace.getWorkspaces.invalidate(),
-				trpcUtils.workspace.getWorkspace.invalidate(),
-			]);
-		},
-	});
-	const { mutate: RemoveLogoMutate, isPending: RemoveLogoIsPending } =
-		trpc.workspace.removeLogo.useMutation({
-			onSuccess: async () => {
-				await Promise.all([
-					trpcUtils.workspace.getWorkspaces.invalidate(),
-					trpcUtils.workspace.getWorkspace.invalidate(),
-				]);
-			},
-		});
+	const { mutateAsync, isPending } =
+		trpc.workspace.updateWorkspace.useMutation();
 
-	const debouncedMutate = useCallback(() => {
-		return _.debounce(
-			(
-				workspace: Partial<
-					Omit<IWorkSpace, 'logo'> & {
-						logo: {
-							fileName: string;
-							fileType: string;
-							fileData: string;
-							fileSize: number;
-						} | null;
-					}
-				>,
-				workspaceId: string,
-			) => {
-				mutate({
-					workspace: { ...workspace },
-					workspaceId: workspaceId,
-				});
-			},
-			700,
-		);
-	}, [mutate])();
+	const { mutateAsync: RemoveLogoMutate, isPending: RemoveLogoIsPending } =
+		trpc.workspace.removeLogo.useMutation();
 
-	const debouncedRemoveLogoMutate = useCallback(() => {
-		return _.debounce((workspaceId: string) => {
-			RemoveLogoMutate({
-				workspaceId: workspaceId,
+	const debouncedMutate = useMemo(
+		() =>
+			_.debounce(
+				async (
+					workspace: Partial<
+						Omit<IWorkSpace, 'logo'> & {
+							logo: {
+								fileName: string;
+								fileType: string;
+								fileData: string;
+								fileSize: number;
+							} | null;
+						}
+					>,
+					workspaceId: string,
+				) => {
+					await mutateAsync({
+						workspace: { ...workspace },
+						workspaceId,
+					});
+				},
+				700,
+			),
+		[mutateAsync],
+	);
+
+	const handleWorkspaceUpdate = async (
+		id: string,
+		data: Partial<
+			Omit<IWorkSpace, 'logo'> & {
+				logo: {
+					fileName: string;
+					fileType: string;
+					fileData: string;
+					fileSize: number;
+				} | null;
+			}
+		>,
+		type: 'logo' | 'Default' = 'Default',
+		logo?: string,
+	) => {
+		debouncedMutate.cancel();
+		if (type === 'logo') {
+			await mutateAsync({
+				workspace: data,
+				workspaceId: id,
 			});
-		}, 700);
-	}, [RemoveLogoMutate])();
+			updateWorkspace(id, { ...data, logo });
+		} else {
+			updateWorkspace(id, data as IWorkSpace);
+			await debouncedMutate(data, id);
+		}
+	};
 
 	return (
 		<AnimatedTabContent>
@@ -107,19 +115,11 @@ function GeneralSettings({}: {}) {
 										{!workspace?.logo ? (
 											<EmojiPicker
 												disabled={isPending}
-												getEmoji={(emoji) => {
+												getEmoji={async (emoji) => {
 													if (workspace?.id) {
-														updateWorkspace(
+														await handleWorkspaceUpdate(
 															workspace.id,
-															{
-																icon: emoji,
-															},
-														);
-														debouncedMutate(
-															{
-																icon: emoji,
-															},
-															workspace.id,
+															{ icon: emoji },
 														);
 													}
 												}}
@@ -128,7 +128,10 @@ function GeneralSettings({}: {}) {
 											</EmojiPicker>
 										) : (
 											<Image
-												src={workspace?.logo || logo}
+												src={
+													workspace?.logo ||
+													'/logo.png'
+												}
 												alt="workspace logo"
 												width={100}
 												height={100}
@@ -185,15 +188,8 @@ function GeneralSettings({}: {}) {
 																	if (
 																		workspace?.id
 																	) {
-																		updateWorkspace(
+																		await handleWorkspaceUpdate(
 																			workspace.id,
-																			{
-																				logo: URL.createObjectURL(
-																					file,
-																				),
-																			},
-																		);
-																		debouncedMutate(
 																			{
 																				logo: {
 																					fileName:
@@ -208,7 +204,10 @@ function GeneralSettings({}: {}) {
 																						file.size,
 																				},
 																			},
-																			workspace.id,
+																			'logo',
+																			URL.createObjectURL(
+																				file,
+																			),
 																		);
 																	}
 																}
@@ -233,9 +232,10 @@ function GeneralSettings({}: {}) {
 																	logo: null,
 																},
 															);
-															debouncedRemoveLogoMutate(
-																workspace.id,
-															);
+															RemoveLogoMutate({
+																workspaceId:
+																	workspace?.id,
+															});
 														}
 													}}
 													className="bg-secondary-100 dark:hover:bg-red-950 text-foreground hover:text-background dark:hover:text-foreground dark:bg-secondary-800/80 border-secondary-200/30 dark:border-secondary-700/60 border"
@@ -262,18 +262,15 @@ function GeneralSettings({}: {}) {
 										maxLength={25}
 										className="w-96 bg-accent/20"
 										value={workspace?.name || ''}
-										onChange={(e) => {
+										onChange={async (e) => {
 											// Update the global state
 											if (workspace?.id) {
-												updateWorkspace(workspace.id, {
-													name: e.currentTarget.value,
-												});
-												debouncedMutate(
+												await handleWorkspaceUpdate(
+													workspace.id,
 													{
 														name: e.currentTarget
 															.value,
 													},
-													workspace.id,
 												);
 											}
 										}}

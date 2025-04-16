@@ -50,7 +50,7 @@ const ThemeSelectorSetting = () => {
 			<CheckStateButton
 				containerClassName="w-30 h-20"
 				checked={theme === 'system'}
-				label="System Preference"
+				label="System"
 				showBottomLabel
 				onChecked={() => {
 					setTheme('system');

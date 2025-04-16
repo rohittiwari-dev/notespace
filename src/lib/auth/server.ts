@@ -11,6 +11,13 @@ import { nextCookies } from 'better-auth/next-js';
 // Server Auth
 export const authServerApi = betterAuth({
 	appName: 'Notespace',
+	account: {
+		accountLinking: {
+			enabled: true,
+			trustedProviders: ['google', 'microsoft'],
+			allowDifferentEmails: true,
+		},
+	},
 	database: drizzleAdapter(db, {
 		provider: 'pg',
 		schema: {

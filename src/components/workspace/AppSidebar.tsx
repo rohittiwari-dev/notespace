@@ -33,7 +33,6 @@ import {
 	oklchToHex,
 } from '@/lib/utils/colors';
 import CustomSuspense from '../app-ui/CustomSuspense';
-import Spinner from '../app-ui/spinner';
 import { UserButtonSidebarSkeleton } from '../skeletons/workspace/sidebar';
 
 const getSidebarData = ({
@@ -49,21 +48,25 @@ const getSidebarData = ({
 } = {}) => ({
 	navMain: [
 		{
+			id: 1,
 			title: 'Home',
 			url: `/space/${currentWorkspace?.id}`,
 			icon: Home,
 		},
 		{
+			id: 2,
 			title: 'Inbox',
 			url: '#',
 			icon: InboxIcon,
 		},
 		{
+			id: 3,
 			title: 'Task Management',
 			url: '#',
 			icon: SquareStack,
 		},
 		{
+			id: 4,
 			title: 'Workflows',
 			url: '#',
 			icon: WorkflowIcon,
@@ -71,11 +74,15 @@ const getSidebarData = ({
 	],
 	navSecondary: [
 		{
+			id: 1,
 			title: 'Settings',
 			url: `/space/${currentWorkspace?.id}/settings`,
 			icon: SettingsIcon,
 		},
 		{
+			// ID is Used to determine if the module is a trash module in further logic for opening the trash in NavSecondary component
+			// Do change id there as well if it is changed here
+			id: 2,
 			title: 'Trash',
 			url: '#',
 			icon: Trash2,
@@ -129,7 +136,11 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarContent>
 				<NavMain items={data.navMain} />
 				<NavModules items={data.modules} />
-				<NavSecondary items={data.navSecondary} className="mt-auto" />
+				<NavSecondary
+					items={data.navSecondary}
+					className="mt-auto"
+					dropdownContentAlign={isMobile ? 'bottom' : 'right'}
+				/>
 			</SidebarContent>
 			<SidebarFooter>
 				<SidebarMenu>

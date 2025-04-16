@@ -9,9 +9,7 @@ import createQueryClient from '@/lib/trpc/create-query-client';
 import { createTRPCReact } from '@trpc/react-query';
 import type { AppRouter } from '@/server';
 
-const trpc = createTRPCReact<AppRouter>({
-	abortOnUnmount: true,
-});
+const trpc = createTRPCReact<AppRouter>();
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 function getQueryClient() {

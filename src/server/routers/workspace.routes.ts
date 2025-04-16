@@ -90,7 +90,6 @@ const workspaceRouter = createRouter({
 		)
 		.mutation(async ({ input }) => {
 			const { workspaceId, workspace } = input;
-			console.log('input', input);
 			const workspaceData = await getWorkspace(workspaceId);
 			if (!workspaceData) {
 				throw new Error('Workspace not found');

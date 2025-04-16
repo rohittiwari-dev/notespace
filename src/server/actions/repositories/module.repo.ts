@@ -5,16 +5,21 @@ import { ErrorResponse, SuccessResponse } from '@/db/handlers';
 import { IModule, IModuleInsert, ModuleTable } from '@/db/schemas';
 import { and, DrizzleError, eq, ne } from 'drizzle-orm';
 
-export const getModule = async (moduleId: string) => {
+export const getModule = async (moduleId: string, fromTrash = false) => {
 	try {
 		const data = await db
 			.select()
 			.from(ModuleTable)
 			.where(
-				and(
-					eq(ModuleTable.id, moduleId),
-					ne(ModuleTable.in_trash, true),
-				),
+				!fromTrash
+					? and(
+							eq(ModuleTable.id, moduleId),
+							ne(ModuleTable.in_trash, true),
+						)
+					: and(
+							eq(ModuleTable.id, moduleId),
+							ne(ModuleTable.in_trash, false),
+						),
 			);
 		if (!data[0]) {
 			throw new Error('Workspace not found');
@@ -31,16 +36,21 @@ export const getModule = async (moduleId: string) => {
 	}
 };
 
-export const getModules = async (workspaceId: string) => {
+export const getModules = async (workspaceId: string, fromTrash = false) => {
 	try {
 		const data = await db
 			.select()
 			.from(ModuleTable)
 			.where(
-				and(
-					eq(ModuleTable.workspace, workspaceId),
-					ne(ModuleTable.in_trash, true),
-				),
+				!fromTrash
+					? and(
+							eq(ModuleTable.workspace, workspaceId),
+							ne(ModuleTable.in_trash, true),
+						)
+					: and(
+							eq(ModuleTable.workspace, workspaceId),
+							ne(ModuleTable.in_trash, false),
+						),
 			);
 		return SuccessResponse({
 			data,
@@ -151,6 +161,35 @@ export const softDeleteModule = async (moduleId: string) => {
 		return SuccessResponse<IModule>({
 			data: data[0],
 			message: 'Module Deleted By Id',
+		});
+	} catch (error) {
+		throw ErrorResponse({
+			error: error as DrizzleError,
+			message: (error as DrizzleError).message || 'Module not found',
+		});
+	}
+};
+
+export const restoreModule = async (moduleId: string) => {
+	try {
+		const data = await db
+			.update(ModuleTable)
+			.set({ in_trash: false })
+			.where(
+				and(
+					eq(ModuleTable.id, moduleId),
+					ne(ModuleTable.in_trash, false),
+				),
+			)
+			.returning();
+
+		if (!data[0]) {
+			throw new Error('No module found in trash with this id');
+		}
+
+		return SuccessResponse<IModule>({
+			data: data[0],
+			message: 'Module Restored',
 		});
 	} catch (error) {
 		throw ErrorResponse({
