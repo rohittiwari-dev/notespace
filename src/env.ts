@@ -24,10 +24,17 @@ export const env = createEnv({
 		CLOUDINARY_API_KEY: z.string(),
 		CLOUDINARY_API_SECRET: z.string(),
 	},
-	client: {},
+	client: {
+		NEXT_PUBLIC_COLLAB_DOC_PREFIX: z.string().optional().default(''),
+		NEXT_PUBLIC_TIPTAP_COLLAB_APP_ID: z.string().optional().default(''),
+	},
 	experimental__runtimeEnv: {
 		NODE_ENV: process.env.NODE_ENV,
 		WEB_PUBLIC_URL: process.env['NEXT_PUBLIC_WEB_PUBLIC_URL'],
+		NEXT_PUBLIC_COLLAB_DOC_PREFIX:
+			process.env['NEXT_PUBLIC_COLLAB_DOC_PREFIX'],
+		NEXT_PUBLIC_TIPTAP_COLLAB_APP_ID:
+			process.env['NEXT_PUBLIC_TIPTAP_COLLAB_APP_ID'],
 	},
 	skipValidation: !!process.env['SKIP_ENV_VALIDATION'],
 	isServer: typeof window === 'undefined',

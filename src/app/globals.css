@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './_styles/notespace-editor.css';
 
 /* Plugins Declarations */
 @plugin "tailwindcss-animate";
@@ -309,6 +310,7 @@
 	* {
 		@apply border-border m-0 p-0 antialiased;
 	}
+	html,
 	body {
 		@apply bg-background text-foreground !border-border h-svh w-screen overflow-hidden;
 	}
@@ -329,6 +331,16 @@
 				transparent 21px
 			);
 		background-size: 40px 40px;
+	}
+
+	.iframe-no-scrollbar {
+		scrollbar-3dlight-color: #000000;
+		scrollbar-arrow-color: #ffffff;
+		scrollbar-darkshadow-color: #000000;
+		scrollbar-face-color: #000000;
+		scrollbar-highlight-color: #ffffff;
+		scrollbar-shadow-color: #ffffff;
+		scrollbar-track-color: #000000;
 	}
 
 	/* Shadcn collapsible component animation */

@@ -46,7 +46,7 @@ const ColorInput = ({
 					setSelectedColor(e.currentTarget.value);
 					onChange?.(e.currentTarget.value);
 				}}
-				className="w-fit disabled:opacity-80 bg-secondary-10 dark:bg-secondary-700/40"
+				className="w-fit disabled:bg-secondary-100/60 bg-secondary-100 dark:bg-secondary-700/40"
 			/>
 		</label>
 	);

@@ -20,9 +20,9 @@ const SpaceLayout = async ({
 	});
 	const sidebarOpen = cookieStore.get(SIDEBAR_COOKIE_NAME)?.value === 'true';
 	return (
-		<SidebarProvider defaultOpen={sidebarOpen} className="w-full h-full">
+		<SidebarProvider defaultOpen={sidebarOpen} className="w-screen h-svh">
 			<AppSidebar />
-			<SidebarInset className="!bg-transparent w-full overflow-y-auto h-full">
+			<SidebarInset className="!bg-transparent  overflow-y-auto">
 				<SpaceHeader />
 				<main className="flex flex-col flex-1 gap-4 h-fit p-4 pt-0">
 					{children}

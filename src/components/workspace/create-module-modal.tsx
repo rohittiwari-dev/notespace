@@ -370,7 +370,9 @@ function CreateModuleModal({
 							<Button type="submit" className="w-full">
 								{(formState.isSubmitting ||
 									formState.isLoading ||
-									isPending) && <Spinner />}{' '}
+									isPending) && (
+									<Spinner className="text-white" />
+								)}{' '}
 								Create Workspace
 							</Button>
 						</CardFooter>

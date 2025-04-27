@@ -90,7 +90,7 @@ const getSidebarData = ({
 	],
 	modules: modules.map((val) => ({
 		name: val.name,
-		url: `/space/${currentWorkspace?.id}/modules/${val.id}`,
+		url: `/space/${currentWorkspace?.id}/${val.id}`,
 		id: val.id,
 		color: val.color,
 		logo: val.logo,

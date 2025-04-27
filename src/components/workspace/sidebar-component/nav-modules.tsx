@@ -34,6 +34,8 @@ import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { motion } from 'motion/react';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const NavModuleItem = ({
 	item,
@@ -47,6 +49,7 @@ const NavModuleItem = ({
 		logo?: string | null;
 	};
 }) => {
+	const pathname = usePathname();
 	const trpcUtils = trpc.useUtils();
 	const { deleteModule } = useAppStore();
 	const { isMobile } = useSidebar();
@@ -55,6 +58,7 @@ const NavModuleItem = ({
 			onSuccess: async (input) => {
 				deleteModule(input.id, 'hard');
 				await trpcUtils.modules.getModules.invalidate();
+				await trpcUtils.modules.getTrashItems.invalidate();
 			},
 		});
 
@@ -86,7 +90,7 @@ const NavModuleItem = ({
 		});
 	};
 	return (
-		<SidebarMenuItem>
+		<SidebarMenuItem className="flex justify-between items-center">
 			<SidebarMenuButton
 				asChild
 				style={
@@ -98,9 +102,11 @@ const NavModuleItem = ({
 							} as React.CSSProperties)
 						: undefined
 				}
-				className={
-					item?.color ? 'hover:bg-[var(--hover-bg-color)]' : ''
-				}
+				className={cn(
+					'px-1.5 !py-0 ',
+					pathname?.includes(item.id) && 'bg-primary/40',
+					item?.color ? 'hover:bg-[var(--hover-bg-color)]' : '',
+				)}
 			>
 				<Link
 					href={item.url}
@@ -123,10 +129,10 @@ const NavModuleItem = ({
 				</Link>
 			</SidebarMenuButton>
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
+				<DropdownMenuTrigger asChild className="!p-0 !m-0 ">
 					<SidebarMenuAction
 						showOnHover
-						className="rounded-sm cursor-pointer focus-visible:!ring-transparent rotate-90 data-[state=open]:bg-accent"
+						className="rounded-sm !p-0 !m-0  cursor-pointer focus-visible:!ring-transparent rotate-90 data-[state=open]:bg-accent"
 					>
 						<MoreHorizontalIcon />
 						<span className="sr-only">More</span>
@@ -224,10 +230,7 @@ export function NavModules({
 						</div>
 					)}
 					<motion.div
-						className="max-h-74"
-						viewport={{
-							once: true,
-						}}
+						className="max-h-74 space-y-1"
 						{...{
 							initial: {
 								opacity: 0,
@@ -239,6 +242,7 @@ export function NavModules({
 								duration: 0.3,
 								ease: 'easeOut',
 								staggerChildren: 0.1,
+								once: true,
 							},
 						}}
 					>
