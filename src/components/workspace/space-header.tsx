@@ -5,6 +5,7 @@ import UserButton from '../app-ui/user-button';
 import useAppStore from '@/store';
 import CustomSuspense from '../app-ui/CustomSuspense';
 import { UserRoundedButtonSkeleton } from '../skeletons/workspace/sidebar';
+import AutoBreadcrumbs from '../app-ui/auto-breadcrumbs';
 
 /**
  * Breadcrumb header component for workspace navigation
@@ -13,12 +14,27 @@ import { UserRoundedButtonSkeleton } from '../skeletons/workspace/sidebar';
  *
  *  group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 h-16
  */
-const SpaceHeader = () => {
+const SpaceHeader = ({
+	breadcrumbEnabled = false,
+	breadcrumbsActivePaths = [],
+}: {
+	breadcrumbEnabled?: boolean;
+	breadcrumbsActivePaths?: string[];
+}) => {
 	const { user } = useAppStore();
+	const { workspace } = useAppStore();
 	return (
 		<header className="flex w-full px-4 flex-col shrink-0 gap-1 transition-[width,height] ease-linear">
 			<div className="flex py-2 items-center w-full gap-2">
 				<SidebarTrigger />
+				{breadcrumbEnabled && (
+					<AutoBreadcrumbs
+						color="text-secondary-400/90"
+						activePageColor="text-muted-foreground"
+						routePatterns={breadcrumbsActivePaths}
+						workspace={workspace ?? undefined}
+					/>
+				)}
 				<div className="flex-1" />
 				<CustomSuspense
 					fallback={<UserRoundedButtonSkeleton />}

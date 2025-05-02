@@ -15,10 +15,14 @@ function SpaceFooter({
 	breadcrumbsLocation = 'inline-right',
 	breadcrumbEnabled = true,
 	breadcrumbsActivePaths,
+	showCopyright = true,
 }: {
 	breadcrumbsLocation?: 'inline-right' | 'inline-left';
 	breadcrumbEnabled?: boolean;
 	breadcrumbsActivePaths?: string[];
+	showCopyright?: boolean;
+	showVersion?: boolean;
+	showAppName?: boolean;
 }) {
 	const { workspace } = useAppStore();
 	return (
@@ -31,21 +35,23 @@ function SpaceFooter({
 				breadcrumbEnabled && 'items-end',
 			)}
 		>
-			<div
-				className={cn(
-					'space-y-1',
-					breadcrumbEnabled &&
-						breadcrumbsLocation === 'inline-left' &&
-						'text-right',
-				)}
-			>
-				<p className="text-sm text-secondary-400/90">
-					All rights reserved
-				</p>
-				<p className="text-sm text-secondary-400/90">
-					&copy; {new Date().getFullYear()} {constants.name}
-				</p>
-			</div>
+			{showCopyright && (
+				<div
+					className={cn(
+						'space-y-1',
+						breadcrumbEnabled &&
+							breadcrumbsLocation === 'inline-left' &&
+							'text-right',
+					)}
+				>
+					<p className="text-sm text-secondary-400/90">
+						All rights reserved
+					</p>
+					<p className="text-sm text-secondary-400/90">
+						&copy; {new Date().getFullYear()} {constants.name}
+					</p>
+				</div>
+			)}
 			{breadcrumbEnabled && (
 				<AutoBreadcrumbs
 					color="text-secondary-400/90"

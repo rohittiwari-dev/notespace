@@ -42,8 +42,8 @@ function SetupWorkspace({
 	cardClassName?: string;
 	redirectOnCreate?: boolean;
 	handleOnSuccess?: (workspace: any) => void;
-	isModal: boolean;
-	open: boolean;
+	isModal?: boolean;
+	open?: boolean;
 }) {
 	const router = useRouter();
 	const { user } = useAppStore();

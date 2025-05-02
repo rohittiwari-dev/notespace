@@ -71,7 +71,7 @@ export function isCuid2(
 		regex.test(id) &&
 		z
 			.string()
-			.regex(/^[a-z0-9]{24}$/i, { error: 'Invalid moduleId' })
+			.regex(/^[a-z0-9]{24}$/i, { message: 'Invalid moduleId' })
 			.safeParse(id).success
 	);
 }

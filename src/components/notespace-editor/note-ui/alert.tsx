@@ -9,7 +9,6 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { defaultProps, insertOrUpdateBlock } from '@blocknote/core';
 import { createReactBlockSpec } from '@blocknote/react';
-import { RiAlertFill } from 'react-icons/ri';
 import { MdCancel, MdCheckCircle, MdError, MdInfo } from 'react-icons/md';
 
 // The types of alerts that users can choose from.
@@ -80,9 +79,9 @@ export const Alert = createReactBlockSpec(
 				<div className="alert" data-alert-type={props.block.props.type}>
 					{/*Icon which opens a menu to choose the Alert type*/}
 					<DropdownMenu>
-						<DropdownMenuTrigger>
+						<DropdownMenuTrigger className="focus:!outline-none focus-visible:!outline-none focus-visible:!ring-none  focus:!ring-none">
 							<Icon
-								className="alert-icon mx-1"
+								className="alert-icon mx-1 "
 								data-alert-icon-type={props.block.props.type}
 								size={24}
 							/>
@@ -148,5 +147,5 @@ export const insertAlert = (editor: any) => ({
 		'success',
 	],
 	group: 'Basic blocks',
-	icon: <RiAlertFill />,
+	icon: <MdInfo />,
 });

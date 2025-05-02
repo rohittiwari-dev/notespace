@@ -44,8 +44,10 @@ const EmojiPicker: React.FC<TEmojiPicker> = ({
 				</PopoverTrigger>
 				{open && (
 					<PopoverContent
-						align="end"
-						className="!animate-none border-none p-0 !transition-none !duration-0 !ease-linear"
+						align="start"
+						sideOffset={-115}
+						alignOffset={85}
+						className="!animate-none border-none p-0 scale-90 !transition-none !duration-0 !ease-linear"
 					>
 						<Picker
 							onEmojiClick={!disabled ? onClick : () => {}}
@@ -54,9 +56,6 @@ const EmojiPicker: React.FC<TEmojiPicker> = ({
 									? Theme.DARK
 									: Theme.LIGHT
 							}
-							lazyLoadEmojis={false} // Changed to false for faster display
-							searchDisabled={true} // Disable search to reduce initial load time
-							skinTonesDisabled={true} // Disable skin tones to reduce complexity
 						/>
 					</PopoverContent>
 				)}

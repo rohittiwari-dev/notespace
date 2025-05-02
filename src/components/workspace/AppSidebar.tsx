@@ -15,6 +15,7 @@ import {
 	SidebarFooter,
 	SidebarHeader,
 	SidebarMenu,
+	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
@@ -148,7 +149,16 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 						<CustomSuspense
 							data={user ?? undefined}
 							checkValidForData={true}
-							fallback={<UserButtonSidebarSkeleton />}
+							fallback={
+								<SidebarMenuButton
+									size="lg"
+									className={cn(
+										'data-[state=open]:bg-sidebar-accent px-2 w-full select-none cursor-pointer data-[state=open]:text-sidebar-accent-foreground',
+									)}
+								>
+									<UserButtonSidebarSkeleton />
+								</SidebarMenuButton>
+							}
 							timeout={200}
 						>
 							<UserButton

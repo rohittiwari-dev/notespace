@@ -3,7 +3,6 @@ import AppSidebar from '@/components/workspace/AppSidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import SpaceHeader from '@/components/workspace/space-header';
 import { SIDEBAR_COOKIE_NAME } from '@/lib/constants';
-import SpaceFooter from '@/components/workspace/space-footer';
 import { cookies } from 'next/headers';
 import trpc from '@/lib/trpc/server';
 
@@ -23,11 +22,7 @@ const SpaceLayout = async ({
 		<SidebarProvider defaultOpen={sidebarOpen} className="w-screen h-svh">
 			<AppSidebar />
 			<SidebarInset className="!bg-transparent  overflow-y-auto">
-				<SpaceHeader />
-				<main className="flex flex-col flex-1 gap-4 h-fit p-4 pt-0">
-					{children}
-				</main>
-				<SpaceFooter
+				<SpaceHeader
 					breadcrumbEnabled
 					breadcrumbsActivePaths={[
 						'/space/[workspaceId]',
@@ -35,6 +30,9 @@ const SpaceLayout = async ({
 						'/space',
 					]}
 				/>
+				<main className="flex flex-col flex-1 gap-4 h-fit p-4 pt-0 pb-0">
+					{children}
+				</main>
 			</SidebarInset>
 		</SidebarProvider>
 	);
