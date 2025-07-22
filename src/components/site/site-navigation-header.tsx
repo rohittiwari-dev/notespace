@@ -25,28 +25,26 @@ const ListItem = forwardRef<
 	React.ComponentPropsWithoutRef<'a'> & { icon: React.ReactNode }
 >(({ className, title, children, icon, ...props }, ref) => {
 	return (
-		<li>
-			<NavigationMenuLink asChild>
-				<a
-					ref={ref}
-					className={cn(
-						'dark:hover:border-border hover:bg-primary-200/20 hover:border-primary-900/20 dark:hover:bg-secondary-700/60 dark:hover:text-foreground dark:focus:border-primary-900 dark:focus:bg-secondary-700/40 dark:focus:text-primary-700 z-50 flex cursor-pointer items-start gap-3 rounded-md border border-transparent px-4 py-3 leading-none no-underline transition-colors outline-none select-none',
-						className,
-					)}
-					{...props}
-				>
-					<div className="size-[18px]">{icon}</div>
-					<div className="space-y-2">
-						<div className="text-foreground text-sm leading-none font-medium">
-							{title}
-						</div>
-						<p className="line-clamp-2 text-xs leading-normal">
-							{children}
-						</p>
+		<NavigationMenuLink asChild>
+			<a
+				ref={ref}
+				className={cn(
+					'dark:hover:border-border hover:bg-primary-200/20 hover:border-primary-900/20 dark:hover:bg-secondary-700/60 dark:hover:text-foreground dark:focus:border-primary-900 dark:focus:bg-secondary-700/40 dark:focus:text-primary-700 z-50 flex cursor-pointer items-start gap-3 rounded-md border border-transparent px-4 py-3 leading-none no-underline transition-colors outline-none select-none',
+					className,
+				)}
+				{...props}
+			>
+				<div className="size-[18px]">{icon}</div>
+				<div className="space-y-2">
+					<div className="text-foreground text-sm leading-none font-medium">
+						{title}
 					</div>
-				</a>
-			</NavigationMenuLink>
-		</li>
+					<p className="line-clamp-2 text-xs leading-normal">
+						{children}
+					</p>
+				</div>
+			</a>
+		</NavigationMenuLink>
 	);
 });
 ListItem.displayName = 'ListItem';

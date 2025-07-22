@@ -1,8 +1,9 @@
 import { betterFetch } from '@better-fetch/fetch';
 import { NextResponse, type NextRequest } from 'next/server';
 import { Session } from 'better-auth';
-import { z } from 'zod';
+
 import { SELECTED_SPACE_COOKIE_NAME } from './lib/constants';
+import { isCuid2 } from './lib/utils/isCuid';
 
 const publicRoutes = ['/'];
 const authRoutes = ['/sign-in', '/sign-up'];
@@ -35,12 +36,11 @@ export async function middleware(req: NextRequest) {
 		if (segments.length >= 3 && segments[1] === 'space' && segments[2]) {
 			const workspaceId = segments[2];
 			// Set the workspace cookie
-			if (z.string().cuid2().safeParse(workspaceId).success)
+			if (isCuid2(workspaceId))
 				response.cookies.set({
 					name: SELECTED_SPACE_COOKIE_NAME,
 					value: workspaceId,
 					path: '/',
-					maxAge: 31536000,
 				});
 		}
 	}

@@ -72,12 +72,12 @@ function ModulePage({ params }: { params: Promise<{ moduleId: string }> }) {
 				</div>
 			</div>
 			<div className="w-full flex border-b border-secondary-foreground/20 justify-between items-center gap-2 py-2 px-3">
-				<div className="flex transition-all duration-300 ease-in-out items-center gap-2 focus-within:ring-1 focus-within:!ring-primary-500 group-focus-within:ring-1 focus-within:bg-primary-800/50 bg-secondary-800 group rounded-md px-2">
+				<div className="flex transition-all duration-300 ease-in-out items-center gap-2 focus-within:ring-1 shadow-sm border-input focus-within:!ring-primary-300 dark:focus-within:!ring-primary-500 group-focus-within:ring-1 dark:focus-within:bg-primary-800/50 dark:bg-secondary-800 bg-secondary-50 group overflow-hidden rounded-md px-2">
 					<Search
 						size={18}
 						className="text-secondary-500  transition-all duration-300 ease-in-out group-focus-within:text-primary-500"
 					/>
-					<Input className="h-8 w-36 !p-0 transition-all duration-300 ease-in-out bg-secondary-800  focus-visible:bg-primary-800/50 focus-visible:!ring-0 !outline-none" />
+					<Input className="h-8 w-36 !p-0 transition-all duration-300 border-none shadow-none ease-in-out  focus-visible:!ring-0 !outline-none" />
 				</div>
 				<div>
 					<Tooltip>
@@ -119,15 +119,12 @@ function ModulePage({ params }: { params: Promise<{ moduleId: string }> }) {
 					</Tooltip>
 				</div>
 			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols4 2xl:grid-cols-5 container @min-[50px]:grid-cols-5 gap-4 w-full p-4 flex-1">
-				<PageCard />
-				<PageCard />
-				<PageCard />
-				<PageCard />
-				<PageCard />
-				<PageCard />
-				<PageCard />
-				<PageCard />
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 w-full p-4 flex-1">
+				{Array.from({ length: 8 }).map((_, i) => (
+					<div key={i} className="h-40 flex">
+						<PageCard />
+					</div>
+				))}
 			</div>
 		</section>
 	);

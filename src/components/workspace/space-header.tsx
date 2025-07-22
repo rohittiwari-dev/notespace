@@ -6,6 +6,7 @@ import useAppStore from '@/store';
 import CustomSuspense from '../app-ui/CustomSuspense';
 import { UserRoundedButtonSkeleton } from '../skeletons/workspace/sidebar';
 import AutoBreadcrumbs from '../app-ui/auto-breadcrumbs';
+import ThemeSwitcher from '../app-ui/theme-switcher';
 
 /**
  * Breadcrumb header component for workspace navigation
@@ -36,6 +37,7 @@ const SpaceHeader = ({
 					/>
 				)}
 				<div className="flex-1" />
+				<ThemeSwitcher />
 				<CustomSuspense
 					fallback={<UserRoundedButtonSkeleton />}
 					timeout={200}

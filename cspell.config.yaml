@@ -12,6 +12,11 @@ ignorePaths:
     - public
     - tsconfig.tsbuildinfo
     - branch_out
+    - package.json
+    - public
+    - dist
+    - coverage
+    - build
 words:
     - activecampaign
     - adipisicing
@@ -118,3 +123,4 @@ words:
     - setlocal
     - COLLAB
     - objc
+    - tabler

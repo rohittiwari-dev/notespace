@@ -7,4 +7,11 @@ bun.lockb
 bun.lock
 *.toml
 drizzle
+public
+dist
+coverage
+build
+.vscode
+*.log
+.idea
 
