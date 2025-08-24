@@ -1,6 +1,6 @@
 {
-  "id": "66d16471-d4d3-4375-9f1a-7ebe343363f8",
-  "prevId": "d09b295a-9fe4-48a7-9cc1-602779cf1193",
+  "id": "7df301de-0f80-4a64-95a1-e789effc0da5",
+  "prevId": "db46df06-a781-472e-afed-3d6d9aae9396",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -346,10 +346,10 @@
         },
         "data": {
           "name": "data",
-          "type": "jsonb[]",
+          "type": "json[]",
           "primaryKey": false,
           "notNull": true,
-          "default": "'[]'::jsonb"
+          "default": "ARRAY\n        []::json[]"
         },
         "cover": {
           "name": "cover",

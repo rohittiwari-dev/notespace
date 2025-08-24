@@ -1,9 +1,9 @@
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { FileTable, ModuleTable, WorkspaceTable } from './workspace.schema';
 import {
+	ConnectedAuthProvidersTable,
 	UserAuthSessionTable,
 	UserAuthVerificationTable,
-	ConnectedAuthProvidersTable,
 } from './auth.schema';
 import { NewsLetterSchema } from './newsletter.schema';
 import { UserTable } from './user.schema';
@@ -33,7 +33,9 @@ export type IUserAuthVerificationInsert = InferInsertModel<
 	typeof UserAuthVerificationTable
 >;
 
-export type IModule = InferSelectModel<typeof ModuleTable>;
+export type IModule = InferSelectModel<typeof ModuleTable> & {
+	files?: IFile[];
+};
 export type IModuleInsert = InferInsertModel<typeof ModuleTable>;
 
 export type IFile = InferSelectModel<typeof FileTable>;

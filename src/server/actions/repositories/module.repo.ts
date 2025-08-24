@@ -7,20 +7,21 @@ import { and, DrizzleError, eq, ne } from 'drizzle-orm';
 
 export const getModule = async (moduleId: string, fromTrash = false) => {
 	try {
-		const data = await db
-			.select()
-			.from(ModuleTable)
-			.where(
-				!fromTrash
-					? and(
-							eq(ModuleTable.id, moduleId),
-							ne(ModuleTable.in_trash, true),
-						)
-					: and(
-							eq(ModuleTable.id, moduleId),
-							ne(ModuleTable.in_trash, false),
-						),
-			);
+		const data = await db.query.ModuleTable.findMany({
+			where: !fromTrash
+				? and(
+						eq(ModuleTable.id, moduleId),
+						ne(ModuleTable.in_trash, true),
+					)
+				: and(
+						eq(ModuleTable.id, moduleId),
+						ne(ModuleTable.in_trash, false),
+					),
+			with: {
+				files: true,
+			},
+		});
+
 		if (!data[0]) {
 			throw new Error('Workspace not found');
 		}
@@ -38,20 +39,20 @@ export const getModule = async (moduleId: string, fromTrash = false) => {
 
 export const getModules = async (workspaceId: string, fromTrash = false) => {
 	try {
-		const data = await db
-			.select()
-			.from(ModuleTable)
-			.where(
-				!fromTrash
-					? and(
-							eq(ModuleTable.workspace, workspaceId),
-							ne(ModuleTable.in_trash, true),
-						)
-					: and(
-							eq(ModuleTable.workspace, workspaceId),
-							ne(ModuleTable.in_trash, false),
-						),
-			);
+		const data = await db.query.ModuleTable.findMany({
+			where: !fromTrash
+				? and(
+						eq(ModuleTable.workspace, workspaceId),
+						ne(ModuleTable.in_trash, true),
+					)
+				: and(
+						eq(ModuleTable.workspace, workspaceId),
+						ne(ModuleTable.in_trash, false),
+					),
+			with: {
+				files: true,
+			},
+		});
 		return SuccessResponse({
 			data,
 			message: 'Modules fetched',
@@ -70,8 +71,17 @@ export const createModule = async (module: IModuleInsert) => {
 		if (!data[0]) {
 			throw new Error('Module not created');
 		}
-		return SuccessResponse<IModuleInsert>({
-			data: data[0],
+
+		// Fetch the created module with files
+		const moduleWithFiles = await db.query.ModuleTable.findFirst({
+			where: eq(ModuleTable.id, data[0].id),
+			with: {
+				files: true,
+			},
+		});
+
+		return SuccessResponse<IModule>({
+			data: moduleWithFiles!,
 			message: 'Module created',
 		});
 	} catch (error) {
@@ -106,8 +116,16 @@ export const updateModule = async (
 			throw new Error('Module not found');
 		}
 
+		// Fetch the updated module with files
+		const moduleWithFiles = await db.query.ModuleTable.findFirst({
+			where: eq(ModuleTable.id, data[0].id),
+			with: {
+				files: true,
+			},
+		});
+
 		return SuccessResponse<IModule>({
-			data: data[0],
+			data: moduleWithFiles!,
 			message: 'Module updated',
 		});
 	} catch (error) {
@@ -158,8 +176,16 @@ export const softDeleteModule = async (moduleId: string) => {
 			throw new Error('Module not found');
 		}
 
+		// Fetch the updated module with files
+		const moduleWithFiles = await db.query.ModuleTable.findFirst({
+			where: eq(ModuleTable.id, data[0].id),
+			with: {
+				files: true,
+			},
+		});
+
 		return SuccessResponse<IModule>({
-			data: data[0],
+			data: moduleWithFiles!,
 			message: 'Module Deleted By Id',
 		});
 	} catch (error) {
@@ -187,8 +213,16 @@ export const restoreModule = async (moduleId: string) => {
 			throw new Error('No module found in trash with this id');
 		}
 
+		// Fetch the restored module with files
+		const moduleWithFiles = await db.query.ModuleTable.findFirst({
+			where: eq(ModuleTable.id, data[0].id),
+			with: {
+				files: true,
+			},
+		});
+
 		return SuccessResponse<IModule>({
-			data: data[0],
+			data: moduleWithFiles!,
 			message: 'Module Restored',
 		});
 	} catch (error) {

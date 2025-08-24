@@ -22,13 +22,13 @@ interface CommonError {
 	timestamp?: string;
 }
 function formatZodError(error: ZodError): CommonError {
-	const errors = error.errors.map(
+	const errors = error.issues.map(
 		(error) => `${error.path.join('.')}: ${error.message}`,
 	);
 	return {
 		code: 'BAD_REQUEST',
 		message: `Invalid input data: [${errors.join(', ')}]`,
-		issues: error.errors,
+		issues: error.issues,
 	};
 }
 

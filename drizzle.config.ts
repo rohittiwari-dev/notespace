@@ -10,4 +10,7 @@ export default defineConfig({
 	dbCredentials: {
 		url: env.DATABASE_URL,
 	},
+	...(env.DATABASE_URL?.includes('neon.tech') && {
+		websocket: true,
+	}),
 });

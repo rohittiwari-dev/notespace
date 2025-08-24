@@ -1,6 +1,6 @@
 {
-  "id": "cc163f87-074e-47ff-8847-09f974d515a9",
-  "prevId": "efca97d8-5f58-424c-adce-3e504735ab9d",
+  "id": "db46df06-a781-472e-afed-3d6d9aae9396",
+  "prevId": "66d16471-d4d3-4375-9f1a-7ebe343363f8",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -317,19 +317,12 @@
           "notNull": false,
           "default": false
         },
-        "position": {
-          "name": "position",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "default": 1
-        },
         "tags": {
           "name": "tags",
           "type": "varchar(128)[]",
           "primaryKey": false,
-          "notNull": false,
-          "default": "ARRAY[]::varchar[]"
+          "notNull": true,
+          "default": "ARRAY\n        []::varchar[]"
         },
         "owner": {
           "name": "owner",
@@ -345,11 +338,29 @@
           "notNull": false,
           "default": "'page'"
         },
-        "reference_id": {
-          "name": "reference_id",
+        "coverPublicId": {
+          "name": "coverPublicId",
           "type": "text",
           "primaryKey": false,
+          "notNull": false
+        },
+        "data": {
+          "name": "data",
+          "type": "json[]",
+          "primaryKey": false,
           "notNull": true
+        },
+        "cover": {
+          "name": "cover",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "workspace": {
           "name": "workspace",
@@ -368,14 +379,14 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n        ()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n        ()"
         }
       },
       "indexes": {},
@@ -484,7 +495,7 @@
           "type": "varchar(128)[]",
           "primaryKey": false,
           "notNull": false,
-          "default": "ARRAY[]::varchar[]"
+          "default": "ARRAY\n            []::varchar[]"
         },
         "workspace": {
           "name": "workspace",
@@ -497,14 +508,14 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n            ()"
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n            ()"
         }
       },
       "indexes": {},
@@ -575,7 +586,7 @@
           "type": "varchar(128)[]",
           "primaryKey": false,
           "notNull": false,
-          "default": "ARRAY[]::varchar[]"
+          "default": "ARRAY\n            []::varchar[]"
         },
         "logo": {
           "name": "logo",
@@ -601,14 +612,14 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n            ()"
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n            ()"
         }
       },
       "indexes": {},

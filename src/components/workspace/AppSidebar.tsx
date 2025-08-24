@@ -1,27 +1,14 @@
 'use client';
 import * as React from 'react';
-import {
-	Dot,
-	Home,
-	InboxIcon,
-	SettingsIcon,
-	SquareStack,
-	Trash2,
-	WorkflowIcon,
-} from 'lucide-react';
+import { Dot, Home, SettingsIcon, SquareStack, Trash2 } from 'lucide-react';
 import {
 	Sidebar,
 	SidebarContent,
-	SidebarFooter,
 	SidebarHeader,
-	SidebarMenu,
-	SidebarMenuButton,
-	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
 import UserButton from '../app-ui/user-button';
 import { NavMain } from './sidebar-component/nav-main';
-import { NavSecondary } from './sidebar-component/nav-secondary';
 import SpaceSwitcher from '../app-ui/space-switcher';
 import { IModule, IWorkSpace } from '@/db/schemas';
 import { User } from 'better-auth';
@@ -34,7 +21,6 @@ import {
 	oklchToHex,
 } from '@/lib/utils/colors';
 import CustomSuspense from '../app-ui/CustomSuspense';
-import { UserButtonSidebarSkeleton } from '../skeletons/workspace/sidebar';
 
 const getSidebarData = ({
 	currentWorkspace,
@@ -56,24 +42,10 @@ const getSidebarData = ({
 		},
 		{
 			id: 2,
-			title: 'Inbox',
-			url: '#',
-			icon: InboxIcon,
-		},
-		{
-			id: 3,
 			title: 'Task Management',
 			url: '#',
 			icon: SquareStack,
 		},
-		{
-			id: 4,
-			title: 'Workflows',
-			url: '#',
-			icon: WorkflowIcon,
-		},
-	],
-	navSecondary: [
 		{
 			id: 1,
 			title: 'Settings',
@@ -97,7 +69,7 @@ const getSidebarData = ({
 		logo: val.logo,
 		icon: val.icon || (
 			<Dot
-				className={cn(`size-10 -mx-3 `)}
+				className={cn(`-mx-3 size-10`)}
 				color={
 					val?.color ||
 					oklchToHex(
@@ -124,7 +96,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 		<Sidebar
 			collapsible="icon"
 			variant="sidebar"
-			className="border-r-accent/40 shadow select-none"
+			className="shadow border-r-accent/40 select-none"
 			{...props}
 		>
 			<SidebarHeader>
@@ -135,15 +107,13 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				/>
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={data.navMain} />
-				<NavModules items={data.modules} />
-				<NavSecondary
-					items={data.navSecondary}
-					className="mt-auto"
+				<NavMain
+					items={data.navMain}
 					dropdownContentAlign={isMobile ? 'bottom' : 'right'}
 				/>
+				<NavModules items={data.modules} />
 			</SidebarContent>
-			<SidebarFooter>
+			{/* <SidebarFooter>
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<CustomSuspense
@@ -153,7 +123,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 								<SidebarMenuButton
 									size="lg"
 									className={cn(
-										'data-[state=open]:bg-sidebar-accent px-2 w-full select-none cursor-pointer data-[state=open]:text-sidebar-accent-foreground',
+										'data-[state=open]:bg-sidebar-accent px-2 w-full data-[state=open]:text-sidebar-accent-foreground cursor-pointer select-none',
 									)}
 								>
 									<UserButtonSidebarSkeleton />
@@ -172,7 +142,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 						</CustomSuspense>
 					</SidebarMenuItem>
 				</SidebarMenu>
-			</SidebarFooter>
+			</SidebarFooter> */}
 		</Sidebar>
 	);
 }

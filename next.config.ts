@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 import './src/env';
 
 const nextConfig: NextConfig = {
+	reactStrictMode: false,
 	transpilePackages: [
 		'lucide-react',
 		'@t3-oss/env-nextjs',

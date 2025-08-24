@@ -50,15 +50,20 @@ CREATE TABLE "files" (
 	"name" varchar(128) NOT NULL,
 	"icon" varchar(128),
 	"in_trash" boolean DEFAULT false,
-	"position" integer DEFAULT 1,
-	"tags" varchar(128)[] DEFAULT ARRAY[]::varchar[],
+	"tags" varchar(128)[] DEFAULT ARRAY
+        []::varchar[] NOT NULL,
 	"owner" text NOT NULL,
 	"type" "file_type_enum" DEFAULT 'page',
-	"reference_id" text NOT NULL,
+	"coverPublicId" text,
+	"data" json[] DEFAULT '[]'::jsonb NOT NULL,
+	"cover" text,
+	"description" text,
 	"workspace" text NOT NULL,
 	"module" text NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now(),
-	"updated_at" timestamp with time zone DEFAULT now()
+	"created_at" timestamp with time zone DEFAULT now
+        (),
+	"updated_at" timestamp with time zone DEFAULT now
+        ()
 );
 --> statement-breakpoint
 CREATE TABLE "modules" (
@@ -66,14 +71,17 @@ CREATE TABLE "modules" (
 	"name" varchar(128) NOT NULL,
 	"icon" varchar(128),
 	"owner" text NOT NULL,
-	"description" text NOT NULL,
+	"color" text,
 	"logo" text,
 	"logo_public_id" text,
 	"in_trash" boolean DEFAULT false,
-	"tags" varchar(128)[] DEFAULT ARRAY[]::varchar[],
+	"tags" varchar(128)[] DEFAULT ARRAY
+            []::varchar[],
 	"workspace" text NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now(),
-	"created_at" timestamp with time zone DEFAULT now()
+	"updated_at" timestamp with time zone DEFAULT now
+            (),
+	"created_at" timestamp with time zone DEFAULT now
+            ()
 );
 --> statement-breakpoint
 CREATE TABLE "workspaces" (
@@ -81,12 +89,15 @@ CREATE TABLE "workspaces" (
 	"name" varchar(128) NOT NULL,
 	"icon" varchar(128) NOT NULL,
 	"owner" text NOT NULL,
-	"tags" varchar(128)[] DEFAULT ARRAY[]::varchar[],
+	"tags" varchar(128)[] DEFAULT ARRAY
+            []::varchar[],
 	"logo" text,
 	"logo_public_id" text,
 	"in_trash" boolean DEFAULT false,
-	"updated_at" timestamp with time zone DEFAULT now(),
-	"created_at" timestamp with time zone DEFAULT now()
+	"updated_at" timestamp with time zone DEFAULT now
+            (),
+	"created_at" timestamp with time zone DEFAULT now
+            ()
 );
 --> statement-breakpoint
 CREATE TABLE "collaborators" (

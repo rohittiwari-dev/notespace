@@ -1,5 +1,5 @@
 {
-  "id": "fb14ef76-f575-4cdf-92f9-c017851f476e",
+  "id": "d09b295a-9fe4-48a7-9cc1-602779cf1193",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -317,19 +317,12 @@
           "notNull": false,
           "default": false
         },
-        "position": {
-          "name": "position",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "default": 1
-        },
         "tags": {
           "name": "tags",
           "type": "varchar(128)[]",
           "primaryKey": false,
-          "notNull": false,
-          "default": "ARRAY[]::varchar[]"
+          "notNull": true,
+          "default": "ARRAY\n        []::varchar[]"
         },
         "owner": {
           "name": "owner",
@@ -345,11 +338,30 @@
           "notNull": false,
           "default": "'page'"
         },
-        "reference_id": {
-          "name": "reference_id",
+        "coverPublicId": {
+          "name": "coverPublicId",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "data": {
+          "name": "data",
+          "type": "json[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "cover": {
+          "name": "cover",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "workspace": {
           "name": "workspace",
@@ -368,14 +380,14 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n        ()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n        ()"
         }
       },
       "indexes": {},
@@ -454,11 +466,11 @@
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
+        "color": {
+          "name": "color",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "logo": {
           "name": "logo",
@@ -484,7 +496,7 @@
           "type": "varchar(128)[]",
           "primaryKey": false,
           "notNull": false,
-          "default": "ARRAY[]::varchar[]"
+          "default": "ARRAY\n            []::varchar[]"
         },
         "workspace": {
           "name": "workspace",
@@ -497,14 +509,14 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n            ()"
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n            ()"
         }
       },
       "indexes": {},
@@ -575,7 +587,7 @@
           "type": "varchar(128)[]",
           "primaryKey": false,
           "notNull": false,
-          "default": "ARRAY[]::varchar[]"
+          "default": "ARRAY\n            []::varchar[]"
         },
         "logo": {
           "name": "logo",
@@ -601,14 +613,14 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n            ()"
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "now\n            ()"
         }
       },
       "indexes": {},

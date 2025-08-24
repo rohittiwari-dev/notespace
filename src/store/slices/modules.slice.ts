@@ -1,5 +1,6 @@
-import { IModule } from '@/db/schemas';
+import { IFile, IModule } from '@/db/schemas';
 import { StateCreator } from 'zustand';
+import { IFileInsert } from '../../db/schemas/schema.types';
 
 export type TModulesInitialState = {
 	modules: IModule[];
@@ -24,9 +25,14 @@ export interface IModuleStore extends TModulesInitialState {
 	updateModule: (moduleId: string, module: Partial<IModule>) => void;
 	deleteModule: (moduleId: string, type?: 'soft' | 'hard') => void;
 	resetModule: () => void;
+	addNewFile: (file: IFileInsert) => void;
+	getFileById: (fileId: string) => IFile | undefined;
+	removeFile: (fileId: string) => void;
+	updateFile: (fileId: string, file: Partial<IFile>) => void;
+	setFile: (file: IFile) => void;
 }
 
-export const ModuleSlice: StateCreator<IModuleStore> = (set) => ({
+export const ModuleSlice: StateCreator<IModuleStore> = (set, get) => ({
 	...initialState,
 	setModulesState: (state) => set(() => ({ ...state })),
 	setModules: (modules, module) =>
@@ -79,4 +85,85 @@ export const ModuleSlice: StateCreator<IModuleStore> = (set) => ({
 			};
 		}),
 	resetModule: () => set(() => ({ ...initialState })),
+	addNewFile: (file) =>
+		set((state) => ({
+			modules: state.modules.map((mod) =>
+				mod.id === state.module?.id
+					? { ...mod, files: [...(mod.files || []), file as IFile] }
+					: mod,
+			),
+			module: state.module
+				? {
+						...state.module,
+						files: [...(state.module.files || []), file as IFile],
+					}
+				: null,
+		})),
+	getFileById: (fileId) => {
+		return get().module?.files?.find((file) => file.id === fileId);
+	},
+	removeFile: (fileId) => {
+		set((state) => ({
+			modules: state.modules.map((mod) =>
+				mod.id === state.module?.id
+					? {
+							...mod,
+							files:
+								mod.files?.filter(
+									(file) => file.id !== fileId,
+								) || [],
+						}
+					: mod,
+			),
+			module: state.module
+				? {
+						...state.module,
+						files:
+							state.module.files?.filter(
+								(file) => file.id !== fileId,
+							) || [],
+					}
+				: null,
+		}));
+	},
+	updateFile: (fileId, file) => {
+		set((state) => ({
+			modules: state.modules.map((mod) =>
+				mod.id === state.module?.id
+					? {
+							...mod,
+							files: mod.files?.map((f) =>
+								f.id === fileId ? { ...f, ...file } : f,
+							),
+						}
+					: mod,
+			),
+			module: state.module
+				? {
+						...state.module,
+						files: state.module.files?.map((f) =>
+							f.id === fileId ? { ...f, ...file } : f,
+						),
+					}
+				: null,
+		}));
+	},
+	setFile: (file: IFile) => {
+		set((state) => ({
+			module: state.module
+				? {
+						...state.module,
+						files: [...(state.module.files || []), file],
+					}
+				: null,
+			modules: state?.modules?.map((mod) =>
+				mod.id === state.module?.id
+					? {
+							...mod,
+							files: [...(mod.files || []), file],
+						}
+					: mod,
+			),
+		}));
+	},
 });

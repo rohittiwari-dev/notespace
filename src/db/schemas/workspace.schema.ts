@@ -1,7 +1,7 @@
-import { sql } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import {
 	boolean,
-	integer,
+	json,
 	pgEnum,
 	pgTable,
 	text,
@@ -37,17 +37,18 @@ export const WorkspaceTable = pgTable(
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
-		tags: varchar({ length: 128 })
-			.array()
-			.default(sql`ARRAY[]::varchar[]`),
+		tags: varchar({ length: 128 }).array().default(sql`ARRAY
+            []::varchar[]`),
 		logo: text(),
 		logo_public_id: text(),
 		in_trash: boolean().default(false),
 		updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-			sql`now()`,
+			sql`now
+            ()`,
 		),
 		created_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-			sql`now()`,
+			sql`now
+            ()`,
 		),
 	},
 	(t) => [
@@ -59,48 +60,39 @@ export const WorkspaceTable = pgTable(
 	],
 );
 
-export const ModuleTable = pgTable(
-	'modules',
-	{
-		id: text()
-			.primaryKey()
-			.$defaultFn(() => createId()),
-		name: varchar({ length: 128 }).notNull(),
-		icon: varchar({ length: 128 }),
-		owner: text()
-			.notNull()
-			.references(() => UserTable.id, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			}),
-		color: text(),
-		logo: text(),
-		logo_public_id: text(),
-		in_trash: boolean().default(false),
-		tags: varchar({ length: 128 })
-			.array()
-			.default(sql`ARRAY[]::varchar[]`),
-		workspace: text()
-			.notNull()
-			.references(() => WorkspaceTable.id, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			}),
-		updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-			sql`now()`,
-		),
-		created_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-			sql`now()`,
-		),
-	},
-	// (t) => [
-	// 	{
-	// 		unique_module_name_index: uniqueIndex(
-	// 			'user_unique_workspace_based_module',
-	// 		).on(t.name, t.workspace, t.owner),
-	// 	},
-	// ],
-);
+export const ModuleTable = pgTable('modules', {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => createId()),
+	name: varchar({ length: 128 }).notNull(),
+	icon: varchar({ length: 128 }),
+	owner: text()
+		.notNull()
+		.references(() => UserTable.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+	color: text(),
+	logo: text(),
+	logo_public_id: text(),
+	in_trash: boolean().default(false),
+	tags: varchar({ length: 128 }).array().default(sql`ARRAY
+            []::varchar[]`),
+	workspace: text()
+		.notNull()
+		.references(() => WorkspaceTable.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+	updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
+		sql`now
+            ()`,
+	),
+	created_at: timestamp({ withTimezone: true, mode: 'string' }).default(
+		sql`now
+            ()`,
+	),
+});
 
 export const FileTable = pgTable('files', {
 	id: text()
@@ -109,10 +101,13 @@ export const FileTable = pgTable('files', {
 	name: varchar({ length: 128 }).notNull(),
 	icon: varchar({ length: 128 }),
 	in_trash: boolean().default(false),
-	position: integer().default(1),
 	tags: varchar({ length: 128 })
 		.array()
-		.default(sql`ARRAY[]::varchar[]`),
+		.default(
+			sql`ARRAY
+        []::varchar[]`,
+		)
+		.notNull(),
 	owner: text()
 		.references(() => UserTable.id, {
 			onDelete: 'cascade',
@@ -120,7 +115,10 @@ export const FileTable = pgTable('files', {
 		})
 		.notNull(),
 	type: FileTypeEnum().default('page'),
-	reference_id: text().notNull(),
+	coverPublicId: text(),
+	data: json('data').array().$type<Array<{ [key: string]: any }>>().notNull(),
+	cover: text(),
+	description: text(),
 	workspace: text()
 		.references(() => WorkspaceTable.id, {
 			onDelete: 'cascade',
@@ -134,9 +132,22 @@ export const FileTable = pgTable('files', {
 		})
 		.notNull(),
 	created_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-		sql`now()`,
+		sql`now
+        ()`,
 	),
 	updated_at: timestamp({ withTimezone: true, mode: 'string' }).default(
-		sql`now()`,
+		sql`now
+        ()`,
 	),
 });
+
+export const filesRelationWithModule = relations(FileTable, ({ one }) => ({
+	module: one(ModuleTable, {
+		fields: [FileTable.module],
+		references: [ModuleTable.id],
+	}),
+}));
+
+export const moduleRelationWithFiles = relations(ModuleTable, ({ many }) => ({
+	files: many(FileTable),
+}));
