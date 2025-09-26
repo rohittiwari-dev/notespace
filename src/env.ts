@@ -13,9 +13,9 @@ export const env = createEnv({
 	},
 	server: {
 		PORT: z.coerce.number().default(3000),
-		DATABASE_URL: z.string().url(),
+		DATABASE_URL: z.string(),
 		RESEND_API_KEY: z.string(),
-		REDIS_URL: z.string().url(),
+		REDIS_URL: z.string(),
 		GOOGLE_CLIENT_ID: z.string(),
 		GOOGLE_CLIENT_SECRET: z.string(),
 		BETTER_AUTH_URL: z.string(),
