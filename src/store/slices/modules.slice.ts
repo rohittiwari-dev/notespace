@@ -6,6 +6,7 @@ export type TModulesInitialState = {
 	modules: IModule[];
 	module: IModule | null;
 	moduleLoading: boolean;
+	modulesLoading: boolean;
 	moduleError: string | null;
 };
 
@@ -13,6 +14,7 @@ export const initialState: TModulesInitialState = {
 	modules: [],
 	module: null,
 	moduleLoading: false,
+	modulesLoading: false,
 	moduleError: null,
 };
 

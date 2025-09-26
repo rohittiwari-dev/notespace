@@ -7,8 +7,6 @@ import trpc from '@/lib/trpc/client';
 import { getUrlIds } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 
-import z from 'zod';
-
 const StoreProvider = ({
 	InitialWorkspaces,
 	session,
@@ -21,16 +19,22 @@ const StoreProvider = ({
 	InitialWorkspaces: IWorkSpace[];
 }) => {
 	const pathname = usePathname();
-	const { fileId, moduleId, workspaceId } = getUrlIds(pathname);
+	const { moduleId, workspaceId } = getUrlIds(pathname);
 	const {
 		setWorkspaces,
 		setUserAndSession,
 		setModulesState,
 		setWorkspace,
 		setModules,
+		setWorkspaceState,
+		setModule,
 	} = useAppStore();
 
-	const { data: workspaces } = trpc.workspace.getWorkspaces.useQuery(
+	const {
+		data: workspaces,
+		isLoading: isWorkspacesLoading,
+		isFetching: isWorkspacesFetching,
+	} = trpc.workspace.getWorkspaces.useQuery(
 		{
 			userId: user?.id || '',
 		},
@@ -42,7 +46,11 @@ const StoreProvider = ({
 			refetchOnMount: true,
 		},
 	);
-	const { data: workspace } = trpc.workspace.getWorkspace.useQuery(
+	const {
+		data: workspace,
+		isFetching: isWorkspaceFetching,
+		isLoading: isWorkspaceLoading,
+	} = trpc.workspace.getWorkspace.useQuery(
 		{
 			workspaceId: workspaceId || '',
 		},
@@ -54,7 +62,11 @@ const StoreProvider = ({
 			refetchOnMount: true,
 		},
 	);
-	const { data: modules } = trpc.modules.getModules.useQuery(
+	const {
+		data: modules,
+		isLoading: isModulesLoading,
+		isFetching: isModulesFetching,
+	} = trpc.modules.getModules.useQuery(
 		{
 			workspaceId: workspaceId || '',
 		},
@@ -65,18 +77,21 @@ const StoreProvider = ({
 			refetchOnMount: true,
 		},
 	);
-	const { data: module, isFetching: isModuleFetching } =
-		trpc.modules.getModule.useQuery(
-			{
-				moduleId: moduleId || '',
-			},
-			{
-				enabled: !!moduleId,
-				refetchOnWindowFocus: true,
-				refetchOnReconnect: true,
-				refetchOnMount: true,
-			},
-		);
+	const {
+		data: module,
+		isFetching: isModuleFetching,
+		isLoading: isModuleLoading,
+	} = trpc.modules.getModule.useQuery(
+		{
+			moduleId: moduleId || '',
+		},
+		{
+			enabled: !!moduleId,
+			refetchOnWindowFocus: true,
+			refetchOnReconnect: true,
+			refetchOnMount: true,
+		},
+	);
 
 	useEffect(() => {
 		if (workspaces?.length)
@@ -84,12 +99,21 @@ const StoreProvider = ({
 		if (workspace && workspaceId) {
 			setWorkspace(workspace);
 		}
+		setWorkspaceState({
+			workspaceLoading: isWorkspaceFetching || isWorkspaceLoading,
+			workspacesLoading: isWorkspacesLoading || isWorkspacesFetching,
+		});
 	}, [
 		InitialWorkspaces,
 		setWorkspaces,
 		workspaces,
 		workspaceId,
+		setWorkspaceState,
 		workspace,
+		isWorkspaceFetching,
+		isWorkspaceLoading,
+		isWorkspacesLoading,
+		isWorkspacesFetching,
 		setWorkspace,
 	]);
 
@@ -106,18 +130,36 @@ const StoreProvider = ({
 		if (module && moduleId) {
 			setModulesState({
 				module: module,
-				moduleLoading: isModuleFetching,
 			});
+		}
+		setModulesState({
+			moduleLoading: isModuleFetching || isModuleLoading,
+			modulesLoading: isModulesLoading || isModulesFetching,
+		});
+		if (moduleId && !module) {
+			setModule(moduleId);
 		}
 	}, [
 		modules,
+		setModule,
 		setModules,
 		module,
 		moduleId,
 		setModulesState,
 		isModuleFetching,
+		isModuleLoading,
+		isModulesLoading,
+		isModulesFetching,
 		workspaceId,
 	]);
+
+	console.log(
+		'StoreProvider rendered',
+		module,
+		modules,
+		workspace,
+		workspaces,
+	);
 	return children;
 };
 

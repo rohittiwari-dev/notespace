@@ -18,6 +18,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
+import useAppStore from '@/store';
 
 type BreadcrumbItem = {
 	label: string;
@@ -97,6 +98,7 @@ function AutoBreadcrumbs({
 	const [mounted, setMounted] = useState(false);
 	const pathname = usePathname();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
+	const { module } = useAppStore();
 
 	// Only run client-side to avoid hydration mismatch
 	useEffect(() => {
@@ -165,6 +167,54 @@ function AutoBreadcrumbs({
 			) {
 				// Handle workspace path segments when workspace is undefined or ID doesn't match
 				label = 'Workspace';
+				isValidRoute = false; // Mark as invalid route to prevent linking
+
+				acc.push({
+					label,
+					href,
+					isCurrent: href === pathname || `${href}/` === pathname,
+					isValidRoute,
+				});
+				return acc;
+			} else if (
+				module &&
+				module.id &&
+				i === 2 &&
+				segment === module?.id
+			) {
+				label = module.name || 'Module';
+			} else if (
+				i === 2 &&
+				segments[0] === 'space' &&
+				(!module || !module.id || segment !== module.id)
+			) {
+				// Handle workspace path segments when workspace is undefined or ID doesn't match
+				label = 'Module';
+				isValidRoute = false; // Mark as invalid route to prevent linking
+
+				acc.push({
+					label,
+					href,
+					isCurrent: href === pathname || `${href}/` === pathname,
+					isValidRoute,
+				});
+				return acc;
+			} else if (
+				module?.files?.length &&
+				i === 3 &&
+				module.files.some((file) => file.id === segment)
+			) {
+				label =
+					module.files.find((file) => file.id === segment)?.name ||
+					'File';
+			} else if (
+				i === 3 &&
+				segments[0] === 'space' &&
+				(!module?.files?.length ||
+					!module.files.some((file) => file.id === segment))
+			) {
+				// Handle workspace path segments when workspace is undefined or ID doesn't match
+				label = 'File';
 				isValidRoute = false; // Mark as invalid route to prevent linking
 
 				acc.push({
@@ -252,7 +302,7 @@ function AutoBreadcrumbs({
 							<React.Fragment
 								key={`${item.href || index}-ellipsis`}
 							>
-								<BreadcrumbSeparator className="flex items-center mt-0.5 ml-1 justify-center h-full" />
+								<BreadcrumbSeparator className="flex justify-center items-center mt-0.5 ml-1 h-full" />
 								<BreadcrumbItem className="flex !items-center !h-full">
 									<Popover
 										open={dropdownOpen}
@@ -265,10 +315,10 @@ function AutoBreadcrumbs({
 											<BreadcrumbEllipsis />
 										</PopoverTrigger>
 										<PopoverContent
-											className="py-1 px-0.5 w-full max-w-60"
+											className="px-0.5 py-1 w-full max-w-60"
 											align="start"
 										>
-											<div className="flex !text-[0.5rem] flex-col">
+											<div className="flex flex-col !text-[0.5rem]">
 												{hiddenCrumbs
 													.filter(
 														(item) =>
@@ -277,7 +327,7 @@ function AutoBreadcrumbs({
 													.map((item, i) => (
 														<div
 															key={`${item.href || i}-hidden`}
-															className="hover:bg-muted !text-[0.5rem] rounded"
+															className="hover:bg-muted rounded !text-[0.5rem]"
 														>
 															{RenderBreadcrumbItem(
 																item,
@@ -290,7 +340,7 @@ function AutoBreadcrumbs({
 										</PopoverContent>
 									</Popover>
 								</BreadcrumbItem>
-								<BreadcrumbSeparator className="flex mr-1 mt-0.5 items-center justify-center h-full" />
+								<BreadcrumbSeparator className="flex justify-center items-center mt-0.5 mr-1 h-full" />
 								<BreadcrumbItem className="flex !items-center !h-full">
 									{RenderBreadcrumbItem(
 										item,
@@ -308,7 +358,7 @@ function AutoBreadcrumbs({
 							{index > 0 && (
 								<BreadcrumbSeparator
 									className={cn(
-										'flex mx-1 mt-0.5 items-center justify-center h-full',
+										'flex justify-center items-center mx-1 mt-0.5 h-full',
 										color,
 									)}
 								/>

@@ -317,6 +317,18 @@
 		@apply bg-background text-foreground !border-border h-svh w-screen overflow-hidden;
 	}
 
+	#module_folder::before {
+		clip-path: polygon(
+			53% 14%,
+			100% 15%,
+			100% 81%,
+			100% 100%,
+			0 100%,
+			0 0,
+			40% 0
+		);
+	}
+
 	.bg-plus-pattern {
 		background-image:
 			linear-gradient(

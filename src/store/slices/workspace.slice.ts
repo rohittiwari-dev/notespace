@@ -5,6 +5,8 @@ import _ from 'lodash';
 export type TInitialWorkspaceState = {
 	workspaces: IWorkSpace[];
 	workspace: IWorkSpace | null;
+	workspaceLoading: boolean;
+	workspacesLoading: boolean;
 };
 
 export interface IWorkspaceStateSlice extends TInitialWorkspaceState {
@@ -16,11 +18,14 @@ export interface IWorkspaceStateSlice extends TInitialWorkspaceState {
 		workspace?: string | IWorkSpace,
 	) => void;
 	resetWorkspace: () => void;
+	setWorkspaceState: (state: Partial<TInitialWorkspaceState>) => void;
 }
 
 export const initialWorkspaceState: TInitialWorkspaceState = {
 	workspaces: [],
 	workspace: null,
+	workspaceLoading: false,
+	workspacesLoading: false,
 };
 
 const WorkspaceSlice: StateCreator<IWorkspaceStateSlice> = (set) => ({
@@ -93,6 +98,7 @@ const WorkspaceSlice: StateCreator<IWorkspaceStateSlice> = (set) => ({
 	resetWorkspace: _.debounce(() => {
 		set(initialWorkspaceState);
 	}, 0),
+	setWorkspaceState: (state) => set((s) => ({ ...s, ...state })),
 });
 
 export default WorkspaceSlice;

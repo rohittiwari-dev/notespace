@@ -1,7 +1,7 @@
 import db from '@/db';
 import { ErrorResponse, SuccessResponse } from '@/db/handlers';
 import { FileTable, IFileInsert } from '@/db/schemas';
-import { DrizzleError, eq } from 'drizzle-orm';
+import { desc, DrizzleError, eq } from 'drizzle-orm';
 
 export const createNewFiles = async (file: IFileInsert) => {
 	try {
@@ -109,6 +109,29 @@ export const deleteFileById = async (id: string) => {
 		throw ErrorResponse({
 			error: error as DrizzleError,
 			message: (error as DrizzleError).message || 'File not deleted',
+		});
+	}
+};
+
+export const getRecentFiles = async (workspaceId: string, limit = 6) => {
+	try {
+		const data = await db
+			.select()
+			.from(FileTable)
+			.where(eq(FileTable.workspace, workspaceId))
+			.orderBy(desc(FileTable.updated_at))
+			.limit(limit)
+			.execute();
+
+		return SuccessResponse({
+			data,
+			message: 'Recent files retrieved',
+		});
+	} catch (error) {
+		throw ErrorResponse({
+			error: error as DrizzleError,
+			message:
+				(error as DrizzleError).message || 'Recent files not found',
 		});
 	}
 };

@@ -24,7 +24,8 @@ const NoteHeader = ({
 }) => {
 	const router = useRouter();
 	const trpcUtils = trpc.useUtils();
-	const { module, updateFile, addNewFile, removeFile } = useAppStore();
+	const { module, updateFile, addNewFile, removeFile, moduleLoading } =
+		useAppStore();
 	const { mutate: updateFileBackend } = trpc.modules.updateFile.useMutation({
 		onMutate: async (variables) => {
 			await trpcUtils.modules.getModule.cancel({
@@ -139,47 +140,63 @@ const NoteHeader = ({
 	);
 
 	useEffect(() => {
-		if (!module?.files?.find((f) => f.id === noteId)) {
-			toast.warning('Create New File ?', {
-				description:
-					'File does not exist. want to create new file or go back?',
-				id: `${noteId}create-new-file`,
-				action: (
-					<div className="flex flex-col gap-2">
-						<Button
-							size="sm"
-							disabled={isPending}
-							variant="secondary"
-							className="!text-[0.6rem]"
-							onClick={() => {
-								addFile({
-									file: {
-										...file,
-										id: noteId,
-										updated_at: new Date().toISOString(),
-									},
-									moduleId: moduleId,
-								});
-							}}
-						>
-							{isPending ? 'Creating...' : 'Create File'}
-						</Button>
-						<Button
-							size="sm"
-							variant="outline"
-							className="!text-[0.6rem]"
-							onClick={() => {
-								router.back();
-							}}
-						>
-							Go Back
-						</Button>
-					</div>
-				),
-				duration: 8000,
-			});
-		}
-	}, [addFile, file, module?.files, moduleId, noteId, router, isPending]);
+		const timeout = setTimeout(() => {
+			if (
+				!moduleLoading &&
+				!module?.files?.find((f) => f.id === noteId)
+			) {
+				toast.warning('Create New File ?', {
+					description:
+						'File does not exist. want to create new file or go back?',
+					id: `${noteId}create-new-file`,
+					action: (
+						<div className="flex flex-col gap-2">
+							<Button
+								size="sm"
+								disabled={isPending}
+								variant="secondary"
+								className="!text-[0.6rem]"
+								onClick={() => {
+									addFile({
+										file: {
+											...file,
+											id: noteId,
+											updated_at:
+												new Date().toISOString(),
+										},
+										moduleId: moduleId,
+									});
+								}}
+							>
+								{isPending ? 'Creating...' : 'Create File'}
+							</Button>
+							<Button
+								size="sm"
+								variant="outline"
+								className="!text-[0.6rem]"
+								onClick={() => {
+									router.back();
+								}}
+							>
+								Go Back
+							</Button>
+						</div>
+					),
+					duration: 8000,
+				});
+			}
+		}, 2000);
+		return () => clearTimeout(timeout);
+	}, [
+		addFile,
+		file,
+		module?.files,
+		moduleId,
+		noteId,
+		router,
+		isPending,
+		moduleLoading,
+	]);
 
 	return (
 		<div className="flex flex-col rounded-t-lg w-full h-fit">
