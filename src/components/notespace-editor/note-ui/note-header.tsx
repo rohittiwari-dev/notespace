@@ -26,8 +26,27 @@ const NoteHeader = ({
 	const trpcUtils = trpc.useUtils();
 	const { module, updateFile, addNewFile, removeFile } = useAppStore();
 	const { mutate: updateFileBackend } = trpc.modules.updateFile.useMutation({
-		onSuccess: (data) => {
-			trpcUtils.modules.getModule.invalidate({ moduleId: data.module });
+		onMutate: async (variables) => {
+			await trpcUtils.modules.getModule.cancel({
+				moduleId: variables.moduleId,
+			});
+			updateFile(variables.fileId, variables.file as any);
+			const previousData = trpcUtils.modules.getModule.getData({
+				moduleId: variables.moduleId,
+			});
+			return { previousData };
+		},
+		onError: (_, variables, context) => {
+			if (context?.previousData) {
+				trpcUtils.modules.getModule.setData(
+					{ moduleId: variables.moduleId },
+					context.previousData,
+				);
+			}
+			toast.error('Failed to update file', {
+				description:
+					'Your changes could not be saved. Please try again.',
+			});
 		},
 	});
 	const { mutateAsync: addFile, isPending } =
@@ -41,16 +60,10 @@ const NoteHeader = ({
 				});
 				return { tempId };
 			},
-			onSuccess: (data, _variables, context) => {
-				if (context?.tempId) {
-					removeFile(context.tempId);
-					addNewFile(data);
-				}
-				trpcUtils.modules.getModule.invalidate({
-					moduleId: moduleId,
-				});
-			},
 			onError: (_, _variables) => {
+				if (_variables?.file?.id) {
+					removeFile(_variables.file.id);
+				}
 				toast.warning('File not saved.', {
 					id: `${noteId}create-new-file`,
 					action: {
@@ -65,16 +78,19 @@ const NoteHeader = ({
 				});
 			},
 		});
-	const debouncedUpdate = useDebouncedCallback(() => {
-		const file = module?.files?.find((f) => f.id === noteId);
-		if (file) {
+	const debouncedUpdate = useDebouncedCallback(
+		(fileId: string, data: Partial<IFile>) => {
 			updateFileBackend({
-				file: { ...file, cover: undefined },
-				fileId: noteId,
+				file: {
+					...data,
+					updated_at: new Date().toISOString(),
+				} as any,
+				fileId: fileId,
 				moduleId: moduleId,
 			});
-		}
-	}, 1500);
+		},
+		2000,
+	);
 	const debouncedUpdateCover = useDebouncedCallback(
 		async (cover: File | null) => {
 			const file = module?.files?.find((f) => f.id === noteId);
@@ -89,6 +105,7 @@ const NoteHeader = ({
 							fileData: coverImageData,
 							fileSize: cover?.size || 0,
 						},
+						updated_at: new Date().toISOString(),
 					},
 					fileId: noteId,
 					moduleId: moduleId,
@@ -139,6 +156,7 @@ const NoteHeader = ({
 									file: {
 										...file,
 										id: noteId,
+										updated_at: new Date().toISOString(),
 									},
 									moduleId: moduleId,
 								});
@@ -170,6 +188,7 @@ const NoteHeader = ({
 				onImageChange={(cover) => {
 					updateFile(noteId, {
 						cover: cover ? URL.createObjectURL(cover) : null,
+						updated_at: new Date().toISOString(),
 					});
 					debouncedUpdateCover(cover);
 				}}
@@ -179,8 +198,14 @@ const NoteHeader = ({
 					<div className="relative bg-secondary-100 dark:bg-secondary-800 border-secondary-200 rounded-xl w-24 h-24 text-5xl cursor-pointer">
 						<EmojiPicker
 							getEmoji={(emoji) => {
-								updateFile(noteId, { icon: emoji });
-								debouncedUpdate();
+								updateFile(noteId, {
+									icon: emoji,
+									updated_at: new Date().toISOString(),
+								});
+								debouncedUpdate(noteId, {
+									icon: emoji,
+									updated_at: new Date().toISOString(),
+								});
 							}}
 						>
 							{file.icon}
@@ -194,8 +219,14 @@ const NoteHeader = ({
 								variant="link"
 								size="sm"
 								onClick={() => {
-									updateFile(noteId, { icon: '📄' });
-									debouncedUpdate();
+									updateFile(noteId, {
+										icon: '📄',
+										updated_at: new Date().toISOString(),
+									});
+									debouncedUpdate(noteId, {
+										icon: '📄',
+										updated_at: new Date().toISOString(),
+									});
 								}}
 								className="!p-0 text-secondary-700 dark:text-secondary-150"
 							>
@@ -206,8 +237,14 @@ const NoteHeader = ({
 								variant="link"
 								size="sm"
 								onClick={() => {
-									updateFile(noteId, { icon: null });
-									debouncedUpdate();
+									updateFile(noteId, {
+										icon: null,
+										updated_at: new Date().toISOString(),
+									});
+									debouncedUpdate(noteId, {
+										icon: null,
+										updated_at: new Date().toISOString(),
+									});
 								}}
 								className="!p-0 text-secondary-700 dark:text-secondary-150"
 							>
@@ -219,8 +256,14 @@ const NoteHeader = ({
 						className="!p-0 !border-none !outline-none focus-visible:!ring-0 dark:focus-visible:ring-0 font-semibold !text-3xl"
 						value={file?.name}
 						onChange={(e) => {
-							updateFile(noteId, { name: e.target.value });
-							debouncedUpdate();
+							updateFile(noteId, {
+								name: e.target.value,
+								updated_at: new Date().toISOString(),
+							});
+							debouncedUpdate(noteId, {
+								name: e.target.value,
+								updated_at: new Date().toISOString(),
+							});
 						}}
 					/>
 					<Input
@@ -232,8 +275,12 @@ const NoteHeader = ({
 						onChange={(e) => {
 							updateFile(noteId, {
 								description: e.target.value,
+								updated_at: new Date().toISOString(),
 							});
-							debouncedUpdate();
+							debouncedUpdate(noteId, {
+								description: e.target.value,
+								updated_at: new Date().toISOString(),
+							});
 						}}
 					/>
 				</div>

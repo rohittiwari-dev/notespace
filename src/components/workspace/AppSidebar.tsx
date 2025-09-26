@@ -7,7 +7,6 @@ import {
 	SidebarHeader,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import UserButton from '../app-ui/user-button';
 import { NavMain } from './sidebar-component/nav-main';
 import SpaceSwitcher from '../app-ui/space-switcher';
 import { IModule, IWorkSpace } from '@/db/schemas';
@@ -20,7 +19,6 @@ import {
 	getRandomTailwindText400ShadeColor,
 	oklchToHex,
 } from '@/lib/utils/colors';
-import CustomSuspense from '../app-ui/CustomSuspense';
 
 const getSidebarData = ({
 	currentWorkspace,
@@ -41,9 +39,9 @@ const getSidebarData = ({
 			icon: Home,
 		},
 		{
-			id: 2,
+			id: 1,
 			title: 'Task Management',
-			url: '#',
+			url: `/space/${currentWorkspace?.id}/task-management`,
 			icon: SquareStack,
 		},
 		{

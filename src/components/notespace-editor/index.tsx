@@ -23,9 +23,7 @@ import {
 	defaultStyleSpecs,
 	filterSuggestionItems,
 } from '@blocknote/core';
-import '@blocknote/core/fonts/inter.css';
-import '@blocknote/mantine/style.css';
-import { codeBlock } from '@blocknote/code-block';
+import { codeBlockOptions } from '@blocknote/code-block';
 import { Alert, insertAlert } from './note-ui/alert';
 import { Font } from './note-ui/font';
 import { MdInfo } from 'react-icons/md';
@@ -33,6 +31,7 @@ import useAppStore from '@/store';
 import trpc from '@/lib/trpc/client';
 import { useDebouncedCallback } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
+import { IFile } from '@/db/schemas';
 
 function NotespaceEditor({ noteId }: { noteId: string }) {
 	const [isLoadingSimulation, setIsLoadingSimulation] = React.useState(true);
@@ -44,26 +43,32 @@ function NotespaceEditor({ noteId }: { noteId: string }) {
 			trpcUtils.modules.getModule.invalidate({ moduleId: data.module });
 		},
 	});
-	const debouncedUpdate = useDebouncedCallback(() => {
-		const file = module?.files?.find((f) => f.id === noteId);
-		if (file) {
+	const debouncedUpdate = useDebouncedCallback(
+		(fileId: string, data: Partial<IFile>) => {
 			updateFileBackend({
-				file: { ...file, cover: undefined },
-				fileId: noteId,
+				file: {
+					...data,
+					updated_at: new Date().toISOString(),
+				} as any,
+				fileId: fileId,
 				moduleId: module?.id as string,
 			});
-		}
-	}, 1500);
+		},
+		1500,
+	);
 	const editor = useCreateBlockNote({
-		initialContent: module?.files?.find((f) => f.id === noteId)?.data || [
-			{
-				type: 'paragraph',
-				content: 'Welcome to this demo!',
-			},
-		],
+		initialContent:
+			(module?.files?.find((f) => f.id === noteId)?.data?.length || 0) > 0
+				? module?.files?.find((f) => f.id === noteId)?.data
+				: [
+						{
+							type: 'paragraph',
+							content: 'Welcome to this demo!',
+						},
+					],
 		dropCursor: multiColumnDropCursor,
 		codeBlock: {
-			...codeBlock,
+			...codeBlockOptions,
 			indentLineWithTab: true,
 		},
 
@@ -71,7 +76,7 @@ function NotespaceEditor({ noteId }: { noteId: string }) {
 			BlockNoteSchema.create({
 				blockSpecs: {
 					...defaultBlockSpecs,
-					alert: Alert,
+					alert: Alert(),
 				},
 				styleSpecs: {
 					...defaultStyleSpecs,
@@ -113,8 +118,11 @@ function NotespaceEditor({ noteId }: { noteId: string }) {
 			data-theming-css-demo
 			onChange={(editor) => {
 				setTimeout(() => {
-					updateFile(noteId, { data: editor.document });
-					debouncedUpdate();
+					updateFile(noteId, {
+						data: editor.document,
+						updated_at: new Date().toISOString(),
+					});
+					debouncedUpdate(noteId, { data: editor.document });
 				}, 0);
 			}}
 			editor={editor}

@@ -103,23 +103,23 @@ const NavModuleItem = ({
 						: undefined
 				}
 				className={cn(
-					'px-1.5 !py-0 ',
+					'px-1.5 !py-0',
 					pathname?.includes(item.id) && 'bg-primary/40',
 					item?.color ? 'hover:bg-[var(--hover-bg-color)]' : '',
 				)}
 			>
 				<Link
 					href={item.url}
-					className="flex items-center dark:text-slate-200 !gap-2"
+					className="flex items-center !gap-2 dark:text-slate-200"
 				>
-					<span className="aspect-1 flex justify-center items-center min-w-5">
+					<span className="flex justify-center items-center min-w-5 aspect-1">
 						{item.logo ? (
 							<Image
 								src={item.logo}
 								alt={`module${item.name}${item.id}`}
 								width={100}
 								height={100}
-								className="size-4 aspect-1 object-cover object-center"
+								className="size-4 object-center object-cover aspect-1"
 							/>
 						) : (
 							item.icon
@@ -129,51 +129,51 @@ const NavModuleItem = ({
 				</Link>
 			</SidebarMenuButton>
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild className="!p-0 !m-0 ">
+				<DropdownMenuTrigger asChild className="!m-0 !p-0">
 					<SidebarMenuAction
 						showOnHover
-						className="rounded-sm !p-0 !m-0  cursor-pointer focus-visible:!ring-transparent rotate-90 data-[state=open]:bg-accent"
+						className="data-[state=open]:bg-accent !m-0 !p-0 rounded-sm focus-visible:!ring-transparent rotate-90 cursor-pointer"
 					>
 						<MoreHorizontalIcon />
 						<span className="sr-only">More</span>
 					</SidebarMenuAction>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent
-					className=" rounded-lg"
+					className="rounded-lg"
 					side={isMobile ? 'bottom' : 'right'}
 					align={isMobile ? 'end' : 'start'}
 				>
-					<DropdownMenuItem className="cursor-pointer text-foreground/80 group hover:!text-foreground/80">
+					<DropdownMenuItem className="group text-foreground/80 hover:!text-foreground/80 cursor-pointer">
 						<FolderIcon className="size-3 !text-inherit group-hover:text-foreground/80" />
 						<span className="text-xs">Open</span>
 					</DropdownMenuItem>
-					<DropdownMenuItem className="cursor-pointer text-foreground/80 group hover:!text-foreground/80">
+					<DropdownMenuItem className="group text-foreground/80 hover:!text-foreground/80 cursor-pointer">
 						<Share2 className="size-3 !text-inherit group-hover:text-foreground/80" />
 						<span className="text-xs">Share</span>
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						onClick={() => handleHardDelete(item.id)}
 						disabled={hardIsPending}
-						className="cursor-pointer text-foreground/80 group hover:!text-red-400"
+						className="group text-foreground/80 hover:!text-red-400 cursor-pointer"
 					>
 						{hardIsPending ? (
 							<Spinner className="size-3 !text-inherit group-hover:text-red-400" />
 						) : (
 							<Trash className="size-3 !text-inherit group-hover:text-red-400" />
 						)}
-						<span className="text-xs mt-0.5">Delete</span>
+						<span className="mt-0.5 text-xs">Delete</span>
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						onClick={() => handleSoftDelete(item.id)}
 						disabled={softIsPending}
-						className="cursor-pointer text-foreground/80 group hover:!text-red-400"
+						className="group text-foreground/80 hover:!text-red-400 cursor-pointer"
 					>
 						{softIsPending ? (
 							<Spinner className="size-3 !text-inherit group-hover:text-red-400" />
 						) : (
 							<Trash className="size-3 !text-inherit group-hover:text-red-400" />
 						)}
-						<span className="text-xs mt-0.5">Move To Trash</span>
+						<span className="mt-0.5 text-xs">Move To Trash</span>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
@@ -196,13 +196,13 @@ export function NavModules({
 	return (
 		<>
 			<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-				<SidebarGroupLabel className="flex items-center justify-between mr-0 pr-0">
+				<SidebarGroupLabel className="flex justify-between items-center mr-0 pr-0">
 					<span>Modules</span>
 					<CreateModuleModal>
 						<SidebarMenuButton
 							tooltip="Quick Create"
 							size="sm"
-							className="cursor-pointer max-w-min m-0"
+							className="m-0 max-w-min cursor-pointer"
 						>
 							<PlusCircleIcon />
 						</SidebarMenuButton>
@@ -211,18 +211,18 @@ export function NavModules({
 
 				<SidebarMenu className="max-h-74 overflow-hidden overflow-y-auto">
 					{items.length <= 0 && (
-						<div className="flex border-2 transition-all duration-300 ease-in-out mx-auto p-3 rounded-md mt-2 dark:border-primary-700 border-primary-150 w-[95%] border-dashed flex-col items-center text-center justify-center h-full gap-4">
-							<p className="text-sm text-foreground/80  w-[200px]">
+						<div className="flex flex-col justify-center items-center gap-4 mx-auto mt-2 p-3 border-2 border-primary-150 dark:border-primary-700 border-dashed rounded-md w-[95%] h-full text-center transition-all duration-300 ease-in-out">
+							<p className="w-[200px] text-foreground/80 text-sm">
 								There is no modules found in your workspace
 							</p>
-							<p className="text-sm text-foreground/80  w-[200px]">
+							<p className="w-[200px] text-foreground/80 text-sm">
 								You can create a new module
 							</p>
 							<CreateModuleModal>
 								<Button
 									size="sm"
 									variant="outline"
-									className="border-2 text-xs text-foreground/80 rounded-md dark:bg-secondary-800 hover:bg-accent border-primary-150 dark:border-primary-700 border-dashed"
+									className="hover:bg-accent dark:bg-secondary-800 border-2 border-primary-150 dark:border-primary-700 border-dashed rounded-md text-foreground/80 text-xs"
 								>
 									Create
 								</Button>
@@ -230,7 +230,7 @@ export function NavModules({
 						</div>
 					)}
 					<motion.div
-						className="max-h-74 space-y-1"
+						className="space-y-1 max-h-74"
 						{...{
 							initial: {
 								opacity: 0,
@@ -242,7 +242,6 @@ export function NavModules({
 								duration: 0.3,
 								ease: 'easeOut',
 								staggerChildren: 0.1,
-								once: true,
 							},
 						}}
 					>

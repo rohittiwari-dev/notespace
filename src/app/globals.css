@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 @import './_styles/notespace-editor.css';
+@import '@blocknote/core/fonts/inter.css';
+@import '@blocknote/mantine/style.css';
 
 /* Plugins Declarations */
 @plugin "tailwindcss-animate";

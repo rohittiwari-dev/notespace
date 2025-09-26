@@ -1,35 +1,55 @@
-import { cn } from '@/lib/utils';
+import { format } from 'timeago.js';
+import { Badge } from '@/components/ui/badge';
+import { IFile } from '@/db/schemas';
 import useAppStore from '@/store';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-function PageCard() {
+function PageCard({ file }: { file: IFile }) {
 	const { workspace, module } = useAppStore();
 
 	return (
 		<Link
-			href={`/space/${workspace?.id}/${module?.id}/1`}
-			className="sm:max-w-64 sm:max-h-48 relative w-full block h-full bg-card shadow hover:ring-4 transition-all ease-in-out duration-500 hover:dark:ring-indigo-900/50 hover:shadow-md shadow-primary-300/20 dark:shadow-primary-800/60 rounded-lg overflow-hidden border dark:border-primary-700/50 border-primary-300/30 hover:ring-indigo-400/30"
+			href={`/space/${workspace?.id}/${module?.id}/${file.id}`}
+			className="block w-full"
 		>
-			{/* {loading && (
-				<Image
-					src="/placeholder.png"
-					alt="Loading..."
-					fill
-					className="absolute w-full h-full object-cover animate-pulse "
-				/>
-			)} */}
-			{/* {!loading && ( */}
-			<Image
-				alt="Page Preview"
-				src="/thumbnail.png"
-				fill
-				loading="lazy"
-				blurDataURL="/placeholder.png"
-				className={cn('absolute')}
-			/>
-			{/* )} */}
+			<div className="flex gap-2 bg-secondary-100/70 dark:bg-secondary-800/80 p-4 rounded-lg w-full transition-colors cursor-pointer">
+				{/* Heading */}
+				<div>
+					{file.cover ? (
+						<Image
+							src={file.cover}
+							alt={`module${file.name}${file.id}`}
+							width={100}
+							height={100}
+							className="size-4 object-center object-cover aspect-1"
+						/>
+					) : (
+						file.icon
+					)}
+				</div>
+				<div className="flex flex-col flex-1 overflow-hidden ga">
+					<p className="mb-1 text-secondary-700 dark:text-secondary-100 !text-base">
+						{file.name}
+					</p>
+					<p className="text-secondary-700 dark:text-secondary-200 !text-xs">
+						{file.description}
+					</p>
+				</div>
+				<div>
+					{file.tags?.map((tag) => (
+						<Badge key={tag} className="mr-1 mb-1 capitalize">
+							{tag}
+						</Badge>
+					))}
+					{file.updated_at && (
+						<Badge variant="secondary">
+							Edited: {format(file.updated_at, 'en_US')}
+						</Badge>
+					)}
+				</div>
+			</div>
 		</Link>
 	);
 }

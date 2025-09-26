@@ -135,11 +135,11 @@ export default function CoverUpload({
 	const hasImage = coverImage && coverImage.preview;
 
 	return (
-		<div className={cn('space-y-4 w-full', className)}>
+		<div className={cn('space-y-4 w-full max-h-96', className)}>
 			{/* Cover Upload Area */}
 			<div
 				className={cn(
-					'group relative border border-border rounded-xl overflow-hidden transition-all duration-200',
+					'group relative border border-border rounded-xl max-h-96 overflow-hidden transition-all duration-200',
 					isDragging
 						? 'border-dashed border-primary bg-primary/5'
 						: hasImage
@@ -157,10 +157,10 @@ export default function CoverUpload({
 				{hasImage ? (
 					<>
 						{/* Cover Image Display */}
-						<div className="relative w-full aspect-[21/9]">
+						<div className="relative w-full max-h-96 aspect-[21/9]">
 							{/* Loading placeholder */}
 							{imageLoading && (
-								<div className="absolute inset-0 flex justify-center items-center bg-muted animate-pulse">
+								<div className="absolute inset-0 flex justify-center items-center bg-muted max-h-96 animate-pulse">
 									<div className="flex flex-col items-center gap-2 text-muted-foreground">
 										<ImageIcon className="size-5" />
 										<span className="text-sm">
@@ -188,7 +188,7 @@ export default function CoverUpload({
 							<div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200" />
 
 							{/* Action buttons overlay */}
-							<div className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+							<div className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 max-h-96 transition-opacity duration-200">
 								<div className="flex gap-2">
 									<Button
 										onClick={openFileDialog}
@@ -212,7 +212,7 @@ export default function CoverUpload({
 
 							{/* Upload progress */}
 							{isUploading && (
-								<div className="absolute inset-0 flex justify-center items-center bg-black/40">
+								<div className="absolute inset-0 flex justify-center items-center bg-black/40 max-h-96">
 									<div className="relative">
 										<svg
 											className="size-16 -rotate-90"
@@ -253,7 +253,7 @@ export default function CoverUpload({
 				) : (
 					/* Empty State */
 					<div
-						className="flex flex-col justify-center items-center gap-4 p-8 w-full aspect-[21/9] text-center cursor-pointer"
+						className="flex flex-col justify-center items-center gap-4 p-8 w-full max-h-96 aspect-[21/9] text-center cursor-pointer"
 						onClick={openFileDialog}
 					>
 						<div className="bg-primary/10 p-4 rounded-full">

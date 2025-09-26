@@ -141,21 +141,23 @@ const moduleRouter = createRouter({
 			z.object({
 				moduleId: z.cuid2(),
 				fileId: z.cuid2(),
-				file: IFileSelectSchema.extend({
-					cover: z
-						.object({
-							fileName: z.string(),
-							fileType: z.string(),
-							fileData: z.string(),
-							fileSize: z
-								.number()
-								.max(
-									5 * 1024 * 1024,
-									'File size must be under 5MB',
-								), // 5MB limit
-						})
-						.optional(),
-				}).optional(),
+				file: IFileSelectSchema.partial()
+					.extend({
+						cover: z
+							.object({
+								fileName: z.string(),
+								fileType: z.string(),
+								fileData: z.string(),
+								fileSize: z
+									.number()
+									.max(
+										5 * 1024 * 1024,
+										'File size must be under 5MB',
+									), // 5MB limit
+							})
+							.optional(),
+					})
+					.optional(),
 			}),
 		)
 		.mutation(async ({ input, ctx }) => {

@@ -15,17 +15,17 @@ import {
 } from '@/lib/utils/colors';
 import useAppStore from '@/store';
 import { createId } from '@orama/cuid2';
-import { Grid2X2, LayoutDashboard, List, Plus, Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import Image from 'next/image';
 import React, { use, useEffect } from 'react';
 import { toast } from 'sonner';
 import LoadingCircle from '../../../../../components/icons/loading-circle';
 import { useRouter } from 'next/navigation';
+import PageCard from '@/components/workspace/modules/page-card';
 
 // Simple fallback FileNotSavedToast component
 
 function ModulePage({ params }: { params: Promise<{ moduleId: string }> }) {
-	const trpcUtils = trpc.useUtils();
 	const router = useRouter();
 	const [viewMode, setViewMode] = React.useState<'list' | 'grid' | 'gallery'>(
 		'list',
@@ -48,21 +48,10 @@ function ModulePage({ params }: { params: Promise<{ moduleId: string }> }) {
 				);
 				return { tempId };
 			},
-			onSuccess: (data, _variables, context) => {
-				if (context?.tempId) {
-					removeFile(context.tempId);
-					addNewFile(data);
-				}
-				trpcUtils.modules.getModule.invalidate({
-					moduleId: module?.id as string,
-				});
-				if (data?.id && context?.tempId && data.id !== context.tempId) {
-					router.replace(
-						`/space/${module?.workspace}/${module?.id}/${data.id}`,
-					);
-				}
-			},
 			onError: (_, _variables) => {
+				if (_variables?.file?.id) {
+					removeFile(_variables.file.id);
+				}
 				toast.warning('File not saved.', {
 					action: {
 						label: 'Retry Save',
@@ -169,7 +158,7 @@ function ModulePage({ params }: { params: Promise<{ moduleId: string }> }) {
 						className="shadow-none !p-0 border-none !outline-none focus-visible:!ring-0 w-36 h-8 transition-all duration-300 ease-in-out"
 					/>
 				</div>
-				<div>
+				{/* <div>
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button
@@ -210,13 +199,13 @@ function ModulePage({ params }: { params: Promise<{ moduleId: string }> }) {
 						</TooltipTrigger>
 						<TooltipContent>Grid</TooltipContent>
 					</Tooltip>
-				</div>
+				</div> */}
 			</div>
-			<div className="flex-1 gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 p-4 w-full">
+			<div className="flex flex-col flex-1 items-stretch gap-4 p-3 w-full">
 				{module?.files
 					?.filter((val) => val.name.includes(searchTerm))
 					?.map((file, index) => (
-						<div key={file.id + index}>{file.name}</div>
+						<PageCard key={file.id + index} file={file} />
 					))}
 			</div>
 		</section>
