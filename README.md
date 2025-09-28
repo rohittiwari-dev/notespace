@@ -8,60 +8,109 @@ Notespace is a comprehensive productivity platform designed specifically for stu
 [![Next.js](https://img.shields.io/badge/Next.js-15+-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Drizzle ORM](https://img.shields.io/badge/Drizzle-ORM-green)](https://orm.drizzle.team/)
+[![Development Status](https://img.shields.io/badge/Status-In%20Development-orange)](https://github.com/rohittiwari-dev/notespace)
 
-## ✨ Features
+## 🌐 Live Demo
 
-### 🏠 **Workspace Management**
+**🚀 [Try Notespace Live](https://devnotespace.netlify.app/)**
 
-- **Multi-Workspace Support**: Create and manage multiple workspaces for different subjects or projects
-- **Customizable Organization**: Organize content with tags, colors, and custom icons
-- **Module-Based Structure**: Group related files and content within modules
-- **Trash Management**: Safely delete and restore content with built-in trash functionality
+Experience Notespace in action with our live development deployment. Create an account and explore the current features!
 
-### 📝 **Rich Content Creation**
+> ⚠️ **Note**: Notespace is currently in active development. Some features are complete, while others are planned or in development. See the feature status below for details.
 
-- **Advanced Note Editor**: Powered by BlockNote with rich text editing capabilities
-- **Multiple File Types**: Support for various content types:
-    - 📄 **Pages**: Rich text documents with formatting
-    - 🧠 **Mind Maps**: Visual thinking and brainstorming tools
-    - 🎨 **Whiteboards**: Digital canvas for creative work
-    - 📋 **Task Boards**: Kanban-style project management
-    - 📁 **PDF Support**: Import and work with PDF documents
-    - ⏰ **Routines**: Schedule and track daily routines
+## ✨ Features & Development Status
 
-### 🎨 **Rich Text Features**
+### ✅ **Completed Features**
 
-- **Multi-Column Layouts**: Organize content in multiple columns
-- **Code Blocks**: Syntax highlighting for various programming languages
-- **Alerts and Callouts**: Highlight important information
-- **Custom Fonts**: Typography options for better readability
-- **Real-time Auto-save**: Never lose your work with automatic saving
+#### 🏠 **Workspace Management**
 
-### 🔐 **User Management & Authentication**
+- ✅ **Multi-Workspace Support**: Create and manage multiple workspaces for different subjects or projects
+- ✅ **Customizable Organization**: Organize content with tags, colors, and custom icons
+- ✅ **Module-Based Structure**: Group related files and content within modules
+- ✅ **Trash Management**: Safely delete and restore content with built-in trash functionality
 
-- **Secure Authentication**: Complete sign-up, sign-in, and password recovery system
-- **User Profiles**: Personalized accounts with avatar support
-- **Account Settings**: Comprehensive user preferences and settings
-- **Email Integration**: Newsletter subscription and email notifications
+#### 📝 **Rich Content Creation**
 
-### 🌙 **User Experience**
+- ✅ **Advanced Note Editor**: Powered by BlockNote with rich text editing capabilities
+- ✅ **Pages**: Rich text documents with formatting and advanced editing features
+- ✅ **Multi-Column Layouts**: Organize content in multiple columns
+- ✅ **Code Blocks**: Syntax highlighting for various programming languages
+- ✅ **Alerts and Callouts**: Highlight important information
+- ✅ **Custom Fonts**: Typography options for better readability
+- ✅ **Real-time Auto-save**: Never lose your work with automatic saving
 
-- **Dark/Light Theme**: Seamless theme switching with system preference detection
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Intuitive Navigation**: Smart breadcrumbs and sidebar navigation
-- **Space Switching**: Quick workspace switching with elegant UI
-- **Loading States**: Smooth loading animations and skeleton screens
+#### 🔐 **User Management & Authentication**
 
-### 🛠️ **Technical Features**
+- ✅ **Secure Authentication**: Complete sign-up, sign-in, and password recovery system
+- ✅ **User Profiles**: Personalized accounts with avatar support
+- ✅ **Account Settings**: Comprehensive user preferences and settings
+- ✅ **Email Integration**: Newsletter subscription and email notifications
 
-- **Real-time Collaboration**: Built with tRPC for type-safe API calls
-- **Data Persistence**: PostgreSQL database with Drizzle ORM
-- **File Upload**: Image and file upload with Cloudinary integration
-- **Search & Filter**: Advanced search capabilities across all content
-- **Export Options**: Export content in various formats
-- **Offline Support**: Progressive Web App (PWA) capabilities
+#### 🌙 **User Experience**
+
+- ✅ **Dark/Light Theme**: Seamless theme switching with system preference detection
+- ✅ **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- ✅ **Intuitive Navigation**: Smart breadcrumbs and sidebar navigation
+- ✅ **Space Switching**: Quick workspace switching with elegant UI
+- ✅ **Loading States**: Smooth loading animations and skeleton screens
+
+#### 🛠️ **Technical Foundation**
+
+- ✅ **Real-time API**: Built with tRPC for type-safe API calls
+- ✅ **Data Persistence**: PostgreSQL database with Drizzle ORM
+- ✅ **File Upload**: Image and file upload with Cloudinary integration
+
+### 🚧 **In Development**
+
+#### 📋 **Task Management**
+
+- 🚧 **Task Boards**: Kanban-style project management system (in active development)
+- 🚧 **Task Organization**: Create, assign, and track tasks across boards
+- 🚧 **Progress Tracking**: Visual progress indicators and completion status
+
+#### ⏰ **Routine Management**
+
+- 🚧 **Daily Routines**: Schedule and track daily habits and routines (in development)
+- 🚧 **Habit Tracking**: Monitor consistency and build productive habits
+- 🚧 **Routine Analytics**: Insights into routine completion and patterns
+
+### 📋 **Planned Features**
+
+#### 🎨 **Visual Tools**
+
+- 📋 **Whiteboards**: Digital canvas for creative work and brainstorming
+- 📋 **Drawing Tools**: Pen, shapes, sticky notes, and collaborative drawing
+- 📋 **Templates**: Pre-built whiteboard templates for different use cases
+
+#### 🧠 **Mind Mapping**
+
+- 📋 **Mind Maps**: Visual thinking and brainstorming tools
+- 📋 **Node Connections**: Create complex idea relationships
+- 📋 **Export Options**: Save mind maps in various formats
+
+#### 📁 **Document Management**
+
+- 📋 **PDF Support**: Import, annotate, and work with PDF documents
+- 📋 **PDF Annotations**: Highlight, comment, and mark up PDFs
+- 📋 **Document Viewer**: Built-in PDF viewer with note-taking capabilities
+
+#### 🔄 **Advanced Features**
+
+- 📋 **Real-time Collaboration**: Live editing and collaboration features
+- 📋 **Advanced Search**: Full-text search across all content types
+- 📋 **Export System**: Export workspaces and content in multiple formats
+- 📋 **Offline Support**: Progressive Web App (PWA) capabilities
+- 📋 **Mobile App**: Native mobile applications for iOS and Android
+
+### 🎯 **Feature Status Legend**
+
+- ✅ **Completed**: Feature is fully implemented and available
+- 🚧 **In Development**: Feature is currently being built
+- 📋 **Planned**: Feature is planned for future development
 
 ## 🚀 Getting Started
+
+> ⚠️ **Development Status**: Notespace is currently in active development. The core functionality (workspaces, notes, authentication) is stable and ready for use. Features like whiteboards, mind maps, PDF support, and kanban boards are planned or in development.
 
 ### Prerequisites
 
@@ -140,6 +189,29 @@ The application uses a PostgreSQL database with the following main entities:
 - `bun run db:migrate` - Apply database migrations
 - `bun run db:push` - Push schema changes to database
 - `bun run db:studio` - Open database studio
+
+## 🗺️ Development Roadmap
+
+### 🎯 **Current Focus (Q4 2025)**
+
+- 🚧 **Kanban Task Boards**: Complete implementation of drag-and-drop task management
+- 🚧 **Routine Tracking**: Finish daily routine and habit tracking system
+- 🚧 **Performance Optimization**: Improve loading times and user experience
+
+### 🔮 **Next Quarter (Q1 2026)**
+
+- 📋 **Whiteboard Implementation**: Start development of digital canvas features
+- 📋 **Mind Map Editor**: Begin mind mapping tool development
+- 📋 **PDF Integration**: Research and plan PDF support architecture
+
+### 🌟 **Future Releases**
+
+- 📋 **Mobile Applications**: Native iOS and Android apps
+- 📋 **Real-time Collaboration**: Live editing and multi-user features
+- 📋 **Advanced Analytics**: Usage insights and productivity metrics
+- 📋 **API Ecosystem**: Public API for third-party integrations
+
+> 💡 **Want to contribute?** Check our [issues](https://github.com/rohittiwari-dev/notespace/issues) for current development tasks or suggest new features!
 
 ## 🤝 Contributing
 
