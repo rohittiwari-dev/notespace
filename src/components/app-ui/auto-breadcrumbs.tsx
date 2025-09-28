@@ -279,6 +279,7 @@ function AutoBreadcrumbs({
 		useEllipsis,
 		workspace,
 		routePatterns,
+		module,
 		mounted,
 	]);
 
